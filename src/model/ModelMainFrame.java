@@ -1,6 +1,12 @@
 package model;
 
 import core.Mode;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -29,6 +35,7 @@ public class ModelMainFrame extends AbstractModel {
         for (Node node : graph) {
             node.addAttribute("ui.label", node.getId());
             node.addAttribute("ui.class", "unmarked");
+            node.addAttribute("chips", 2);
         }
     }
 
@@ -51,11 +58,27 @@ public class ModelMainFrame extends AbstractModel {
         clearChanged();
     }
     
-    public void iter () {
-        Mode m = new Mode ();
-        graph = m.iter (graph);
-        
-        
+    public void iter() {
+
+        HashMap<String, Integer> initialState = new HashMap<>(graph.getNodeCount());
+
+        for (Node node : graph) {
+            initialState.put(node.getId(), (int) node.getAttribute("chips"));
+        }
+
+        for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
+            if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
+                for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
+                    edgeOut.getNode1().setAttribute("chips", (int)edgeOut.getNode1().getAttribute("chips") + 1);
+                    edgeOut.getNode0().setAttribute("chips", (int)edgeOut.getNode0().getAttribute("chips") - 1);
+                }
+            }
+        }
+
+        for (Node node : graph) {
+            System.out.println(node.getId() + " : " + node.getAttribute("chips"));
+        }
+
         setChanged();
         notifyObservers(graph);
         clearChanged();

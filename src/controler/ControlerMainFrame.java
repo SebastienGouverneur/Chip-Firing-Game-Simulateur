@@ -25,6 +25,7 @@ public class ControlerMainFrame extends AbstractControler {
 
         modelMainFrame.addObserver(viewMainFrame);
         viewMainFrame.getLogButton().addActionListener((ActionListener) this);
+        viewMainFrame.getOptionControlRun().addActionListener((ActionListener) this);
         
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
@@ -78,7 +79,9 @@ public class ControlerMainFrame extends AbstractControler {
             ControlerLog controlerLog = new ControlerLog(viewLog, modelLogFrame);
             viewLog.setVisible(true);
         }
-        else if (ae.getSource() == viewMainFrame.getpPlayCFG()) {
+        
+        if (ae.getSource() == viewMainFrame.getOptionControlRun()) {
+            System.out.println("ooooooo");
             ((ModelMainFrame) model).iter ();
         }
     }
