@@ -1,5 +1,6 @@
 package controler;
 
+import core.ModeSequentialBlock;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -26,15 +27,15 @@ public class ControlerMainFrame extends AbstractControler {
         modelMainFrame.addObserver(viewMainFrame);
         viewMainFrame.getLogButton().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlRun().addActionListener((ActionListener) this);
-        
+
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
-        fromViewer.addViewerListener(new Click (modelMainFrame));
+        fromViewer.addViewerListener(new Click(modelMainFrame));
         fromViewer.addSink(model.getGraph());
 
         Thread pu = new Thread(new Runnable() {
             @Override
-            public void run() {                
+            public void run() {
                 while (true) {
                     try {
                         fromViewer.blockingPump();
@@ -79,10 +80,25 @@ public class ControlerMainFrame extends AbstractControler {
             ControlerLog controlerLog = new ControlerLog(viewLog, modelLogFrame);
             viewLog.setVisible(true);
         }
-        
+
         if (ae.getSource() == viewMainFrame.getOptionControlRun()) {
-            System.out.println("ooooooo");
-            ((ModelMainFrame) model).iter ();
+
+            Thread compute = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    while (true) {
+                        ((ModelMainFrame) model).execute(new ModeSequentialBlock());
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            });
+            
+            compute.start();
         }
     }
 }
