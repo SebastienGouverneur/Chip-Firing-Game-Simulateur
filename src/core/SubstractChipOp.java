@@ -1,6 +1,6 @@
 package core;
 
-public class RetrieveChipOp implements IChipOperation {
+public class SubstractChipOp implements IChipOperation {
 
     @Override
     public int compute(int nbToApply, int nodeCurrentChips) {

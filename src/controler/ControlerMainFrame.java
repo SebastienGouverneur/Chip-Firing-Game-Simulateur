@@ -1,6 +1,6 @@
 package controler;
 
-import core.RetrieveChipOp;
+import core.SubstractChipOp;
 import core.AddChipOp;
 import core.IChipOperation;
 import core.ModeSequentialBlock;
@@ -161,7 +161,7 @@ public class ControlerMainFrame extends AbstractControler {
             op = new AddChipOp();
         } else 
         {
-            op = new RetrieveChipOp();
+            op = new SubstractChipOp();
         }
         
         int nbChips = Integer.parseInt(viewMainFrame.getInputNbChips().getText());
