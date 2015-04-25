@@ -90,7 +90,7 @@ public class ControlerMainFrame extends AbstractControler {
                     while (true) {
                         ((ModelMainFrame) model).execute(new ModeSequentialBlock());
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(4000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }

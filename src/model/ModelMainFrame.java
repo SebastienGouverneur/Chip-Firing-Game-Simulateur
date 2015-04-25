@@ -1,9 +1,6 @@
 package model;
 
 import core.IMode;
-import java.util.HashMap;
-import java.util.Map;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -22,9 +19,12 @@ public class ModelMainFrame extends AbstractModel {
         graph.addAttribute("ui.stylesheet", "url('file:///home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
 
         graph.addEdge("AB", "A", "B", true);
-        graph.addEdge("AC", "A", "C", true);
         graph.addEdge("BC", "B", "C", true);
-        graph.addEdge("CB", "C", "B", true);
+        graph.addEdge("CA", "C", "A", true);
+        graph.addEdge("AD", "A", "D", true);
+        graph.addEdge("DE", "D", "E", true);
+        graph.addEdge("DF", "D", "F", true);
+        graph.addEdge("EF", "E", "F", true);
 
         for (Node node : graph) {
             node.addAttribute("ui.class", "unmarked");
@@ -51,35 +51,9 @@ public class ModelMainFrame extends AbstractModel {
         clearChanged();
     }
 
-    public void iter() {
-
-        HashMap<String, Integer> initialState = new HashMap<>(graph.getNodeCount());
-
-        for (Node node : graph) {
-            initialState.put(node.getId(), (int) node.getAttribute("chips"));
-        }
-
-        for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
-            if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
-                for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
-                    edgeOut.getNode1().setAttribute("chips", (int) edgeOut.getNode1().getAttribute("chips") + 1);
-                    edgeOut.getNode0().setAttribute("chips", (int) edgeOut.getNode0().getAttribute("chips") - 1);
-                }
-            }
-        }
-
-        for (Node node : graph) {
-            System.out.println(node.getId() + " : " + node.getAttribute("chips"));
-        }
-
-        setChanged();
-        notifyObservers(graph);
-        clearChanged();
-    }
-
     public void execute(IMode mode) {
-        mode.execute (graph);
-        
+        mode.execute(graph);
+
         setChanged();
         notifyObservers(graph);
         clearChanged();

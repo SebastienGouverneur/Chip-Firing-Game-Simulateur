@@ -1,6 +1,6 @@
 node.unmarked
 { 
-    size: 20px; 
+    size: 35px; 
     fill-color: #D82; 
     stroke-mode: plain; 
     stroke-color: #999; 
@@ -12,7 +12,7 @@ node.unmarked
 
 node.marked
 { 
-    size: 20px; 
+    size: 35px; 
     fill-color: red; 
     stroke-mode: plain; 
     stroke-color: #999; 
@@ -25,4 +25,14 @@ node.marked
 edge 
 {
     arrow-shape: arrow; 
+} 
+
+
+edge.actif 
+{
+     fill-color: #777; 
+     shadow-mode: plain; 
+     shadow-width: 3px; 
+     shadow-color: #FC0; 
+     shadow-offset: 0px;
 } 
