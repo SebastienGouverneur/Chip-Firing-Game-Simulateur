@@ -1,38 +1,37 @@
-node.unmarked
-{ 
-    size: 35px; 
-    fill-color: #D82; 
+node.unmarked { 
+    size: 20px; 
+    fill-color: blue; 
     stroke-mode: plain; 
     stroke-color: #999; 
-    shadow-mode: gradient-radial; 
-    shadow-width: 2px; 
-    shadow-color: #999, white;
-    shadow-offset: 3px, -3px; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: grey; 
+    shadow-offset: 0px; 
 }
 
-node.marked
-{ 
-    size: 35px; 
-    fill-color: red; 
+node.marked { 
+    size: 20px; 
+    fill-color: blue; 
     stroke-mode: plain; 
     stroke-color: #999; 
-    shadow-mode: gradient-radial; 
-    shadow-width: 2px; 
-    shadow-color: #999, white;
-    shadow-offset: 3px, -3px; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: red; 
+    shadow-offset: 0px; 
+} 
+
+edge.unmarked { 
+    fill-color: blue; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: grey; 
+    shadow-offset: 0px; 
 }
 
-edge 
-{
-    arrow-shape: arrow; 
-} 
-
-
-edge.actif 
-{
-     fill-color: #777; 
-     shadow-mode: plain; 
-     shadow-width: 3px; 
-     shadow-color: #FC0; 
-     shadow-offset: 0px;
-} 
+edge.marked { 
+    fill-color: blue; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: red; 
+    shadow-offset: 0px; 
+}

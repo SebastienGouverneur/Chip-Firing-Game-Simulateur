@@ -2,6 +2,7 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,7 +27,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     // L'instance de notre objet contrôleur
     private ModelMainFrame model;
     private Viewer viewer;
-            
+
     public ViewMainFrame() {
         initComponents();
     }
@@ -363,13 +364,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     //Implémentation du pattern observer
     @Override
     public void update(Observable o, Object o1) {
-        System.out.println(o.toString());
-        
-        if (o1 instanceof Node) {
-            selectedNodeText.append(o1.toString());
-        }
-        else if (o1 instanceof Graph) {
-            
+
+        if (o1 instanceof Set) {
+            selectedNodeText.setText(o1.toString());
         }
     }
 
