@@ -1,40 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author jon-snow
- */
+
 public class PatternUpdate {
 
-    private LinkedHashMap<Integer, LinkedList<String>> patternUpdate = new LinkedHashMap<>();
-    private Pattern regex;
+    private final LinkedHashMap<Integer, LinkedList<String>> patternUpdate = new LinkedHashMap<>();
+    private final Pattern regex;
+    private String orderedPartitionText;
 
     public PatternUpdate() {
+        this.orderedPartitionText = new String();
         regex = Pattern.compile("\\(\\{\\w+(\\,\\w+)*\\}(\\,\\{\\w+(\\,\\w+)*\\})*\\)");
     }
 
     public PatternUpdate(Pattern regex) {
+        this.orderedPartitionText = new String();
         this.regex = regex;
     }
 
-    public boolean isValid(String orderedPartition) {
-        Matcher m = regex.matcher(orderedPartition);
+    private boolean isValid(String orderedPartition) {
+        orderedPartitionText = orderedPartition;
+        Matcher m = regex.matcher(orderedPartitionText);
 
         if (m.matches()) {
             System.out.println("Pattern reconnu");
@@ -45,9 +38,10 @@ public class PatternUpdate {
         }
     }
 
-    public boolean isFair(String orderedPartition, int nbVertex) {
+    private boolean isFair(String orderedPartition, int nbVertex) {
         Set<Integer> presentNode = new HashSet();
 
+        orderedPartitionText = orderedPartition;
         Pattern p = Pattern.compile("\\w+");
         Matcher m = p.matcher(orderedPartition);
 
@@ -60,9 +54,10 @@ public class PatternUpdate {
         return presentNode.size() == nbVertex;
     }
 
-    public boolean isFair(String orderedPartition, int nbVertex, String unitPart) {
+    private boolean isFair(String orderedPartition, int nbVertex, String unitPart) {
         Set<Integer> presentNode = new HashSet();
 
+        orderedPartitionText = orderedPartition;
         Pattern p = Pattern.compile(unitPart + "+");
         Matcher m = p.matcher(orderedPartition);
 
@@ -75,15 +70,17 @@ public class PatternUpdate {
         return presentNode.size() == nbVertex;
     }
 
-    public void initPattern(String orderedPartition, int nbVertex) throws Exception {
+    public boolean initPattern(String orderedPartition, int nbVertex) {
 
         if (!(isValid(orderedPartition) && isFair(orderedPartition, nbVertex))) {
-            throw new Exception("MalformedPatternException", new Throwable("MalformedPatternException"));
+            return false;
+//            throw new Exception("MalformedPatternException", new Throwable("MalformedPatternException"));
         }
 
         Pattern p = Pattern.compile("\\{\\w+(\\,\\w+)*\\}");
         Matcher m = p.matcher(orderedPartition);
-
+        orderedPartitionText = orderedPartition;
+        
         for (int numIter = 0; m.find(); numIter++) {
             LinkedList<String> parallelGroup = new LinkedList<>();
 
@@ -98,6 +95,8 @@ public class PatternUpdate {
 
             patternUpdate.put(numIter, parallelGroup);
         }
+        
+        return true;
     }
 
     public void initPattern(String orderedPartition, int nbVertex, String unitPart) throws Exception {
@@ -130,13 +129,8 @@ public class PatternUpdate {
     public Set<Entry<Integer, LinkedList<String>>> getAllStep() {
         return patternUpdate.entrySet();
     }
-
-    public static void main(String[] args) throws Exception {
-        String s = new String("({1},{2,3})");
-        int nbV = 3;
-
-        PatternUpdate p = new PatternUpdate();
-
-        p.initPattern(s, nbV);
+    
+    public String getOrderedPartionText() {
+        return orderedPartitionText;
     }
 }
