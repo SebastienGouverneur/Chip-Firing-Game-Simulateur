@@ -10,14 +10,18 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AbstractModel;
+import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
 import org.graphstream.ui.view.ViewerPipe;
+import view.ViewIteration;
 import view.ViewLog;
 import view.ViewMainFrame;
 
 public class ControlerMainFrame extends AbstractControler {
 
+    private ControlerIteration controlerIteration;
+    private ViewIteration viewIteration;
     private ViewMainFrame viewMainFrame;
     private Thread checkUpdateGraph;
     private Thread compute;
@@ -38,6 +42,7 @@ public class ControlerMainFrame extends AbstractControler {
         viewMainFrame.getModeAddChips().addActionListener((ActionListener) this);
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
+        viewMainFrame.getIterationButton().addActionListener((ActionListener) this);
 
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
@@ -56,7 +61,6 @@ public class ControlerMainFrame extends AbstractControler {
                 }
             }
         });
-
         checkUpdateGraph.start();
     }
 
@@ -84,15 +88,19 @@ public class ControlerMainFrame extends AbstractControler {
         }
 
         if (ae.getSource() == viewMainFrame.getOptionControlRun()) {
-            optionControlRun();
+            optionControlRunPerformed();
         }
 
         if (ae.getSource() == viewMainFrame.getOptionControlForward()) {
-            optionControlForward();
+            optionControlForwardPerformed();
         }
 
         if (ae.getSource() == viewMainFrame.getValideOptionChips()) {
-            valideOptionChips();
+            valideOptionChipsPerformed();
+        }
+
+        if (ae.getSource() == viewMainFrame.getIterationButton()) {
+            iterationButtonPerformed();
         }
     }
 
@@ -110,18 +118,22 @@ public class ControlerMainFrame extends AbstractControler {
         viewLog.setVisible(true);
     }
 
-    public void optionControlRun() {
+    public void optionControlRunPerformed() {
+
+        if (controlerIteration == null) {
+            iterationButtonPerformed();
+        }
+
+        if (controlerIteration.getCurrentPattern() != null) {
+            iterationButtonPerformed();
+        }
+
         compute = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 while (true) {
-                    PatternUpdate p = new PatternUpdate();
-                    try {
-                        p.initPattern("({1,2,3})", model.getGraph().getNodeCount());
-                    } catch (Exception ex) {
-                        Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    PatternUpdate p = controlerIteration.getCurrentPattern();
 
                     ((ModelMainFrame) model).execute(new ModeSequentialBlock(p));
                     try {
@@ -132,33 +144,48 @@ public class ControlerMainFrame extends AbstractControler {
                 }
             }
         });
+
         compute.start();
     }
 
-    public void optionControlForward() {
+    public void optionControlForwardPerformed() {
+        if (controlerIteration == null) {
+            iterationButtonPerformed();
+        }
+
         compute = new Thread(new Runnable() {
             @Override
             public void run() {
-                PatternUpdate p = new PatternUpdate();
-                try {
-                    p.initPattern("({1,2,3})", model.getGraph().getNodeCount());
-                } catch (Exception ex) {
-                    Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                PatternUpdate p = controlerIteration.getCurrentPattern();
+                ((ModelMainFrame) model).execute(new ModeSequentialBlock(p));
+            }
+        });
+
+        compute.start();
     }
 
-    private void valideOptionChips() {
+    private void valideOptionChipsPerformed() {
         IChipOperation op;
-        
-        if (viewMainFrame.getModeAddChips().isSelected())
-        {
+
+        if (viewMainFrame.getModeAddChips().isSelected()) {
             op = new AddChipOp();
-        } else 
-        {
+        } else {
             op = new SubstractChipOp();
         }
-        
+
         int nbChips = Integer.parseInt(viewMainFrame.getInputNbChips().getText());
-        ((ModelMainFrame)model).computeNodesValues(nbChips, op);
+        ((ModelMainFrame) model).computeNodesValues(nbChips, op);
+    }
+
+    private void iterationButtonPerformed() {
+
+        if (controlerIteration != null) {
+            viewIteration.setVisible(true);
+        }
+
+        ModelIteration modelIteration = new ModelIteration(model.getGraph());
+        viewIteration = new ViewIteration(modelIteration);
+        controlerIteration = new ControlerIteration(viewIteration, modelIteration);
+        viewIteration.setVisible(true);
     }
 }

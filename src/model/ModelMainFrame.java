@@ -14,7 +14,7 @@ public class ModelMainFrame extends AbstractModel {
     public ModelMainFrame() {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-        
+
         selectedNode = new ConcurrentSkipListSet<>();
 
         graph = new SingleGraph("Tutorial 1");
@@ -41,16 +41,6 @@ public class ModelMainFrame extends AbstractModel {
                 edgeOut.addAttribute("ui.class", "unmarked");
             }
         }
-    }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void changeColor(String id) {
@@ -104,8 +94,8 @@ public class ModelMainFrame extends AbstractModel {
     public void computeNodesValues(int nbToApply, IChipOperation op) {
         for (String nodeId : selectedNode) {
             int nodeCurrentChips = ((int) graph.getNode(nodeId).getAttribute("chips"));
-            graph.getNode(nodeId).setAttribute("chips",  op.compute(nbToApply, nodeCurrentChips));
-            graph.getNode(nodeId).setAttribute("ui.label", (int)graph.getNode(nodeId).getAttribute("chips"));
+            graph.getNode(nodeId).setAttribute("chips", op.compute(nbToApply, nodeCurrentChips));
+            graph.getNode(nodeId).setAttribute("ui.label", (int) graph.getNode(nodeId).getAttribute("chips"));
             setUnselectedNode(nodeId);
         }
 
@@ -113,6 +103,14 @@ public class ModelMainFrame extends AbstractModel {
         notifyObservers(selectedNode);
         clearChanged();
     }
-    
-    
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
