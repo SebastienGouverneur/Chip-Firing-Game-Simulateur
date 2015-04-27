@@ -23,7 +23,7 @@ public class ModelMainFrame extends AbstractModel {
         graph.setStrict(false);
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
-        graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
+        graph.addAttribute("ui.stylesheet", "url('file:////home/jon-snow/NetBeansProjects/Chip-Firing-Game-Simulateur/src/view/graphCSS.css')");
 
         graph.addEdge("12", "1", "2", true);
         graph.addEdge("13", "1", "3", true);

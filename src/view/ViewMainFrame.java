@@ -103,7 +103,12 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         iterationMode.add(iterationModeParallel);
         iterationModeParallel.setSelected(true);
-        iterationModeParallel.setText("Parallel");
+        iterationModeParallel.setText("Bloc-Seq");
+        iterationModeParallel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iterationModeParallelActionPerformed(evt);
+            }
+        });
 
         iterationMode.add(iterationModeSeqentiel);
         iterationModeSeqentiel.setText("Async");
@@ -157,7 +162,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(optionControlTime, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(optionControlTimeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addComponent(iterationButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphTransButton)
@@ -296,7 +301,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tabs.addTab("Play CFG", playCFG);
@@ -360,6 +365,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void iterationModeParallelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterationModeParallelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iterationModeParallelActionPerformed
 
     //Implémentation du pattern observer
     @Override

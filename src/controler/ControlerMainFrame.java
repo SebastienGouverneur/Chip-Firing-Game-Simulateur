@@ -118,7 +118,7 @@ public class ControlerMainFrame extends AbstractControler {
                 while (true) {
                     PatternUpdate p = new PatternUpdate();
                     try {
-                        p.initPattern("({1,2},{3})", model.getGraph().getNodeCount());
+                        p.initPattern("({1,2,3})", model.getGraph().getNodeCount());
                     } catch (Exception ex) {
                         Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -141,16 +141,10 @@ public class ControlerMainFrame extends AbstractControler {
             public void run() {
                 PatternUpdate p = new PatternUpdate();
                 try {
-                    p.initPattern("({1,2},{3})", model.getGraph().getNodeCount());
+                    p.initPattern("({1,2,3})", model.getGraph().getNodeCount());
                 } catch (Exception ex) {
                     Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                ((ModelMainFrame) model).execute(new ModeSequentialBlock(p));
-            }
-        });
-
-        compute.start();
+                } 
     }
 
     private void valideOptionChips() {

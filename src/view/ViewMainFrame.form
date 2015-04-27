@@ -140,7 +140,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="viewGraph" pref="341" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="optionsChips" min="-2" pref="155" max="-2" attributes="0"/>
+                      <Component id="optionsChips" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -183,7 +183,7 @@
                           <Component id="optionControlTime" min="-2" pref="54" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                           <Component id="optionControlTimeLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="168" max="32767" attributes="0"/>
+                          <EmptySpace pref="181" max="32767" attributes="0"/>
                           <Component id="iterationButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="graphTransButton" min="-2" max="-2" attributes="0"/>
@@ -237,8 +237,11 @@
                       <ComponentRef name="iterationMode"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="Parallel"/>
+                    <Property name="text" type="java.lang.String" value="Bloc-Seq"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iterationModeParallelActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="iterationModeSeqentiel">
                   <Properties>
