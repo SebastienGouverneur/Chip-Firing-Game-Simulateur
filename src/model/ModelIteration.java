@@ -6,36 +6,29 @@ import org.graphstream.graph.Graph;
 public class ModelIteration extends AbstractModel {
 
     PatternUpdate pattern;
-    String statePattern;
 
     public ModelIteration() {
-        pattern = new PatternUpdate();
-        statePattern = new String();
+        pattern = new PatternUpdate("", 0);
     }
 
     public ModelIteration(Graph graph) {
         this.graph = graph;
-        pattern = new PatternUpdate();
-        statePattern = new String();
-    }
-
-    public void setStatePattern(String statePattern) {
-        this.statePattern = statePattern;
-
-        setChanged();
-        notifyObservers(statePattern);
-        clearChanged();
+        pattern = new PatternUpdate("", 0);
     }
 
     public PatternUpdate getPattern() {
         return pattern;
     }
-    
-    public void setPattern(PatternUpdate pattern) {
-        this.pattern = pattern;
+
+    public void setPattern(String retrivedPattern, int nodeCount) {
+        PatternUpdate toTest = new PatternUpdate(retrivedPattern, nodeCount);
+
+        if (toTest.isValid()) {
+            this.pattern = toTest;
+        }
 
         setChanged();
-        notifyObservers(pattern);
+        notifyObservers(toTest);
         clearChanged();
     }
 

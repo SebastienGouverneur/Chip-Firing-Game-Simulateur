@@ -32,21 +32,7 @@ public class ControlerIteration extends AbstractControler {
 
     private void buttonValidatePerformed() {
         String retrivedPattern = viewIteration.getInputPattern().getText();
-        String state = "";
-
-        System.out.print(retrivedPattern);
-
-        PatternUpdate pattern = new PatternUpdate();
-        boolean isValid = pattern.initPattern(retrivedPattern, model.getGraph().getNodeCount());
-
-        if (isValid) {
-            state = "Valid pattern !";
-            ((ModelIteration) model).setPattern(pattern);
-        } else {
-            state = "Invalid pattern !";
-        }
-        
-        ((ModelIteration) model).setStatePattern(state);
+        ((ModelIteration) model).setPattern(retrivedPattern, model.getGraph().getNodeCount());
     }
 
     public PatternUpdate getCurrentPattern() {

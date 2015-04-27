@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import core.PatternUpdate;
+import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -42,19 +38,25 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
         inputPattern = new javax.swing.JFormattedTextField();
         buttonValidate = new javax.swing.JButton();
         stateTextField = new javax.swing.JTextField();
+        parallelButton = new javax.swing.JButton();
+        sequentialButton = new javax.swing.JButton();
         currentIterationPanel = new javax.swing.JPanel();
         currentIterationTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIterationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Set iteration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 10))); // NOI18N
 
-        setIterationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Set iteration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Abyssinica SIL", 2, 10))); // NOI18N
+        inputPattern.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
 
-        inputPattern.setFont(new java.awt.Font("Ubuntu", 2, 12)); // NOI18N
-
+        buttonValidate.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
         buttonValidate.setText("Validate");
 
         stateTextField.setEditable(false);
         stateTextField.setBackground(java.awt.Color.lightGray);
+        stateTextField.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
+
+        parallelButton.setText("Parallel");
+
+        sequentialButton.setText("Sequential");
 
         javax.swing.GroupLayout setIterationPanelLayout = new javax.swing.GroupLayout(setIterationPanel);
         setIterationPanel.setLayout(setIterationPanelLayout);
@@ -67,7 +69,12 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
                     .addGroup(setIterationPanelLayout.createSequentialGroup()
                         .addComponent(stateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                        .addComponent(buttonValidate)))
+                        .addComponent(buttonValidate))
+                    .addGroup(setIterationPanelLayout.createSequentialGroup()
+                        .addComponent(parallelButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(sequentialButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         setIterationPanelLayout.setVerticalGroup(
@@ -75,17 +82,23 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, setIterationPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(inputPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(setIterationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sequentialButton)
+                    .addComponent(parallelButton))
+                .addGap(27, 27, 27)
                 .addGroup(setIterationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonValidate))
                 .addGap(24, 24, 24))
         );
 
-        currentIterationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current ieration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Abyssinica SIL", 2, 10))); // NOI18N
+        currentIterationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current iteration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 10))); // NOI18N
+        currentIterationPanel.setToolTipText("");
 
         currentIterationTextField.setEditable(false);
         currentIterationTextField.setBackground(java.awt.Color.lightGray);
+        currentIterationTextField.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout currentIterationPanelLayout = new javax.swing.GroupLayout(currentIterationPanel);
         currentIterationPanel.setLayout(currentIterationPanelLayout);
@@ -98,9 +111,9 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
         );
         currentIterationPanelLayout.setVerticalGroup(
             currentIterationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(currentIterationPanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(currentIterationTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, currentIterationPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(currentIterationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -120,7 +133,7 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(setIterationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(currentIterationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -158,16 +171,24 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel currentIterationPanel;
     private javax.swing.JTextField currentIterationTextField;
     private javax.swing.JFormattedTextField inputPattern;
+    private javax.swing.JButton parallelButton;
+    private javax.swing.JButton sequentialButton;
     private javax.swing.JPanel setIterationPanel;
     private javax.swing.JTextField stateTextField;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void update(Observable o, Object o1) {
-        if (o1 instanceof String) {
-            getStateTextField().setText((String)o1);
-        } else if (o1 instanceof PatternUpdate) {
-            getCurrentIterationTextField().setText(((PatternUpdate)o1).getOrderedPartionText());
+        if (o1 instanceof PatternUpdate) {
+           if (((PatternUpdate)o1).isValid())
+           {
+               getCurrentIterationTextField().setText(((PatternUpdate)o1).getOrderedPartionText());
+               getStateTextField().setForeground(Color.green);
+               getStateTextField().setText("Pattern is valid !");
+           } else {
+               getStateTextField().setForeground(Color.red);
+               getStateTextField().setText("Pattern is invalid !");
+           }  
         }
     }
 }

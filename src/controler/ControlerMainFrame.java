@@ -22,6 +22,8 @@ public class ControlerMainFrame extends AbstractControler {
 
     private ControlerIteration controlerIteration;
     private ViewIteration viewIteration;
+    private ModelIteration modelIteration;
+    
     private ViewMainFrame viewMainFrame;
     private Thread checkUpdateGraph;
     private Thread compute;
@@ -49,6 +51,12 @@ public class ControlerMainFrame extends AbstractControler {
         fromViewer.addViewerListener(new Click(modelMainFrame));
         fromViewer.addSink(model.getGraph());
 
+        
+        modelIteration = new ModelIteration(model.getGraph());
+        viewIteration = new ViewIteration(modelIteration);
+        controlerIteration = new ControlerIteration(viewIteration, modelIteration);
+        
+        
         checkUpdateGraph = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -119,13 +127,10 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlRunPerformed() {
-
-        if (controlerIteration == null) {
+        
+        if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
-        }
-
-        if (controlerIteration.getCurrentPattern() != null) {
-            iterationButtonPerformed();
+            return;
         }
 
         compute = new Thread(new Runnable() {
@@ -149,8 +154,9 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlForwardPerformed() {
-        if (controlerIteration == null) {
+        if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
+            return;
         }
 
         compute = new Thread(new Runnable() {
@@ -178,14 +184,6 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     private void iterationButtonPerformed() {
-
-        if (controlerIteration != null) {
-            viewIteration.setVisible(true);
-        }
-
-        ModelIteration modelIteration = new ModelIteration(model.getGraph());
-        viewIteration = new ViewIteration(modelIteration);
-        controlerIteration = new ControlerIteration(viewIteration, modelIteration);
         viewIteration.setVisible(true);
     }
 }
