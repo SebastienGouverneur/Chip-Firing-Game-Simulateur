@@ -20,6 +20,9 @@ public class ControlerIteration extends AbstractControler {
         modelIteration.addObserver(viewIteration);
 
         addActionListener(viewIteration.getButtonValidate(), viewIteration);
+        addActionListener(viewIteration.getParallelButton(), viewIteration);
+        addActionListener(viewIteration.getSequentialButton(), viewIteration);
+
     }
 
     @Override
@@ -28,6 +31,13 @@ public class ControlerIteration extends AbstractControler {
             buttonValidatePerformed();
         }
 
+        if (ae.getSource() == viewIteration.getParallelButton()) {
+            parallelButtonPerformed();
+        }
+
+        if (ae.getSource() == viewIteration.getSequentialButton()) {
+            sequentialButtonPerformed();
+        }
     }
 
     private void buttonValidatePerformed() {
@@ -47,5 +57,13 @@ public class ControlerIteration extends AbstractControler {
     @Override
     public void control() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void sequentialButtonPerformed() {
+        ((ModelIteration) model).setSequentialPattern();
+    }
+
+    private void parallelButtonPerformed() {
+        ((ModelIteration) model).setParallelPattern();
     }
 }

@@ -7,13 +7,54 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 
 public class PatternUpdate {
 
-    private final LinkedHashMap<Integer, LinkedList<String>> patternUpdate = new LinkedHashMap<>();
-    private final Pattern regex;
+    private LinkedHashMap<Integer, LinkedList<String>> patternUpdate = new LinkedHashMap<>();
+    private Pattern regex;
     private String orderedPartitionText;
     private boolean isValidPattern;
+
+    private PatternUpdate(LinkedHashMap<Integer, LinkedList<String>> patternUpdate) {
+        this.orderedPartitionText = "(";
+
+        for (Entry<Integer, LinkedList<String>> entry : patternUpdate.entrySet()) {
+            this.orderedPartitionText += "{";
+
+            for (String parallelStep : entry.getValue()) {
+                this.orderedPartitionText += parallelStep + ",";
+            }
+
+            this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 1);
+            this.orderedPartitionText += "},";
+
+            if (this.orderedPartitionText.substring(this.orderedPartitionText.length() - 3).equals("{},")) {
+                this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 3);
+            }
+        }
+
+        this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 1);
+        this.orderedPartitionText += ")";
+        isValidPattern = true;
+    }
+
+    private LinkedHashMap<Integer, LinkedList<String>> getPatternUpdate() {
+        return patternUpdate;
+    }
+
+    private void setPatternUpdate(LinkedHashMap<Integer, LinkedList<String>> patternUpdate) {
+        this.patternUpdate = patternUpdate;
+    }
+
+    private String getOrderedPartitionText() {
+        return orderedPartitionText;
+    }
+
+    private void setOrderedPartitionText(String orderedPartitionText) {
+        this.orderedPartitionText = orderedPartitionText;
+    }
 
     public PatternUpdate(String orderedPartition, int nbVertex) {
         this.isValidPattern = false;
@@ -23,9 +64,11 @@ public class PatternUpdate {
         orderedPartitionText = orderedPartition;
         Matcher m = regex.matcher(orderedPartitionText);
 
-        isValidPattern = m.matches() && isFair(orderedPartition, nbVertex) ;
-        
-        if (isValidPattern) { initPattern(orderedPartition, nbVertex); }
+        isValidPattern = m.matches() && isFair(orderedPartition, nbVertex);
+
+        if (isValidPattern) {
+            initPattern(orderedPartition, nbVertex);
+        }
     }
 
     public PatternUpdate(String regex, String orderedPartition, int nbVertex) {
@@ -39,8 +82,10 @@ public class PatternUpdate {
         Matcher m = this.regex.matcher(orderedPartitionText);
 
         isValidPattern = m.matches() && isFair(orderedPartition, nbVertex);
-        
-        if (m.matches() && isFair(orderedPartition, nbVertex)) { initPattern(orderedPartition, nbVertex); }
+
+        if (m.matches() && isFair(orderedPartition, nbVertex)) {
+            initPattern(orderedPartition, nbVertex);
+        }
     }
 
     public boolean isValid() {
@@ -94,5 +139,27 @@ public class PatternUpdate {
 
     public String getOrderedPartionText() {
         return orderedPartitionText;
+    }
+
+    public static String buildSequentialPattern(Graph graph) {
+        String orderedPattern = "(";
+
+        for (Node node : graph.getNodeSet()) {
+            orderedPattern += "{";
+            orderedPattern += node.getId();
+            orderedPattern += "},";
+        }
+
+        return orderedPattern.substring(0, orderedPattern.length() - 1) + ")";
+    }
+
+    public static String buildParallelPattern(Graph graph) {
+        String orderedPattern = "({";
+
+        for (Node node : graph.getNodeSet()) {
+            orderedPattern += (node.getId() + ",");
+        }
+
+        return orderedPattern.substring(0, orderedPattern.length() - 1) + "})";
     }
 }

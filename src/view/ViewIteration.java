@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import model.ModelIteration;
 
 public class ViewIteration extends javax.swing.JFrame implements Observer {
+
     private ModelIteration model;
 
     /**
@@ -145,6 +146,14 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
         return buttonValidate;
     }
 
+    public JButton getParallelButton() {
+        return parallelButton;
+    }
+
+    public JButton getSequentialButton() {
+        return sequentialButton;
+    }
+
     public JPanel getCurrentIterationPanel() {
         return currentIterationPanel;
     }
@@ -179,16 +188,26 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        if (o1 instanceof PatternUpdate) {
-           if (((PatternUpdate)o1).isValid())
-           {
-               getCurrentIterationTextField().setText(((PatternUpdate)o1).getOrderedPartionText());
-               getStateTextField().setForeground(Color.green);
-               getStateTextField().setText("Pattern is valid !");
-           } else {
-               getStateTextField().setForeground(Color.red);
-               getStateTextField().setText("Pattern is invalid !");
-           }  
+        if (o1 instanceof ModelIteration) {
+            if (((ModelIteration) o1).getPattern().isValid()) {
+                switch (((ModelIteration) o1).getCurrentState()) {
+                    case INPUT_PATTERN_UPDATED:
+                        getInputPattern().setText(((ModelIteration) o1).getPattern().getOrderedPartionText());
+                        getStateTextField().setForeground(Color.black);
+                        getStateTextField().setText("");
+                        break;
+                    case ALL_UPDATED:
+                        getCurrentIterationTextField().setText(((ModelIteration) o1).getPattern().getOrderedPartionText());
+                        getStateTextField().setForeground(Color.green);
+                        getStateTextField().setText("Pattern is valid !");
+                        break;
+                    default: 
+                        break;
+                }
+            } else {
+                getStateTextField().setForeground(Color.red);
+                getStateTextField().setText("Pattern is invalid !");
+            }
         }
     }
 }
