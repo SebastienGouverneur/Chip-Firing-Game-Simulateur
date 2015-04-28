@@ -2,6 +2,7 @@ package controler;
 
 import core.SubstractChipOp;
 import core.AddChipOp;
+import core.ConfigurationContrainer;
 import core.IChipOperation;
 import core.ModeSequentialBlock;
 import core.PatternUpdate;
@@ -142,10 +143,22 @@ public class ControlerMainFrame extends AbstractControler {
 
             @Override
             public void run() {
-                while (true) {
+                ConfigurationContrainer configSet = new ConfigurationContrainer();
+                
+                while (! configSet.cycleDetected()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
-                    ((ModelMainFrame) model).execute(new ModeSequentialBlock(p, ((ModelMainFrame) model).getTimeExec(), ((ModelMainFrame) model).getTimeAnimation()));
+
+                    ((ModelMainFrame) model).execute(
+                            new ModeSequentialBlock(
+                                    p,
+                                    configSet,
+                                    ((ModelMainFrame) model).getTimeExec(),
+                                    ((ModelMainFrame) model).getTimeAnimation()
+                            )
+                    );
                 }
+                
+                
             }
         });
 
@@ -159,10 +172,19 @@ public class ControlerMainFrame extends AbstractControler {
         }
 
         compute = new Thread(new Runnable() {
+            ConfigurationContrainer configSet = new ConfigurationContrainer();
+            
             @Override
             public void run() {
                 PatternUpdate p = controlerIteration.getCurrentPattern();
-                ((ModelMainFrame) model).execute(new ModeSequentialBlock(p, ((ModelMainFrame) model).getTimeExec(), ((ModelMainFrame) model).getTimeAnimation()));
+                ((ModelMainFrame) model).execute(
+                        new ModeSequentialBlock(
+                                p, 
+                                configSet,
+                                ((ModelMainFrame) model).getTimeExec(), 
+                                ((ModelMainFrame) model).getTimeAnimation()
+                        )
+                );
             }
         });
 
@@ -183,6 +205,8 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     private void iterationButtonPerformed() {
+        viewIteration.getInputPattern().setText("");
+        viewIteration.getStateTextField().setText("");
         viewIteration.setVisible(true);
     }
 

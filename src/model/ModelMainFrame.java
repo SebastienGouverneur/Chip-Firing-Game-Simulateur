@@ -4,6 +4,7 @@ import core.IChipOperation;
 import java.util.concurrent.ConcurrentSkipListSet;
 import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -25,12 +26,41 @@ public class ModelMainFrame extends AbstractModel {
         graph.setStrict(false);
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
-        graph.addAttribute("ui.stylesheet", "url('file:////home/jon-snow/NetBeansProjects/Chip-Firing-Game-Simulateur/src/view/graphCSS.css')");
+        graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
 
         graph.addEdge("12", "1", "2", true);
-        graph.addEdge("13", "1", "3", true);
         graph.addEdge("23", "2", "3", true);
-        graph.addEdge("32", "3", "2", true);
+        graph.addEdge("34", "3", "4", true);
+        graph.addEdge("41", "4", "1", true);
+
+        graph.addEdge("21", "2", "1", true);
+        graph.addEdge("32", "3", "2",  true);
+        graph.addEdge("43", "4", "3", true);
+        graph.addEdge("14", "1", "4",  true);
+        
+        for (Node node : graph) {
+            node.addAttribute("ui.class", "unmarked");
+            node.addAttribute("chips", 2);
+            node.addAttribute("ui.label", node.getAttribute("chips").toString());
+        }
+
+        for (Node node : graph) {
+            for (Edge edgeOut : node.getEachLeavingEdge()) {
+                edgeOut.addAttribute("ui.class", "unmarked");
+            }
+        }
+    }
+
+    public ModelMainFrame(Graph graphi) {
+        this.graph = graphi;
+        selectedNode = new ConcurrentSkipListSet<>();
+        
+        System.setProperty("sun.java2d.opengl", "True");
+        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+
+        graph.addAttribute("ui.quality");
+        graph.addAttribute("ui.antialias");
+        graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
 
         for (Node node : graph) {
             node.addAttribute("ui.class", "unmarked");

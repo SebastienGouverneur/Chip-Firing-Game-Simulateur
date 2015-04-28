@@ -2,7 +2,6 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,8 +17,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {

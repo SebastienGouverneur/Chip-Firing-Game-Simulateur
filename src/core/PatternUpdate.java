@@ -17,29 +17,7 @@ public class PatternUpdate {
     private String orderedPartitionText;
     private boolean isValidPattern;
 
-    private PatternUpdate(LinkedHashMap<Integer, LinkedList<String>> patternUpdate) {
-        this.orderedPartitionText = "(";
-
-        for (Entry<Integer, LinkedList<String>> entry : patternUpdate.entrySet()) {
-            this.orderedPartitionText += "{";
-
-            for (String parallelStep : entry.getValue()) {
-                this.orderedPartitionText += parallelStep + ",";
-            }
-
-            this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 1);
-            this.orderedPartitionText += "},";
-
-            if (this.orderedPartitionText.substring(this.orderedPartitionText.length() - 3).equals("{},")) {
-                this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 3);
-            }
-        }
-
-        this.orderedPartitionText = this.orderedPartitionText.substring(0, this.orderedPartitionText.length() - 1);
-        this.orderedPartitionText += ")";
-        isValidPattern = true;
-    }
-
+    
     private LinkedHashMap<Integer, LinkedList<String>> getPatternUpdate() {
         return patternUpdate;
     }
@@ -118,10 +96,10 @@ public class PatternUpdate {
 
             Pattern p2 = Pattern.compile("\\w+");
             Matcher m2 = p2.matcher(m.group());
-            System.out.println(m.group());
+//            System.out.println(m.group());
 
             while (m2.find()) {
-                System.out.println(m2.group());
+//                System.out.println(m2.group());
                 parallelGroup.add(m2.group());
             }
 

@@ -13,18 +13,34 @@ import org.graphstream.graph.Node;
 public class ModeSequentialBlock implements DynamicAlgorithm {
 
     private PatternUpdate patternUpdate;
+    private ConfigurationContrainer configSet;
     private Graph graph;
     private double time;
     private double timeAnimation;
 
-    public ModeSequentialBlock(PatternUpdate patternUpdate, double time,  double timeAnimation) {
+    public ModeSequentialBlock(PatternUpdate patternUpdate, ConfigurationContrainer configSet, double time,  double timeAnimation) {
         this.patternUpdate = patternUpdate;
         this.timeAnimation = timeAnimation;
+        this.configSet = configSet;
         this.time = time;
     }
 
     @Override
     public void terminate() {
+        
+        StringBuilder config = new StringBuilder(graph.getNodeCount());
+        
+        for (Node node : graph) {
+            config.append(node.getAttribute("chips"));
+            node.setAttribute("ui.label", node.getAttribute("chips").toString());
+        }
+        
+        boolean isInserted = configSet.insertConfiguration(config.toString());
+        
+        if (! isInserted ) {
+            System.err.println("Cycle detecté : Taille cycle = " + configSet.retrieveLimitCycleSize());
+        }
+        
         try {
             Thread.sleep((long) (time));
         } catch (InterruptedException ex) {
@@ -39,7 +55,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
 
     @Override
     public void compute() {
-
+        
         /* start */
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
             int numStep = stepIter.getKey();
@@ -72,12 +88,6 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             for (Edge e : graph.getEdgeSet()) {
                 e.setAttribute("ui.class", "unmarked");
             }
-
-        }
-
-        for (Node node : graph) {
-            System.out.println(node.getId() + " : " + node.getAttribute("chips"));
-            node.setAttribute("ui.label", node.getAttribute("chips").toString());
         }
     }
 }

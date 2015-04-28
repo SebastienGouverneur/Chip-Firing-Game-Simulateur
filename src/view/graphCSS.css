@@ -1,6 +1,18 @@
+
+
+node { 
+    size: 30px; 
+    fill-color: blue, green, red;
+    fill-mode: dyn-plain;
+    stroke-mode: plain; 
+    stroke-color: #999; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: grey; 
+    shadow-offset: 0px; 
+}
+
 node.unmarked { 
-    size: 20px; 
-    fill-color: blue; 
     stroke-mode: plain; 
     stroke-color: #999; 
     shadow-mode: plain; 
@@ -10,8 +22,6 @@ node.unmarked {
 }
 
 node.marked { 
-    size: 20px; 
-    fill-color: blue; 
     stroke-mode: plain; 
     stroke-color: #999; 
     shadow-mode: plain; 
