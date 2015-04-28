@@ -18,12 +18,5 @@ public class Main {
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
 
         viewMainFrame.setVisible(true);
-        
-        /*
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                viewMainFrame.setVisible(true);
-            }
-        });*/
     }
 }

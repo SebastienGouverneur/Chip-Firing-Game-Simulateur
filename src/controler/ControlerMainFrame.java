@@ -21,6 +21,9 @@ import view.ViewMainFrame;
 public class ControlerMainFrame extends AbstractControler {
 
     private ControlerIteration controlerIteration;
+    private ViewIteration viewIteration;
+    private ModelIteration modelIteration;
+
     private ViewMainFrame viewMainFrame;
     private Thread checkUpdateGraph;
     private Thread compute;
@@ -42,11 +45,19 @@ public class ControlerMainFrame extends AbstractControler {
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
         viewMainFrame.getIterationButton().addActionListener((ActionListener) this);
+        viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
 
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
         fromViewer.addViewerListener(new Click(modelMainFrame));
         fromViewer.addSink(model.getGraph());
+
+        modelIteration = new ModelIteration(model.getGraph());
+        viewIteration = new ViewIteration(modelIteration);
+        controlerIteration = new ControlerIteration(viewIteration, modelIteration);
+
+        modelMainFrame.setTimeAnimation(1000);
+        modelMainFrame.setTimeExec(1000);
 
         checkUpdateGraph = new Thread(new Runnable() {
             @Override
@@ -101,6 +112,10 @@ public class ControlerMainFrame extends AbstractControler {
         if (ae.getSource() == viewMainFrame.getIterationButton()) {
             iterationButtonPerformed();
         }
+
+        if (ae.getSource() == viewMainFrame.getValidateTime()) {
+            validateTimeButtonPerformed();
+        }
     }
 
     @Override
@@ -118,9 +133,9 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlRunPerformed() {
-
-        if (controlerIteration == null) {
+        if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
+            return;
         }
 
         compute = new Thread(new Runnable() {
@@ -129,13 +144,7 @@ public class ControlerMainFrame extends AbstractControler {
             public void run() {
                 while (true) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
-
-                    ((ModelMainFrame) model).execute(new ModeSequentialBlock(p));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    ((ModelMainFrame) model).execute(new ModeSequentialBlock(p, ((ModelMainFrame) model).getTimeExec(), ((ModelMainFrame) model).getTimeAnimation()));
                 }
             }
         });
@@ -144,15 +153,16 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlForwardPerformed() {
-        if (controlerIteration == null) {
+        if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
+            return;
         }
 
         compute = new Thread(new Runnable() {
             @Override
             public void run() {
                 PatternUpdate p = controlerIteration.getCurrentPattern();
-                ((ModelMainFrame) model).execute(new ModeSequentialBlock(p));
+                ((ModelMainFrame) model).execute(new ModeSequentialBlock(p, ((ModelMainFrame) model).getTimeExec(), ((ModelMainFrame) model).getTimeAnimation()));
             }
         });
 
@@ -173,10 +183,12 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     private void iterationButtonPerformed() {
-        ModelIteration modelIteration = new ModelIteration(model.getGraph());
-        ViewIteration viewIteration = new ViewIteration(modelIteration);
-        controlerIteration = new ControlerIteration(viewIteration, modelIteration);
-
         viewIteration.setVisible(true);
+    }
+
+    private void validateTimeButtonPerformed() {
+        double timeExec = Double.parseDouble(viewMainFrame.getOptionControlTime().getText());
+        ((ModelMainFrame) model).setTimeExec(timeExec);
+        ((ModelMainFrame) model).setTimeAnimation(timeExec);
     }
 }

@@ -119,7 +119,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="optionsChips" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="599" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -140,7 +140,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="viewGraph" pref="341" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="optionsChips" min="-2" pref="155" max="-2" attributes="0"/>
+                      <Component id="optionsChips" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -179,11 +179,17 @@
                           <Component id="iterationModeParallel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="iterationModeSeqentiel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="optionControlTime" min="-2" pref="54" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="optionControlTimeLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="168" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="validateTime" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jSeparator2" min="-2" pref="15" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="iterationButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="graphTransButton" min="-2" max="-2" attributes="0"/>
@@ -200,32 +206,39 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="separator4" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="iterationModeParallel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="iterationModeSeqentiel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlTime" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="iterationButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="graphTransButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="editGraphButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="infoGraphButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="logButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jSeparator1" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="iterationModeParallel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="iterationModeSeqentiel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="optionControlTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="optionControlTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="iterationButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="graphTransButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="editGraphButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="infoGraphButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="logButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="validateTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="optionControlRun" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlForward" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlBackward" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlBegin" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="optionControlEnd" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="separator4" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="optionControlRun" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="optionControlForward" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="optionControlBackward" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="optionControlBegin" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="optionControlEnd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jSeparator2" alignment="1" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="36" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -237,8 +250,11 @@
                       <ComponentRef name="iterationMode"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="Parallel"/>
+                    <Property name="text" type="java.lang.String" value="Bloc-Seq"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iterationModeParallelActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="iterationModeSeqentiel">
                   <Properties>
@@ -308,6 +324,21 @@
                 <Component class="javax.swing.JButton" name="logButton">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Log"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="validateTime">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="OK"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JSeparator" name="jSeparator1">
+                  <Properties>
+                    <Property name="orientation" type="int" value="1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JSeparator" name="jSeparator2">
+                  <Properties>
+                    <Property name="orientation" type="int" value="1"/>
                   </Properties>
                 </Component>
               </SubComponents>

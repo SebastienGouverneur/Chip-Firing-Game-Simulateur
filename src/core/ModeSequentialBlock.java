@@ -11,17 +11,25 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 public class ModeSequentialBlock implements DynamicAlgorithm {
+
     private PatternUpdate patternUpdate;
     private Graph graph;
-    
-    public ModeSequentialBlock (PatternUpdate patternUpdate)
-    {
+    private double time;
+    private double timeAnimation;
+
+    public ModeSequentialBlock(PatternUpdate patternUpdate, double time,  double timeAnimation) {
         this.patternUpdate = patternUpdate;
+        this.timeAnimation = timeAnimation;
+        this.time = time;
     }
 
     @Override
     public void terminate() {
-        
+        try {
+            Thread.sleep((long) (time));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ModeSequentialBlock.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -31,14 +39,14 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
 
     @Override
     public void compute() {
-        
+
         /* start */
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
             int numStep = stepIter.getKey();
             LinkedList<String> parallelPattern = stepIter.getValue();
 
             HashMap<String, Integer> initialState = new HashMap<>(parallelPattern.size());
-            
+
             for (String nodeId : parallelPattern) {
                 initialState.put(nodeId, (int) graph.getNode(nodeId).getAttribute("chips"));
             }
@@ -56,7 +64,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             }
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep((long) (timeAnimation));
             } catch (InterruptedException ex) {
                 Logger.getLogger(ModeSequentialBlock.class.getName()).log(Level.SEVERE, null, ex);
             }

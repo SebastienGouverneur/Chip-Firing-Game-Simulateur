@@ -1,0 +1,9 @@
+package core;
+
+public enum UpdateStateEnum {
+    NOTHING_UPDATED,
+    ALL_UPDATED,
+    INPUT_PATTERN_UPDATED,
+    STATE_PATTERN_UPDATED,
+    CURRENT_PATTERN_UPDATED;
+}

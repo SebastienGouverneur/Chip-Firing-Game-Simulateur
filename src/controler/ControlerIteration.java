@@ -20,6 +20,9 @@ public class ControlerIteration extends AbstractControler {
         modelIteration.addObserver(viewIteration);
 
         addActionListener(viewIteration.getButtonValidate(), viewIteration);
+        addActionListener(viewIteration.getParallelButton(), viewIteration);
+        addActionListener(viewIteration.getSequentialButton(), viewIteration);
+
     }
 
     @Override
@@ -28,25 +31,18 @@ public class ControlerIteration extends AbstractControler {
             buttonValidatePerformed();
         }
 
+        if (ae.getSource() == viewIteration.getParallelButton()) {
+            parallelButtonPerformed();
+        }
+
+        if (ae.getSource() == viewIteration.getSequentialButton()) {
+            sequentialButtonPerformed();
+        }
     }
 
     private void buttonValidatePerformed() {
         String retrivedPattern = viewIteration.getInputPattern().getText();
-        String state = "";
-
-        System.out.print(retrivedPattern);
-
-        PatternUpdate pattern = new PatternUpdate();
-        boolean isValid = pattern.initPattern(retrivedPattern, model.getGraph().getNodeCount());
-
-        if (isValid) {
-            state = "Valid pattern !";
-            ((ModelIteration) model).setPattern(pattern);
-        } else {
-            state = "Invalid pattern !";
-        }
-        
-        ((ModelIteration) model).setStatePattern(state);
+        ((ModelIteration) model).setPattern(retrivedPattern, model.getGraph().getNodeCount());
     }
 
     public PatternUpdate getCurrentPattern() {
@@ -61,5 +57,13 @@ public class ControlerIteration extends AbstractControler {
     @Override
     public void control() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void sequentialButtonPerformed() {
+        ((ModelIteration) model).setSequentialPattern();
+    }
+
+    private void parallelButtonPerformed() {
+        ((ModelIteration) model).setParallelPattern();
     }
 }
