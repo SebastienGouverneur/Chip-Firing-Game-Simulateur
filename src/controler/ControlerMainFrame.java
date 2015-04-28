@@ -11,10 +11,13 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.AbstractModel;
+import model.ModelGraphTrans;
 import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
+import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.ViewerPipe;
+import view.ViewGraphTrans;
 import view.ViewIteration;
 import view.ViewLog;
 import view.ViewMainFrame;
@@ -24,6 +27,10 @@ public class ControlerMainFrame extends AbstractControler {
     private ControlerIteration controlerIteration;
     private ViewIteration viewIteration;
     private ModelIteration modelIteration;
+    
+    private ViewGraphTrans viewGraphTrans;
+    private ModelGraphTrans modelGraphTrans;
+    private ControlerGraphTrans controlerGraphTrans;
 
     private ViewMainFrame viewMainFrame;
     private Thread checkUpdateGraph;
@@ -47,7 +54,8 @@ public class ControlerMainFrame extends AbstractControler {
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
         viewMainFrame.getIterationButton().addActionListener((ActionListener) this);
         viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
-
+        viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
+        
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
         fromViewer.addViewerListener(new Click(modelMainFrame));
@@ -57,6 +65,10 @@ public class ControlerMainFrame extends AbstractControler {
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
 
+        modelGraphTrans = new ModelGraphTrans(new SingleGraph("graph_trans", false, true));
+        viewGraphTrans  = new ViewGraphTrans(modelGraphTrans);
+        controlerGraphTrans = new ControlerGraphTrans(viewGraphTrans, modelGraphTrans);
+                
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
@@ -117,6 +129,10 @@ public class ControlerMainFrame extends AbstractControler {
         if (ae.getSource() == viewMainFrame.getValidateTime()) {
             validateTimeButtonPerformed();
         }
+        
+        if (ae.getSource() == viewMainFrame.getGraphTransButton()) {
+            graphTransButtonPerformed();
+        }
     }
 
     @Override
@@ -147,7 +163,8 @@ public class ControlerMainFrame extends AbstractControler {
                 
                 while (! configSet.cycleDetected()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
-
+                    String configFrom = configSet.getLastConfig();
+                    
                     ((ModelMainFrame) model).execute(
                             new ModeSequentialBlock(
                                     p,
@@ -156,6 +173,9 @@ public class ControlerMainFrame extends AbstractControler {
                                     ((ModelMainFrame) model).getTimeAnimation()
                             )
                     );
+                    
+                    String configTo = configSet.getLastConfig();
+                    modelGraphTrans.addConfig(configFrom, configTo);
                 }
                 
                 
@@ -215,4 +235,10 @@ public class ControlerMainFrame extends AbstractControler {
         ((ModelMainFrame) model).setTimeExec(timeExec);
         ((ModelMainFrame) model).setTimeAnimation(timeExec);
     }
+
+    private void graphTransButtonPerformed() {
+        viewGraphTrans.setVisible(true);
+    }
+    
+    
 }

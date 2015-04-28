@@ -1,6 +1,5 @@
 package core;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class ConfigurationContrainer {
@@ -9,12 +8,14 @@ public class ConfigurationContrainer {
     private long nextConfigurationId;
     private boolean limitCycleDetected;
     private long limitCycleSize;
+    private String lastConfig;
 
     public ConfigurationContrainer() {
         configurationSet = new LinkedHashMap<>();
         limitCycleDetected = false;
         nextConfigurationId = 1;
         limitCycleSize = -1;
+        lastConfig = "";
     }
 
     public boolean insertConfiguration(String configuration) {
@@ -31,6 +32,7 @@ public class ConfigurationContrainer {
             isInserted = true;
         }
 
+        lastConfig = configuration;
         return isInserted;
     }
 
@@ -45,5 +47,9 @@ public class ConfigurationContrainer {
     public boolean cycleDetected() {
         return limitCycleDetected;
 
+    }
+
+    public String getLastConfig() {
+       return lastConfig;
     }
 }

@@ -19,16 +19,15 @@ public class Main {
 
         Graph graph = new MultiGraph("grid", false, false);
         Generator gen = new CustomGeneratorGrid(false, false, false, true);
-//        Generator gen = new CustomBananaTreeGenerator(5);
 
-//        gen.addSink(graph);
-//        gen.begin();
-//        for (int i = 0; i < 2; i++) {
-//            gen.nextEvents();
-//        }
-//        gen.end();
+        gen.addSink(graph);
+        gen.begin();
+        for (int i = 0; i < 2; i++) {
+            gen.nextEvents();
+        }
+        gen.end();
 //        
-        ModelMainFrame modelMainFrame = new ModelMainFrame();
+        ModelMainFrame modelMainFrame = new ModelMainFrame(graph);
         ViewMainFrame viewMainFrame = new ViewMainFrame(modelMainFrame);
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
 
