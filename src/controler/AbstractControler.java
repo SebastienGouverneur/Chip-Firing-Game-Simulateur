@@ -1,11 +1,8 @@
 package controler;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import model.AbstractModel;
 import org.graphstream.graph.Graph;
 

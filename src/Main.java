@@ -1,8 +1,8 @@
 
-import model.ModelMainFrame;
 import controler.ControlerMainFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import model.ModelMainFrame;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
@@ -18,7 +18,7 @@ public class Main {
         }
 
         Graph graph = new MultiGraph("grid", false, false);
-        Generator gen = new CustomGeneratorGrid(false, false, false, true);
+        Generator gen = new CustomGeneratorGrid(true, true, false, true);
 
         gen.addSink(graph);
         gen.begin();

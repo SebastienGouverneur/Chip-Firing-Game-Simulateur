@@ -31,12 +31,15 @@ public class ModelMainFrame extends AbstractModel {
         graph.addEdge("12", "1", "2", true);
         graph.addEdge("23", "2", "3", true);
         graph.addEdge("34", "3", "4", true);
-        graph.addEdge("41", "4", "1", true);
+        graph.addEdge("45", "4", "5", true);
+        graph.addEdge("51", "5", "1", true);
 
         graph.addEdge("21", "2", "1", true);
-        graph.addEdge("32", "3", "2",  true);
+        graph.addEdge("32", "3", "2", true);
         graph.addEdge("43", "4", "3", true);
-        graph.addEdge("14", "1", "4",  true);
+        graph.addEdge("54", "5", "4", true);
+        graph.addEdge("15", "1", "5", true);
+        
         
         for (Node node : graph) {
             node.addAttribute("ui.class", "unmarked");
@@ -54,7 +57,7 @@ public class ModelMainFrame extends AbstractModel {
     public ModelMainFrame(Graph graphi) {
         this.graph = graphi;
         selectedNode = new ConcurrentSkipListSet<>();
-        
+
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
@@ -87,17 +90,22 @@ public class ModelMainFrame extends AbstractModel {
         clearChanged();
     }
 
-    private void setSelectedNode(String id) {
+    public void setSelectedNode(String id) {
         graph.getNode(id).setAttribute("ui.class", "marked");
         selectedNode.add(id);
+
+        setChanged();
+        notifyObservers(this);
+        clearChanged();
     }
 
-    private void setUnselectedNode(String id) {
+    public void setUnselectedNode(String id) {
         graph.getNode(id).setAttribute("ui.class", "unmarked");
-        /* TODO assert */
-        assert selectedNode.contains(id);
-
         selectedNode.remove(id);
+
+        setChanged();
+        notifyObservers(this);
+        clearChanged();
     }
 
     public boolean isSelected(String id) {
@@ -120,10 +128,6 @@ public class ModelMainFrame extends AbstractModel {
         } else {
             setSelectedNode(id);
         }
-
-        setChanged();
-        notifyObservers(this);
-        clearChanged();
     }
 
     public void computeNodesValues(int nbToApply, IChipOperation op) {

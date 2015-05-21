@@ -82,6 +82,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         nbChipsLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         separator5 = new javax.swing.JSeparator();
+        modeSetChips = new javax.swing.JRadioButton();
+        selectAllVerticesButton = new javax.swing.JButton();
+        resetSelectedVerticesButton = new javax.swing.JButton();
         importGraph = new javax.swing.JPanel();
         menu = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
@@ -174,7 +177,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(validateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addComponent(iterationButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphTransButton)
@@ -242,6 +245,23 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         separator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        buttonGroup1.add(modeSetChips);
+        modeSetChips.setText("=");
+        modeSetChips.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modeSetChipsActionPerformed(evt);
+            }
+        });
+
+        selectAllVerticesButton.setText("All");
+
+        resetSelectedVerticesButton.setText("Reset");
+        resetSelectedVerticesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetSelectedVerticesButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout optionsChipsLayout = new javax.swing.GroupLayout(optionsChips);
         optionsChips.setLayout(optionsChipsLayout);
         optionsChipsLayout.setHorizontalGroup(
@@ -250,21 +270,27 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addComponent(nbChipsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(optionsChipsLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(modeAddChips)
-                            .addComponent(modeRemoveChips))))
+                            .addComponent(modeRemoveChips)
+                            .addComponent(modeSetChips)
+                            .addComponent(modeAddChips)))
+                    .addGroup(optionsChipsLayout.createSequentialGroup()
+                        .addComponent(nbChipsLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(selectedNode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(valideOptionChips, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsChipsLayout.createSequentialGroup()
+                        .addComponent(selectAllVerticesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetSelectedVerticesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(valideOptionChips, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         optionsChipsLayout.setVerticalGroup(
@@ -284,13 +310,18 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                                 .addGap(41, 41, 41)
                                 .addComponent(jLabel2))
                             .addGroup(optionsChipsLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGap(12, 12, 12)
+                                .addComponent(modeAddChips)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(optionsChipsLayout.createSequentialGroup()
-                                        .addComponent(modeAddChips)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(modeRemoveChips))
-                                    .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(modeRemoveChips)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(modeSetChips)
+                                            .addComponent(selectAllVerticesButton)
+                                            .addComponent(resetSelectedVerticesButton))))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -302,8 +333,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addGap(20, 20, 20)
                 .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(playCFGLayout.createSequentialGroup()
-                        .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(599, Short.MAX_VALUE))
+                        .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(593, Short.MAX_VALUE))
                     .addGroup(playCFGLayout.createSequentialGroup()
                         .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(optionsControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -316,7 +347,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addGap(14, 14, 14)
                 .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -387,13 +418,21 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_iterationModeParallelActionPerformed
 
+    private void modeSetChipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeSetChipsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modeSetChipsActionPerformed
+
+    private void resetSelectedVerticesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSelectedVerticesButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resetSelectedVerticesButtonActionPerformed
+
     //Implémentation du pattern observer
     @Override
     public void update(Observable o, Object o1) {
 
         if (o1 instanceof ModelMainFrame) {
-            selectedNodeText.setText(((ModelMainFrame)o1).getSelectedNode().toString());
-            optionControlTime.setText(Double.toString(((ModelMainFrame)o1).getTimeExec()));
+            selectedNodeText.setText(((ModelMainFrame) o1).getSelectedNode().toString());
+            optionControlTime.setText(Double.toString(((ModelMainFrame) o1).getTimeExec()));
         }
     }
 
@@ -419,6 +458,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuBar menu;
     private javax.swing.JRadioButton modeAddChips;
     private javax.swing.JRadioButton modeRemoveChips;
+    private javax.swing.JRadioButton modeSetChips;
     private javax.swing.JLabel nbChipsLabel;
     private javax.swing.JMenuItem open;
     private javax.swing.JButton optionControlBackward;
@@ -432,7 +472,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel optionsControl;
     private javax.swing.JPanel playCFG;
     private javax.swing.JMenuItem quit;
+    private javax.swing.JButton resetSelectedVerticesButton;
     private javax.swing.JMenuItem saveas;
+    private javax.swing.JButton selectAllVerticesButton;
     private javax.swing.JScrollPane selectedNode;
     private javax.swing.JTextArea selectedNodeText;
     private javax.swing.JPopupMenu.Separator separator1;
@@ -445,6 +487,18 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton valideOptionChips;
     private javax.swing.JPanel viewGraph;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getResetSelectedVerticesButton() {
+        return resetSelectedVerticesButton;
+    }
+
+    public JButton getSelectAllVerticesButton() {
+        return selectAllVerticesButton;
+    }
+
+    public JRadioButton getModeSetChips() {
+        return modeSetChips;
+    }
 
     public ModelMainFrame getModel() {
         return model;

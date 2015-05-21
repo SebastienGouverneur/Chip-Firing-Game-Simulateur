@@ -1,20 +1,22 @@
 package controler;
 
-import core.SubstractChipOp;
 import core.AddChipOp;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
 import core.ModeSequentialBlock;
 import core.PatternUpdate;
+import core.SetChipOp;
+import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.AbstractModel;
 import model.ModelGraphTrans;
 import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.ViewerPipe;
 import view.ViewGraphTrans;
@@ -24,38 +26,38 @@ import view.ViewMainFrame;
 
 public class ControlerMainFrame extends AbstractControler {
 
-    private ControlerIteration controlerIteration;
-    private ViewIteration viewIteration;
-    private ModelIteration modelIteration;
-    
-    private ViewGraphTrans viewGraphTrans;
-    private ModelGraphTrans modelGraphTrans;
-    private ControlerGraphTrans controlerGraphTrans;
+    private final ControlerIteration controlerIteration;
+    private final ViewIteration viewIteration;
+    private final ModelIteration modelIteration;
 
-    private ViewMainFrame viewMainFrame;
-    private Thread checkUpdateGraph;
+    private final ViewGraphTrans viewGraphTrans;
+    private final ModelGraphTrans modelGraphTrans;
+    private final ControlerGraphTrans controlerGraphTrans;
+
+    private final ViewMainFrame viewMainFrame;
+    private final Thread checkUpdateGraph;
     private Thread compute;
 
-    public ControlerMainFrame(AbstractModel model) {
-        super(model);
-    }
+    private static AtomicBoolean inProgess;
 
     public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
         super(modelMainFrame);
         this.viewMainFrame = viewMainFrame;
-
+        
+        inProgess = new AtomicBoolean(false);
+        
         modelMainFrame.addObserver(viewMainFrame);
         viewMainFrame.getLogButton().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlRun().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlForward().addActionListener((ActionListener) this);
-        viewMainFrame.getModeAddChips().addActionListener((ActionListener) this);
-        viewMainFrame.getModeAddChips().addActionListener((ActionListener) this);
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
         viewMainFrame.getIterationButton().addActionListener((ActionListener) this);
         viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
-        
+        viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
+        viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
+
         final ViewerPipe fromViewer;
         fromViewer = viewMainFrame.getViewer().newViewerPipe();
         fromViewer.addViewerListener(new Click(modelMainFrame));
@@ -66,9 +68,9 @@ public class ControlerMainFrame extends AbstractControler {
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
 
         modelGraphTrans = new ModelGraphTrans(new SingleGraph("graph_trans", false, true));
-        viewGraphTrans  = new ViewGraphTrans(modelGraphTrans);
+        viewGraphTrans = new ViewGraphTrans(modelGraphTrans);
         controlerGraphTrans = new ControlerGraphTrans(viewGraphTrans, modelGraphTrans);
-                
+
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
@@ -129,9 +131,17 @@ public class ControlerMainFrame extends AbstractControler {
         if (ae.getSource() == viewMainFrame.getValidateTime()) {
             validateTimeButtonPerformed();
         }
-        
+
         if (ae.getSource() == viewMainFrame.getGraphTransButton()) {
             graphTransButtonPerformed();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getSelectAllVerticesButton()) {
+            selectAllVerticesButtonPerformed();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getResetSelectedVerticesButton()) {
+            resetSelectedVerticesButtonPerformed();
         }
     }
 
@@ -150,6 +160,10 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlRunPerformed() {
+        if (inProgess.get()) {
+            return;
+        }
+
         if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
             return;
@@ -160,11 +174,12 @@ public class ControlerMainFrame extends AbstractControler {
             @Override
             public void run() {
                 ConfigurationContrainer configSet = new ConfigurationContrainer();
-                
-                while (! configSet.cycleDetected()) {
+                inProgess.set(true);
+
+                while (!configSet.cycleDetected()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
                     String configFrom = configSet.getLastConfig();
-                    
+
                     ((ModelMainFrame) model).execute(
                             new ModeSequentialBlock(
                                     p,
@@ -173,12 +188,12 @@ public class ControlerMainFrame extends AbstractControler {
                                     ((ModelMainFrame) model).getTimeAnimation()
                             )
                     );
-                    
+
                     String configTo = configSet.getLastConfig();
                     modelGraphTrans.addConfig(configFrom, configTo);
                 }
-                
-                
+
+                inProgess.set(false);
             }
         });
 
@@ -186,6 +201,10 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void optionControlForwardPerformed() {
+        if (inProgess.get()) {
+            return;
+        }
+
         if (!controlerIteration.getCurrentPattern().isValid()) {
             iterationButtonPerformed();
             return;
@@ -193,18 +212,22 @@ public class ControlerMainFrame extends AbstractControler {
 
         compute = new Thread(new Runnable() {
             ConfigurationContrainer configSet = new ConfigurationContrainer();
-            
+
             @Override
             public void run() {
                 PatternUpdate p = controlerIteration.getCurrentPattern();
+                inProgess.set(true);
+                
                 ((ModelMainFrame) model).execute(
                         new ModeSequentialBlock(
-                                p, 
+                                p,
                                 configSet,
-                                ((ModelMainFrame) model).getTimeExec(), 
+                                ((ModelMainFrame) model).getTimeExec(),
                                 ((ModelMainFrame) model).getTimeAnimation()
                         )
                 );
+
+                inProgess.set(false);
             }
         });
 
@@ -216,6 +239,8 @@ public class ControlerMainFrame extends AbstractControler {
 
         if (viewMainFrame.getModeAddChips().isSelected()) {
             op = new AddChipOp();
+        } else if (viewMainFrame.getModeSetChips().isSelected()){
+            op = new SetChipOp();
         } else {
             op = new SubstractChipOp();
         }
@@ -239,6 +264,17 @@ public class ControlerMainFrame extends AbstractControler {
     private void graphTransButtonPerformed() {
         viewGraphTrans.setVisible(true);
     }
-    
-    
+
+    private void selectAllVerticesButtonPerformed() {
+        for (Node node : model.getGraph().getNodeSet()) {
+            ((ModelMainFrame)model).setSelectedNode(node.getId());
+        }
+    }
+
+    private void resetSelectedVerticesButtonPerformed() {
+        for (String nodeId : ((ModelMainFrame)model).getSelectedNode()) {
+            ((ModelMainFrame)model).setUnselectedNode(nodeId);
+        }
+    }
+
 }

@@ -13,13 +13,13 @@ public class ModelGraphTrans extends AbstractModel {
     }
 
     public void addConfig(String configFrom, String configTo) {
-        graph.addEdge(configFrom + configTo, configFrom, configTo);
-        
+        graph.addEdge(configFrom + configTo, configFrom, configTo, true);
+
         setChanged();
         notifyObservers(this);
         clearChanged();
     }
-    
+
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

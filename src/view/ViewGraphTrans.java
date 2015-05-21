@@ -1,9 +1,11 @@
 package view;
 
+import controler.MouseGraphTrans;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import model.ModelGraphTrans;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
@@ -21,15 +23,18 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
     }
 
     public ViewGraphTrans(ModelGraphTrans modelGraphTrans) {
-        this.model = modelGraphTrans;
         initComponents();
+
+        this.model = modelGraphTrans;
 
         viewer = new Viewer(model.getGraph(), Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
-        viewGraph.add(viewer.addDefaultView(false));
-
+        
+        final ViewPanel viewCamera = viewer.addDefaultView(false);
+        viewCamera.addMouseListener(new MouseGraphTrans(viewCamera));
+ 
+        viewGraph.add(viewCamera);
         fromViewer = viewer.newViewerPipe();
-//        fromViewer.addViewerListener(new Click(modelGraphTrans));
         fromViewer.addSink(model.getGraph());
     }
 
@@ -46,7 +51,7 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
 
         setMinimumSize(new java.awt.Dimension(800, 600));
 
-        viewGraph.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current graph transition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 10))); // NOI18N
+        viewGraph.setBorder(null);
         viewGraph.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -55,14 +60,14 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

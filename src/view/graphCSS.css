@@ -30,6 +30,14 @@ node.marked {
     shadow-offset: 0px; 
 } 
 
+edge { 
+    fill-color: blue; 
+    shadow-mode: plain; 
+    shadow-width: 3px; 
+    shadow-color: grey; 
+    shadow-offset: 0px; 
+}
+
 edge.unmarked { 
     fill-color: blue; 
     shadow-mode: plain; 

@@ -1,6 +1,5 @@
 package view;
 
-import core.PatternUpdate;
 import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
