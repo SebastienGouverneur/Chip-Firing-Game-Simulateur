@@ -18,7 +18,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
     private double time;
     private double timeAnimation;
 
-    public ModeSequentialBlock(PatternUpdate patternUpdate, ConfigurationContrainer configSet, double time,  double timeAnimation) {
+    public ModeSequentialBlock(PatternUpdate patternUpdate, ConfigurationContrainer configSet, double time, double timeAnimation) {
         this.patternUpdate = patternUpdate;
         this.timeAnimation = timeAnimation;
         this.configSet = configSet;
@@ -27,20 +27,20 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
 
     @Override
     public void terminate() {
-        
+
         StringBuilder config = new StringBuilder(graph.getNodeCount());
-        
+
         for (Node node : graph) {
             config.append(node.getAttribute("chips"));
             node.setAttribute("ui.label", node.getAttribute("chips").toString());
         }
-        
+
         boolean isInserted = configSet.insertConfiguration(config.toString());
-        
-        if (! isInserted ) {
+
+        if (!isInserted) {
             System.err.println("Cycle detecté : Taille cycle = " + configSet.retrieveLimitCycleSize());
         }
-        
+
         try {
             Thread.sleep((long) (time));
         } catch (InterruptedException ex) {
@@ -55,7 +55,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
 
     @Override
     public void compute() {
-        
+
         /* start */
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
             int numStep = stepIter.getKey();
@@ -70,10 +70,6 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
                 if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
                     for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
-                        edgeOut.getNode1().setAttribute("chips", (int) edgeOut.getNode1().getAttribute("chips") + 1);
-                        edgeOut.getNode1().setAttribute("ui.label", edgeOut.getNode1().getAttribute("chips").toString());
-                        edgeOut.getNode0().setAttribute("chips", (int) edgeOut.getNode0().getAttribute("chips") - 1);
-                        edgeOut.getNode0().setAttribute("ui.label", edgeOut.getNode0().getAttribute("chips").toString());
                         edgeOut.setAttribute("ui.class", "marked");
                     }
                 }
@@ -88,6 +84,19 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             for (Edge e : graph.getEdgeSet()) {
                 e.setAttribute("ui.class", "unmarked");
             }
+
+            /* Mise a jour des tokens */
+            for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
+                if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
+                    for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
+                        edgeOut.getNode1().setAttribute("chips", (int) edgeOut.getNode1().getAttribute("chips") + 1);
+                        edgeOut.getNode1().setAttribute("ui.label", edgeOut.getNode1().getAttribute("chips").toString());
+                        edgeOut.getNode0().setAttribute("chips", (int) edgeOut.getNode0().getAttribute("chips") - 1);
+                        edgeOut.getNode0().setAttribute("ui.label", edgeOut.getNode0().getAttribute("chips").toString());
+                    }
+                }
+            }
+
         }
     }
 }

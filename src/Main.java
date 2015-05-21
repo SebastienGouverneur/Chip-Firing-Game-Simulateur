@@ -27,7 +27,7 @@ public class Main {
         }
         gen.end();
 //        
-        ModelMainFrame modelMainFrame = new ModelMainFrame(graph);
+        ModelMainFrame modelMainFrame = new ModelMainFrame();
         ViewMainFrame viewMainFrame = new ViewMainFrame(modelMainFrame);
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
 

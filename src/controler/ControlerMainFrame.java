@@ -190,6 +190,7 @@ public class ControlerMainFrame extends AbstractControler {
                     );
 
                     String configTo = configSet.getLastConfig();
+                    if (configFrom.equals("")) continue;
                     modelGraphTrans.addConfig(configFrom, configTo);
                 }
 

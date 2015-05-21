@@ -26,7 +26,7 @@ public class ModelMainFrame extends AbstractModel {
         graph.setStrict(false);
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
-        graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
+        graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         graph.addEdge("12", "1", "2", true);
         graph.addEdge("23", "2", "3", true);
@@ -63,7 +63,7 @@ public class ModelMainFrame extends AbstractModel {
 
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
-        graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
+        graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         for (Node node : graph) {
             node.addAttribute("ui.class", "unmarked");

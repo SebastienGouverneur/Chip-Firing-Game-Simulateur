@@ -9,7 +9,7 @@ public class ModelGraphTrans extends AbstractModel {
         
         this.graph.addAttribute("ui.quality");
         this.graph.addAttribute("ui.antialias");
-        this.graph.addAttribute("ui.stylesheet", "url('file:////home/abdelhak/NetBeansProjects/cfg/src/view/graphCSS.css')");
+        this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
     }
 
     public void addConfig(String configFrom, String configTo) {
