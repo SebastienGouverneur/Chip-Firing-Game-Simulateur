@@ -85,6 +85,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         modeSetChips = new javax.swing.JRadioButton();
         selectAllVerticesButton = new javax.swing.JButton();
         resetSelectedVerticesButton = new javax.swing.JButton();
+        InformationsPanel = new javax.swing.JPanel();
+        labelCycleLimit = new javax.swing.JLabel();
+        labelSizeCycleLimit = new javax.swing.JLabel();
         importGraph = new javax.swing.JPanel();
         menu = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
@@ -325,6 +328,33 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        InformationsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Informations")));
+
+        labelCycleLimit.setText("Cycle limite :");
+
+        labelSizeCycleLimit.setText("0");
+
+        javax.swing.GroupLayout InformationsPanelLayout = new javax.swing.GroupLayout(InformationsPanel);
+        InformationsPanel.setLayout(InformationsPanelLayout);
+        InformationsPanelLayout.setHorizontalGroup(
+            InformationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(InformationsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelCycleLimit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelSizeCycleLimit, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        InformationsPanelLayout.setVerticalGroup(
+            InformationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(InformationsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(InformationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelCycleLimit)
+                    .addComponent(labelSizeCycleLimit))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout playCFGLayout = new javax.swing.GroupLayout(playCFG);
         playCFG.setLayout(playCFGLayout);
         playCFGLayout.setHorizontalGroup(
@@ -334,12 +364,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(playCFGLayout.createSequentialGroup()
                         .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(593, Short.MAX_VALUE))
-                    .addGroup(playCFGLayout.createSequentialGroup()
-                        .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(optionsControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(viewGraph, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(20, 20, 20))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(optionsControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(viewGraph, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
         playCFGLayout.setVerticalGroup(
             playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,9 +376,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addGap(14, 14, 14)
                 .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(optionsChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         tabs.addTab("Play CFG", playCFG);
@@ -362,7 +393,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         );
         importGraphLayout.setVerticalGroup(
             importGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+            .addGap(0, 566, Short.MAX_VALUE)
         );
 
         tabs.addTab("Import Graph", importGraph);
@@ -437,6 +468,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel InformationsPanel;
     private javax.swing.JMenuItem Save;
     private javax.swing.JMenu about;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -454,6 +486,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel labelCycleLimit;
+    private javax.swing.JLabel labelSizeCycleLimit;
     private javax.swing.JButton logButton;
     private javax.swing.JMenuBar menu;
     private javax.swing.JRadioButton modeAddChips;
@@ -686,5 +720,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JPanel getpPlayCFG() {
         return playCFG;
+    }
+
+    public void printLimitCycleSize(long limitCycleSize) {
+        labelSizeCycleLimit.setText(Long.toString(limitCycleSize));
     }
 }

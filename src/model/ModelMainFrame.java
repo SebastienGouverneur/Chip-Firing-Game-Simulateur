@@ -8,6 +8,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
+
 public class ModelMainFrame extends AbstractModel {
 
     private ConcurrentSkipListSet<String> selectedNode;
@@ -17,17 +18,18 @@ public class ModelMainFrame extends AbstractModel {
     public ModelMainFrame() {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-
+                
         selectedNode = new ConcurrentSkipListSet<>();
 
         graph = new SingleGraph("Tutorial 1");
 
         graph.setAutoCreate(true);
         graph.setStrict(false);
-        graph.addAttribute("ui.quality");
+        
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
-
+        graph.addAttribute("layout.quality");
+  
         graph.addEdge("12", "1", "2", true);
         graph.addEdge("23", "2", "3", true);
         graph.addEdge("34", "3", "4", true);

@@ -10,12 +10,13 @@ public class ConfigurationContrainer {
     private long limitCycleSize;
     private String lastConfig;
 
-    public ConfigurationContrainer() {
+    public ConfigurationContrainer(String startConfiguration) {
         configurationSet = new LinkedHashMap<>();
         limitCycleDetected = false;
-        nextConfigurationId = 1;
+        nextConfigurationId = 2;
         limitCycleSize = -1;
-        lastConfig = "";
+        lastConfig = startConfiguration;
+        configurationSet.put(startConfiguration, 1L);
     }
 
     public boolean insertConfiguration(String configuration) {

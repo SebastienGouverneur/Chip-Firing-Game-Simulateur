@@ -57,6 +57,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
     public void compute() {
 
         /* start */
+        
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
             int numStep = stepIter.getKey();
             LinkedList<String> parallelPattern = stepIter.getValue();
@@ -96,7 +97,6 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
                     }
                 }
             }
-
         }
     }
 }

@@ -7,51 +7,37 @@ node {
     stroke-mode: plain; 
     stroke-color: #999; 
     shadow-mode: plain; 
-    shadow-width: 3px; 
+    shadow-width: 0.015gu; 
     shadow-color: grey; 
     shadow-offset: 0px; 
     text-style: bold;
-    text-size: 14;
+    text-size: 13px;   
 }
 
-node.unmarked { 
-    stroke-mode: plain; 
-    stroke-color: #999; 
-    shadow-mode: plain; 
-    shadow-width: 3px; 
-    shadow-color: grey; 
-    shadow-offset: 0px; 
+node.unmarked {  
+    shadow-color: grey;  
 }
 
 node.marked { 
-    stroke-mode: plain; 
-    stroke-color: #999; 
-    shadow-mode: plain; 
-    shadow-width: 3px; 
-    shadow-color: blue; 
-    shadow-offset: 0px; 
+    shadow-color: blue;  
 } 
 
 edge { 
-    fill-color: #cceeff; 
+    arrow-shape: arrow;
+    size: 0.01gu;
+    fill-color: #025c79; 
     shadow-mode: plain; 
-    shadow-width: 3px; 
-    shadow-color: grey; 
+    shadow-width: 0.002gu; 
+    shadow-color: #b4b7b8; 
     shadow-offset: 0px; 
 }
 
 edge.unmarked { 
-    fill-color: #cceeff; 
-    shadow-mode: plain; 
-    shadow-width: 3px; 
-    shadow-color: grey; 
-    shadow-offset: 0px; 
+    fill-color: #025c79; 
+    shadow-color: #b4b7b8;
 }
 
 edge.marked { 
-    fill-color: blue; 
-    shadow-mode: plain; 
-    shadow-width: 3px; 
-    shadow-color: red; 
-    shadow-offset: 0px; 
+    fill-color: #fa0810;
+    shadow-color: #f71530;
 }
