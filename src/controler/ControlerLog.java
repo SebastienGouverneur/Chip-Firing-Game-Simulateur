@@ -1,29 +1,18 @@
 package controler;
 
 import java.awt.event.ActionEvent;
-import model.AbstractModel;
+import java.awt.event.ActionListener;
 import model.ModelLogFrame;
 import view.ViewLog;
 
-public class ControlerLog extends AbstractControler {
-
-    public ControlerLog(AbstractModel model) {
-        super(model);
-    }
-
+public class ControlerLog implements ActionListener {
+    private ModelLogFrame modelLogFrame;
+    private ViewLog viewLog;
+    
     ControlerLog(ViewLog viewLog, ModelLogFrame modelLogFrame) {
-        super(modelLogFrame);
+        this.modelLogFrame = modelLogFrame;
+        this.viewLog = viewLog;
         modelLogFrame.addObserver(viewLog);
-    }
-
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void control() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

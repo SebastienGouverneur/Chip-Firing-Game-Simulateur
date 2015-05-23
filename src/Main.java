@@ -46,7 +46,7 @@ public class Main {
         ViewMainFrame viewMainFrame = new ViewMainFrame(modelMainFrame);
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
 
-        viewMainFrame.setVisible(true);
+        controlerMainFrame.start();
     }
 
     private static Set<List<Integer>> accelAsc(int n, int partSize) {

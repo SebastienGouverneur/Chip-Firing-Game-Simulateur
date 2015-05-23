@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 public class PatternUpdate {
@@ -119,7 +118,7 @@ public class PatternUpdate {
         return orderedPartitionText;
     }
 
-    public static String buildSequentialPattern(Graph graph) {
+    public static String buildSequentialPattern(MyGraph graph) {
         String orderedPattern = "(";
 
         for (Node node : graph.getNodeSet()) {
@@ -131,7 +130,7 @@ public class PatternUpdate {
         return orderedPattern.substring(0, orderedPattern.length() - 1) + ")";
     }
 
-    public static String buildParallelPattern(Graph graph) {
+    public static String buildParallelPattern(MyGraph graph) {
         String orderedPattern = "({";
 
         for (Node node : graph.getNodeSet()) {

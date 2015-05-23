@@ -7,22 +7,19 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import model.ModelEditGraph;
 import model.ModelIteration;
 
 public class ViewIteration extends javax.swing.JFrame implements Observer {
+    private ModelIteration modelIteration;
 
-    private ModelIteration model;
-
-    /**
-     * Creates new form ViewIteration
-     */
     public ViewIteration() {
         initComponents();
     }
 
     public ViewIteration(ModelIteration modelIteration) {
         initComponents();
-        this.model = modelIteration;
+        this.modelIteration = modelIteration;
     }
 
     /**
@@ -187,7 +184,7 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        if (o1 instanceof ModelIteration) {
+        if (o instanceof ModelIteration) {
             if (((ModelIteration) o1).getPattern().isValid()) {
                 switch (((ModelIteration) o1).getCurrentState()) {
                     case INPUT_PATTERN_UPDATED:

@@ -2,27 +2,22 @@ package controler;
 
 import core.PatternUpdate;
 import java.awt.event.ActionEvent;
-import model.AbstractModel;
+import java.awt.event.ActionListener;
 import model.ModelIteration;
 import view.ViewIteration;
 
-public class ControlerIteration extends AbstractControler {
-
+public class ControlerIteration implements ActionListener {
+    private ModelIteration modelIteration;
     private ViewIteration viewIteration;
 
-    public ControlerIteration(AbstractModel model) {
-        super(model);
-    }
-
     ControlerIteration(ViewIteration viewIteration, ModelIteration modelIteration) {
-        super(modelIteration);
+        this.modelIteration = modelIteration;
         this.viewIteration = viewIteration;
         modelIteration.addObserver(viewIteration);
 
-        addActionListener(viewIteration.getButtonValidate(), viewIteration);
-        addActionListener(viewIteration.getParallelButton(), viewIteration);
-        addActionListener(viewIteration.getSequentialButton(), viewIteration);
-
+        viewIteration.getButtonValidate().addActionListener((ActionListener)this);
+        viewIteration.getParallelButton().addActionListener((ActionListener)this);
+        viewIteration.getSequentialButton().addActionListener((ActionListener)this);
     }
 
     @Override
@@ -42,28 +37,18 @@ public class ControlerIteration extends AbstractControler {
 
     private void buttonValidatePerformed() {
         String retrivedPattern = viewIteration.getInputPattern().getText();
-        ((ModelIteration) model).setPattern(retrivedPattern, model.getGraph().getNodeCount());
+        modelIteration.setPattern(retrivedPattern, modelIteration.getNodeCount());
     }
 
     public PatternUpdate getCurrentPattern() {
-        return ((ModelIteration) model).getPattern();
-    }
-
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void control() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return modelIteration.getPattern();
     }
 
     private void sequentialButtonPerformed() {
-        ((ModelIteration) model).setSequentialPattern();
+        modelIteration.setSequentialPattern();
     }
 
     private void parallelButtonPerformed() {
-        ((ModelIteration) model).setParallelPattern();
+        modelIteration.setParallelPattern();
     }
 }

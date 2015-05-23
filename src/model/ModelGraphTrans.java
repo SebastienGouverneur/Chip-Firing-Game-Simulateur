@@ -1,44 +1,46 @@
 package model;
 
+import core.MyGraph;
+import java.util.Observable;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
 
-public class ModelGraphTrans extends AbstractModel {
+public class ModelGraphTrans extends Observable {
+    private final MyGraph graph;
 
     public ModelGraphTrans() {
-        this.graph = new SingleGraph("graph_trans", false, true);
-
-        this.graph.addAttribute("ui.quality");
-        this.graph.addAttribute("ui.antialias");
-        this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
+        this.graph = new MyGraph(new SingleGraph("graph_trans", false, true));
     }
 
     public void addConfig(String configFrom, String configTo) {
         Node from = graph.addNode(configFrom);
         Node to = graph.addNode(configTo);
-        
+
         Edge e = graph.addEdge(configFrom + configTo, from, to, true);
-        
+
         from.addAttribute("ui.label", from.getId());
-        to.addAttribute("ui.label", from.getId());
-        
+        to.addAttribute("ui.label", to.getId());
+
         setChanged();
         notifyObservers(this);
         clearChanged();
     }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    
     public void reset() {
         this.graph.clear();
+    }  
+    
+    public void pump() {
+        graph.pump();
+    }
 
-        this.graph.addAttribute("ui.quality");
-        this.graph.addAttribute("ui.antialias");
-        this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
+    public void createViewGraph() {
+        graph.createViewGraph();
+    }
+
+    public Viewer getViewer() {
+        return graph.getViewer();
     }
 }

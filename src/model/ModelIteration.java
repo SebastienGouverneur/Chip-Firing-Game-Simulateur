@@ -1,11 +1,14 @@
 package model;
 
+import core.MyGraph;
 import core.PatternUpdate;
 import core.UpdateStateEnum;
+import java.util.Observable;
 import org.graphstream.graph.Graph;
 
-public class ModelIteration extends AbstractModel {
+public class ModelIteration extends Observable {
 
+    private MyGraph graph;
     private PatternUpdate pattern;
     private UpdateStateEnum currentState;
 
@@ -14,7 +17,7 @@ public class ModelIteration extends AbstractModel {
         currentState = UpdateStateEnum.NOTHING_UPDATED;
     }
 
-    public ModelIteration(Graph graph) {
+    public ModelIteration(MyGraph graph) {
         this.graph = graph;
         pattern = new PatternUpdate("", 0);
         currentState = UpdateStateEnum.NOTHING_UPDATED;
@@ -70,13 +73,7 @@ public class ModelIteration extends AbstractModel {
         clearChanged();
     }
 
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getNodeCount() {
+        return graph.getNodeCount();
     }
 }

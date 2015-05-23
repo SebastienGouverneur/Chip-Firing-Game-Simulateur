@@ -1,41 +1,25 @@
 package view;
 
-import controler.MouseGraphTrans;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JPanel;
 import model.ModelGraphTrans;
-import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.ViewerPipe;
 
 public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
+    private ModelGraphTrans modelGraphTrans;
 
-    private ModelGraphTrans model;
-    private Viewer viewer;
-    private ViewerPipe fromViewer;
-
-    /**
-     * Creates new form ViewGraphTrans
-     */
     public ViewGraphTrans() {
         initComponents();
     }
 
     public ViewGraphTrans(ModelGraphTrans modelGraphTrans) {
         initComponents();
-
-        this.model = modelGraphTrans;
-
-        viewer = new Viewer(model.getGraph(), Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        viewer.enableAutoLayout();
-        
-        final ViewPanel viewCamera = viewer.addDefaultView(false);
-        viewCamera.addMouseListener(new MouseGraphTrans(viewCamera));
- 
-        viewGraph.add(viewCamera);
-        fromViewer = viewer.newViewerPipe();
-        fromViewer.addSink(model.getGraph());
+        this.modelGraphTrans = modelGraphTrans;
+        viewGraph.add (modelGraphTrans.getViewer().addDefaultView(false));
+    }
+    
+    @Override
+    public void update(Observable o, Object o1) {
+        modelGraphTrans.pump();
     }
 
     /**
@@ -74,21 +58,7 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel viewGraph;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void update(Observable o, Object o1) {
-        fromViewer.pump();
-    }
-
-    public JPanel getViewGraph() {
-        return viewGraph;
-    }
-
-    public Viewer getViewer() {
-        return viewer;
-    }
 }

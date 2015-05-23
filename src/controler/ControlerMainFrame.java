@@ -4,6 +4,7 @@ import core.AddChipOp;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
 import core.ModeSequentialBlock;
+import core.MyGraph;
 import core.PatternUpdate;
 import core.SetChipOp;
 import core.SubstractChipOp;
@@ -12,21 +13,23 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.ModelEditGraph;
 import model.ModelGraphTrans;
 import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.view.ViewerPipe;
+import view.ViewEditGraph;
 import view.ViewGraphTrans;
 import view.ViewIteration;
 import view.ViewLog;
 import view.ViewMainFrame;
 
-public class ControlerMainFrame extends AbstractControler {
-
+public class ControlerMainFrame  implements ActionListener {
+    
+    private final ViewMainFrame viewMainFrame;
+    private final ModelMainFrame modelMainFrame;
+    
     private final ControlerIteration controlerIteration;
     private final ViewIteration viewIteration;
     private final ModelIteration modelIteration;
@@ -35,16 +38,15 @@ public class ControlerMainFrame extends AbstractControler {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
-    private final ViewMainFrame viewMainFrame;
     private final Thread checkUpdateGraph;
     private Thread compute;
 
     private static AtomicBoolean inProgess;
 
-    public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
-        super(modelMainFrame);
-        this.viewMainFrame = viewMainFrame;
-
+    public ControlerMainFrame(ViewMainFrame viewMainFrame, final ModelMainFrame modelMainFrame) {
+        this.viewMainFrame  = viewMainFrame;
+        this.modelMainFrame = modelMainFrame;
+        
         inProgess = new AtomicBoolean(false);
 
         modelMainFrame.addObserver(viewMainFrame);
@@ -58,13 +60,13 @@ public class ControlerMainFrame extends AbstractControler {
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
         viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
+        viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);  
+        
+        modelMainFrame.createViewGraph ();
+        modelMainFrame.getFromViewer().addViewerListener(new Click(modelMainFrame));
+//        modelMainFrame.getFromViewer().addViewerListener(new Mouse(modelMainFrame));
 
-        final ViewerPipe fromViewer;
-        fromViewer = viewMainFrame.getViewer().newViewerPipe();
-        fromViewer.addViewerListener(new Click(modelMainFrame));
-        fromViewer.addSink(model.getGraph());
-
-        modelIteration = new ModelIteration(model.getGraph());
+        modelIteration = new ModelIteration(modelMainFrame.getGraph());
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
 
@@ -74,13 +76,13 @@ public class ControlerMainFrame extends AbstractControler {
 
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
-
+        
         checkUpdateGraph = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-                        fromViewer.blockingPump();
+                        modelMainFrame.getFromViewer().blockingPump();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -91,21 +93,17 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     public void changeColorNode(String id) {
-        model.setAttribute(id, "ui.class", "marked");
+        modelMainFrame.getGraph().setNodeMarked(id);
     }
 
     public void selectedNodeForChange(String id) {
-        if (model.getGraph().getNode(id).getAttribute("ui.class") == "marked") {
-            model.addSelectedNode(id);
+        if (modelMainFrame.getGraph().isNodeMarked(id)) {
+            modelMainFrame.addSelectedNode(id);
         } else {
-            model.setAttribute(id, "ui.class", "marked");
+            modelMainFrame.getGraph().setNodeMarked(id);
         }
     }
 
-    @Override
-    public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -144,12 +142,9 @@ public class ControlerMainFrame extends AbstractControler {
         if (ae.getSource() == viewMainFrame.getResetSelectedVerticesButton()) {
             resetSelectedVerticesButtonPerformed();
         }
-    }
 
-    @Override
-    public void control() {
-        if (compute.isAlive()) {
-
+        if (ae.getSource() == viewMainFrame.getEditGraphButton()) {
+            editGraphButtonPerformed();
         }
     }
 
@@ -174,10 +169,10 @@ public class ControlerMainFrame extends AbstractControler {
 
             @Override
             public void run() {
-                final Graph graph = model.getGraph();
+                final MyGraph graph = modelMainFrame.getGraph();
                 StringBuilder config = new StringBuilder(graph.getNodeCount());
 
-                for (Node node : graph) {
+                for (Node node : graph.getNodeSet()) {
                     config.append(node.getAttribute("chips"));
                 }
 
@@ -187,21 +182,24 @@ public class ControlerMainFrame extends AbstractControler {
                 viewMainFrame.printLimitCycleSize(0);
 
                 inProgess.set(true);
-
+                
+                boolean noCycleDetected = true;
+                
                 while (!configSet.cycleDetected()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
                     String configFrom = configSet.getLastConfig();
 
-                    ((ModelMainFrame) model).execute(
+                    modelMainFrame.execute(
                             new ModeSequentialBlock(
                                     p,
                                     configSet,
-                                    ((ModelMainFrame) model).getTimeExec(),
-                                    ((ModelMainFrame) model).getTimeAnimation()
+                                    modelMainFrame.getTimeExec(),
+                                    modelMainFrame.getTimeAnimation()
                             )
                     );
 
                     String configTo = configSet.getLastConfig();
+                    System.err.println(configFrom + " -> " + configTo);
                     modelGraphTrans.addConfig(configFrom, configTo);
                 }
 
@@ -227,25 +225,24 @@ public class ControlerMainFrame extends AbstractControler {
 
             @Override
             public void run() {
-                final Graph graph = model.getGraph();
+                final MyGraph graph = modelMainFrame.getGraph();
                 StringBuilder config = new StringBuilder(graph.getNodeCount());
 
-                for (Node node : graph) {
+                for (Node node : graph.getNodeSet()) {
                     config.append(node.getAttribute("chips"));
                 }
 
                 ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
 
-                
                 PatternUpdate p = controlerIteration.getCurrentPattern();
                 inProgess.set(true);
 
-                ((ModelMainFrame) model).execute(
+                modelMainFrame.execute(
                         new ModeSequentialBlock(
                                 p,
                                 configSet,
-                                ((ModelMainFrame) model).getTimeExec(),
-                                ((ModelMainFrame) model).getTimeAnimation()
+                                modelMainFrame.getTimeExec(),
+                                modelMainFrame.getTimeAnimation()
                         )
                 );
 
@@ -268,7 +265,7 @@ public class ControlerMainFrame extends AbstractControler {
         }
 
         int nbChips = Integer.parseInt(viewMainFrame.getInputNbChips().getText());
-        ((ModelMainFrame) model).computeNodesValues(nbChips, op);
+        modelMainFrame.computeNodesValues(nbChips, op);
     }
 
     private void iterationButtonPerformed() {
@@ -279,8 +276,8 @@ public class ControlerMainFrame extends AbstractControler {
 
     private void validateTimeButtonPerformed() {
         double timeExec = Double.parseDouble(viewMainFrame.getOptionControlTime().getText());
-        ((ModelMainFrame) model).setTimeExec(timeExec);
-        ((ModelMainFrame) model).setTimeAnimation(timeExec);
+        modelMainFrame.setTimeExec(timeExec);
+        modelMainFrame.setTimeAnimation(timeExec);
     }
 
     private void graphTransButtonPerformed() {
@@ -288,15 +285,24 @@ public class ControlerMainFrame extends AbstractControler {
     }
 
     private void selectAllVerticesButtonPerformed() {
-        for (Node node : model.getGraph().getNodeSet()) {
-            ((ModelMainFrame) model).setSelectedNode(node.getId());
+        for (Node node : modelMainFrame.getNodeSet()) {
+            modelMainFrame.setSelectedNode(node.getId());
         }
     }
 
     private void resetSelectedVerticesButtonPerformed() {
-        for (String nodeId : ((ModelMainFrame) model).getSelectedNode()) {
-            ((ModelMainFrame) model).setUnselectedNode(nodeId);
+        for (String nodeId : modelMainFrame.getSelectedNode()) {
+            modelMainFrame.setUnselectedNode(nodeId);
         }
     }
 
+    private void editGraphButtonPerformed() {
+        ModelEditGraph modelEditGraph          = new ModelEditGraph(modelMainFrame.getGraph());
+        ViewEditGraph viewEditGraph            = new ViewEditGraph(modelEditGraph);
+        ControllerEditGraph controlerEditGraph = new ControllerEditGraph(viewEditGraph, modelEditGraph);
+    }
+
+    public void start() {
+        viewMainFrame.setVisible(true);
+    }
 }

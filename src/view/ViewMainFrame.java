@@ -20,10 +20,8 @@ import model.ModelMainFrame;
 import org.graphstream.ui.view.Viewer;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
-
     // L'instance de notre objet contrôleur
-    private ModelMainFrame model;
-    private Viewer viewer;
+    private ModelMainFrame modelMailFrame;
 
     public ViewMainFrame() {
         initComponents();
@@ -31,14 +29,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public ViewMainFrame(ModelMainFrame modelMainFrame) {
         initComponents();
-
-        this.model = modelMainFrame;
-
-        viewer = new Viewer(model.getGraph(), Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        viewer.enableAutoLayout();
-        viewGraph.add(viewer.addDefaultView(false));
+        this.modelMailFrame = modelMainFrame;
+        
+        viewGraph.add(modelMainFrame.getViewer().addDefaultView(false));
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -460,10 +455,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     //Implémentation du pattern observer
     @Override
     public void update(Observable o, Object o1) {
-
-        if (o1 instanceof ModelMainFrame) {
-            selectedNodeText.setText(((ModelMainFrame) o1).getSelectedNode().toString());
-            optionControlTime.setText(Double.toString(((ModelMainFrame) o1).getTimeExec()));
+        if (o instanceof ModelMainFrame) {
+            selectedNodeText.setText(((ModelMainFrame) o).getSelectedNode().toString());
+            optionControlTime.setText(Double.toString(((ModelMainFrame) o).getTimeExec()));
         }
     }
 
@@ -535,7 +529,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     }
 
     public ModelMainFrame getModel() {
-        return model;
+        return modelMailFrame;
     }
 
     public JMenuItem getSave() {
@@ -712,10 +706,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JButton getLogButton() {
         return logButton;
-    }
-
-    public Viewer getViewer() {
-        return viewer;
     }
 
     public JPanel getpPlayCFG() {

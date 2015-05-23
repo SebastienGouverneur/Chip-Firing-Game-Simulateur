@@ -33,9 +33,4 @@ public abstract class AbstractControler implements ActionListener {
     public abstract void reset ();
 
     public abstract void control();
-    
-    public void addActionListener (AbstractButton button, Frame view)
-    {
-        button.addActionListener((ActionListener)this);
-    }
 }

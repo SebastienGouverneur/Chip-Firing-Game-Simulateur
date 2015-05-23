@@ -41,9 +41,4 @@ public abstract class AbstractModel extends Observable {
         /* notifyObservers(); */
     }
 
-    public void addSelectedNode(String id) {
-        graph.getNode(id).addAttribute(id, "ui.class", "marked");
-        /* notifyObservers(); */
-    }
-
 }

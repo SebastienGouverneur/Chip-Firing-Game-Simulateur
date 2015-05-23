@@ -3,7 +3,7 @@ package controler;
 import model.ModelMainFrame;
 import org.graphstream.ui.view.ViewerListener;
 
-class Click implements ViewerListener {
+public class Click implements ViewerListener {
     private ModelMainFrame modelMainFrame;
     
     public Click(ModelMainFrame model) {

@@ -4,13 +4,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import org.graphstream.ui.swingViewer.ViewPanel;
 
-public class MouseGraphTrans implements MouseListener {
+public class Mouse implements MouseListener {
 
     private final ViewPanel viewCamera;
     private int x;
     private int y;
 
-    public MouseGraphTrans(ViewPanel viewCamera) {
+    public Mouse(ViewPanel viewCamera) {
         this.viewCamera = viewCamera;
     }
 
