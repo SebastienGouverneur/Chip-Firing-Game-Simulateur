@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import model.ModelEditGraph;
 import model.ModelIteration;
 
 public class ViewIteration extends javax.swing.JFrame implements Observer {

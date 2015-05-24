@@ -14,20 +14,6 @@ public class ModelGraphTrans extends Observable {
         this.graph = new MyGraph(new SingleGraph("graph_trans", false, true));
     }
 
-    public void addConfig(String configFrom, String configTo) {
-        Node from = graph.addNode(configFrom);
-        Node to = graph.addNode(configTo);
-
-        Edge e = graph.addEdge(configFrom + configTo, from, to, true);
-
-        from.addAttribute("ui.label", from.getId());
-        to.addAttribute("ui.label", to.getId());
-
-        setChanged();
-        notifyObservers(this);
-        clearChanged();
-    }
-    
     public void reset() {
         this.graph.clear();
     }  
@@ -43,4 +29,19 @@ public class ModelGraphTrans extends Observable {
     public Viewer getViewer() {
         return graph.getViewer();
     }
+
+    public void addConfig(String configFrom, String configTo) {
+        Node from = graph.addNode(configFrom);
+        Node to = graph.addNode(configTo);
+
+        Edge e = graph.addEdge(configFrom + configTo, from, to, true);
+
+        from.addAttribute("ui.label", from.getId());
+        to.addAttribute("ui.label", to.getId());
+
+        setChanged();
+        notifyObservers(this);
+        clearChanged();
+    }
+    
 }

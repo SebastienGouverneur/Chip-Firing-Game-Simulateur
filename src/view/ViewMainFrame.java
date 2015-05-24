@@ -17,7 +17,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
-import org.graphstream.ui.view.Viewer;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     // L'instance de notre objet contrôleur

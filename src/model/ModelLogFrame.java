@@ -7,7 +7,6 @@ public class ModelLogFrame extends Observable {
     StringBuilder log;
 
     public ModelLogFrame() {
-
     }
 
     public void addText(String text) {
