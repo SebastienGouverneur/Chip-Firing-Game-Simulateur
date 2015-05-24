@@ -7,6 +7,7 @@ import model.ModelIteration;
 import view.ViewIteration;
 
 public class ControlerIteration implements ActionListener {
+
     private ModelIteration modelIteration;
     private ViewIteration viewIteration;
 
@@ -15,9 +16,9 @@ public class ControlerIteration implements ActionListener {
         this.viewIteration = viewIteration;
         modelIteration.addObserver(viewIteration);
 
-        viewIteration.getButtonValidate().addActionListener((ActionListener)this);
-        viewIteration.getParallelButton().addActionListener((ActionListener)this);
-        viewIteration.getSequentialButton().addActionListener((ActionListener)this);
+        viewIteration.getButtonValidate().addActionListener((ActionListener) this);
+        viewIteration.getParallelButton().addActionListener((ActionListener) this);
+        viewIteration.getSequentialButton().addActionListener((ActionListener) this);
     }
 
     @Override

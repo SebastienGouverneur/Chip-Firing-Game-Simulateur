@@ -11,8 +11,8 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
 public class ModelMainFrame extends Observable {
-    private MyGraph graph;
-    private ConcurrentSkipListSet<String> selectedNode;
+    private final MyGraph graph;
+    private final ConcurrentSkipListSet<String> selectedNode;
     private double timeExec;
     private double timeAnimation;
 
@@ -23,18 +23,12 @@ public class ModelMainFrame extends Observable {
         selectedNode = new ConcurrentSkipListSet<>();
 
         graph = new MyGraph(new SingleGraph("Tutorial 1", false, true));
-
-        graph.addEdge("12", "1", "2", true);
+        
+        
         graph.addEdge("23", "2", "3", true);
         graph.addEdge("34", "3", "4", true);
-        graph.addEdge("45", "4", "5", true);
-        graph.addEdge("51", "5", "1", true);
-
-        graph.addEdge("21", "2", "1", true);
-        graph.addEdge("32", "3", "2", true);
+        graph.addEdge("42", "4", "2", true);
         graph.addEdge("43", "4", "3", true);
-        graph.addEdge("54", "5", "4", true);
-        graph.addEdge("15", "1", "5", true);
 
         graph.setAllNodesUnmarked();
         graph.setAllEdgesUnmarked();

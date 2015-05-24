@@ -1,5 +1,6 @@
 package controler;
 
+import core.Click;
 import core.AddChipOp;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
@@ -19,17 +20,19 @@ import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.layout.Layout;
+import org.graphstream.ui.layout.Layouts;
 import view.ViewEditGraph;
 import view.ViewGraphTrans;
 import view.ViewIteration;
 import view.ViewLog;
 import view.ViewMainFrame;
 
-public class ControlerMainFrame  implements ActionListener {
-    
+public class ControlerMainFrame implements ActionListener {
+
     private final ViewMainFrame viewMainFrame;
     private final ModelMainFrame modelMainFrame;
-    
+
     private final ControlerIteration controlerIteration;
     private final ViewIteration viewIteration;
     private final ModelIteration modelIteration;
@@ -44,9 +47,9 @@ public class ControlerMainFrame  implements ActionListener {
     private static AtomicBoolean inProgess;
 
     public ControlerMainFrame(ViewMainFrame viewMainFrame, final ModelMainFrame modelMainFrame) {
-        this.viewMainFrame  = viewMainFrame;
+        this.viewMainFrame = viewMainFrame;
         this.modelMainFrame = modelMainFrame;
-        
+
         inProgess = new AtomicBoolean(false);
 
         modelMainFrame.addObserver(viewMainFrame);
@@ -60,9 +63,9 @@ public class ControlerMainFrame  implements ActionListener {
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
         viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
-        viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);  
-        
-        modelMainFrame.createViewGraph ();
+        viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
+
+        modelMainFrame.createViewGraph();
         modelMainFrame.getFromViewer().addViewerListener(new Click(modelMainFrame));
 //        modelMainFrame.getFromViewer().addViewerListener(new Mouse(modelMainFrame));
 
@@ -76,7 +79,7 @@ public class ControlerMainFrame  implements ActionListener {
 
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
-        
+
         checkUpdateGraph = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -103,7 +106,6 @@ public class ControlerMainFrame  implements ActionListener {
             modelMainFrame.getGraph().setNodeMarked(id);
         }
     }
-
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -182,9 +184,9 @@ public class ControlerMainFrame  implements ActionListener {
                 viewMainFrame.printLimitCycleSize(0);
 
                 inProgess.set(true);
-                
+
                 boolean noCycleDetected = true;
-                
+
                 while (!configSet.cycleDetected()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
                     String configFrom = configSet.getLastConfig();
@@ -297,9 +299,9 @@ public class ControlerMainFrame  implements ActionListener {
     }
 
     private void editGraphButtonPerformed() {
-        ModelEditGraph modelEditGraph          = new ModelEditGraph(modelMainFrame.getGraph());
-        ViewEditGraph viewEditGraph            = new ViewEditGraph(modelEditGraph);
-        ControllerEditGraph controlerEditGraph = new ControllerEditGraph(viewEditGraph, modelEditGraph);
+        ModelEditGraph modelEditGraph = new ModelEditGraph(modelMainFrame.getGraph());
+        ViewEditGraph viewEditGraph = new ViewEditGraph(modelEditGraph);
+        ControlerEditGraph controlerEditGraph = new ControlerEditGraph(viewEditGraph, modelEditGraph);
     }
 
     public void start() {

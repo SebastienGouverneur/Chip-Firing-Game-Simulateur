@@ -1,20 +1,18 @@
-
-
 node { 
-    size: 0.2gu; 
+    size: 0.1gu; 
     fill-color: #cceeff, green, red;
     fill-mode: dyn-plain;
     stroke-mode: plain; 
     stroke-color: #999; 
     shadow-mode: plain; 
-    shadow-width: 0.015gu; 
+    shadow-width: 0.011gu; 
     shadow-color: grey; 
     shadow-offset: 0px; 
     text-style: bold;
     text-size: 13px;   
 }
 
-node.unmarked {  
+node.unmarked {
     shadow-color: grey;  
 }
 
@@ -24,7 +22,8 @@ node.marked {
 
 edge { 
     arrow-shape: arrow;
-    size: 0.01gu;
+    arrow-size: 0.02gu;
+    size: 0.009gu;
     fill-color: #025c79; 
     shadow-mode: plain; 
     shadow-width: 0.002gu; 

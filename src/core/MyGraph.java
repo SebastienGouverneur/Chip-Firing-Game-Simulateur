@@ -1,6 +1,5 @@
 package core;
 
-import controler.Click;
 import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -10,9 +9,9 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
 public class MyGraph {
-    private Graph graph;
+    private final Graph graph;
     private String format; /*TODO : associer le format a chaque graphe */
-    private Viewer viewer;
+    private final Viewer viewer;
     private ViewPanel viewCamera;
     private ViewerPipe fromViewer;
 

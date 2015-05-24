@@ -1,4 +1,4 @@
-package controler;
+package core;
 
 import model.ModelMainFrame;
 import org.graphstream.ui.view.ViewerListener;

@@ -83,7 +83,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         InformationsPanel = new javax.swing.JPanel();
         labelCycleLimit = new javax.swing.JLabel();
         labelSizeCycleLimit = new javax.swing.JLabel();
-        importGraph = new javax.swing.JPanel();
         menu = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
         open = new javax.swing.JMenuItem();
@@ -380,19 +379,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         tabs.addTab("Play CFG", playCFG);
 
-        javax.swing.GroupLayout importGraphLayout = new javax.swing.GroupLayout(importGraph);
-        importGraph.setLayout(importGraphLayout);
-        importGraphLayout.setHorizontalGroup(
-            importGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1046, Short.MAX_VALUE)
-        );
-        importGraphLayout.setVerticalGroup(
-            importGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
-        );
-
-        tabs.addTab("Import Graph", importGraph);
-
         file.setText("File");
 
         open.setText("Open");
@@ -440,17 +426,17 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void iterationModeParallelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterationModeParallelActionPerformed
+    private void resetSelectedVerticesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSelectedVerticesButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_iterationModeParallelActionPerformed
+    }//GEN-LAST:event_resetSelectedVerticesButtonActionPerformed
 
     private void modeSetChipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeSetChipsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_modeSetChipsActionPerformed
 
-    private void resetSelectedVerticesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSelectedVerticesButtonActionPerformed
+    private void iterationModeParallelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterationModeParallelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_resetSelectedVerticesButtonActionPerformed
+    }//GEN-LAST:event_iterationModeParallelActionPerformed
 
     //Implémentation du pattern observer
     @Override
@@ -469,7 +455,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton editGraphButton;
     private javax.swing.JMenu file;
     private javax.swing.JButton graphTransButton;
-    private javax.swing.JPanel importGraph;
     private javax.swing.JMenuItem import_;
     private javax.swing.JButton infoGraphButton;
     private javax.swing.JTextField inputNbChips;
@@ -554,10 +539,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JButton getGraphTransButton() {
         return graphTransButton;
-    }
-
-    public JPanel getImportGraph() {
-        return importGraph;
     }
 
     public JMenuItem getImport_() {

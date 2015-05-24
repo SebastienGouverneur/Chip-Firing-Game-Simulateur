@@ -4,7 +4,6 @@ import core.MyGraph;
 import core.PatternUpdate;
 import core.UpdateStateEnum;
 import java.util.Observable;
-import org.graphstream.graph.Graph;
 
 public class ModelIteration extends Observable {
 

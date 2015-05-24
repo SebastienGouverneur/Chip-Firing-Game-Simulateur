@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 import model.ModelEditGraph;
 import view.ViewEditGraph;
 
-public class ControllerEditGraph implements ActionListener {
-    private ModelEditGraph modelEditGraph;
+public class ControlerEditGraph implements ActionListener {
+    private final ModelEditGraph modelEditGraph;
     private final ViewEditGraph viewEditGrap;
 
-    ControllerEditGraph(ViewEditGraph viewEditGraph, ModelEditGraph modelEditGraph) {
+    ControlerEditGraph(ViewEditGraph viewEditGraph, ModelEditGraph modelEditGraph) {
         this.modelEditGraph = modelEditGraph;
         this.viewEditGrap = viewEditGraph;
         modelEditGraph.addObserver(viewEditGraph);
@@ -29,5 +29,4 @@ public class ControllerEditGraph implements ActionListener {
         modelEditGraph.setFormat(viewEditGrap.getInputFormatGraph().getText());
         viewEditGrap.dispose();
     }
-
 }
