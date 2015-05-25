@@ -5,7 +5,6 @@ import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.graph.implementations.SingleGraph;
 
 public class CustomGeneratorGrid extends GridGenerator {
     
@@ -15,7 +14,7 @@ public class CustomGeneratorGrid extends GridGenerator {
         generator = new GridGenerator(cross, tore, generateXY, directed);
     }
 
-    MyGraph generateGridGraph(int dimension) {
+    MyGraph generateGridGraph(int dimension, int nbChips) {
 
         Graph generatedgraph = new MultiGraph("GeneratedGridGraph", false, true);
 
@@ -27,7 +26,7 @@ public class CustomGeneratorGrid extends GridGenerator {
         generator.end();
 
         for (Node node : generatedgraph) {
-            node.addAttribute("label", 0);
+            node.addAttribute("label", nbChips);
         }
         
         MyGraph graph = new MyGraph(generatedgraph);
