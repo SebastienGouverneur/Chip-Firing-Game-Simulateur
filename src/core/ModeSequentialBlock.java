@@ -3,8 +3,6 @@ package core;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -12,11 +10,11 @@ import org.graphstream.graph.Node;
 
 public class ModeSequentialBlock implements DynamicAlgorithm {
 
-    private PatternUpdate patternUpdate;
-    private ConfigurationContrainer configSet;
+    private final PatternUpdate patternUpdate;
+    private final ConfigurationContrainer configSet;
     private Graph graph;
-    private double time;
-    private double timeAnimation;
+    private final double time;
+    private final double timeAnimation;
 
     public ModeSequentialBlock(PatternUpdate patternUpdate, ConfigurationContrainer configSet, double time, double timeAnimation) {
         this.patternUpdate = patternUpdate;
@@ -44,7 +42,6 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
         try {
             Thread.sleep((long) (time));
         } catch (InterruptedException ex) {
-            Logger.getLogger(ModeSequentialBlock.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -56,8 +53,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
     @Override
     public void compute() {
 
-        /* start */
-        
+        /* start */       
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
             int numStep = stepIter.getKey();
             LinkedList<String> parallelPattern = stepIter.getValue();
@@ -79,7 +75,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             try {
                 Thread.sleep((long) (timeAnimation));
             } catch (InterruptedException ex) {
-                Logger.getLogger(ModeSequentialBlock.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
 
             for (Edge e : graph.getEdgeSet()) {

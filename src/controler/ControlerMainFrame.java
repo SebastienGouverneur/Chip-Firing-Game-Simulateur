@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import model.ModelEditGraph;
 import model.ModelGraphTrans;
 import model.ModelIteration;
@@ -93,6 +94,7 @@ public class ControlerMainFrame implements ActionListener {
                 }
             }
         });
+        
         checkUpdateGraph.start();
     }
 
@@ -190,9 +192,7 @@ public class ControlerMainFrame implements ActionListener {
 
                 inProgess.set(true);
 
-                boolean noCycleDetected = true;
-
-                while (!configSet.cycleDetected()) {
+                while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
                     PatternUpdate p = controlerIteration.getCurrentPattern();
                     String configFrom = configSet.getLastConfig();
 
@@ -262,6 +262,7 @@ public class ControlerMainFrame implements ActionListener {
 
     private void valideOptionChipsPerformed() {
         IChipOperation op;
+        int nbChips = 0;
 
         if (viewMainFrame.getModeAddChips().isSelected()) {
             op = new AddChipOp();
@@ -270,8 +271,15 @@ public class ControlerMainFrame implements ActionListener {
         } else {
             op = new SubstractChipOp();
         }
-
-        int nbChips = Integer.parseInt(viewMainFrame.getInputNbChips().getText());
+        
+        String valueText = viewMainFrame.getInputNbChips().getText();
+        
+        try {
+            nbChips = Integer.parseInt(valueText);
+        } catch (NumberFormatException numberFormatException) {
+            return;
+        }
+        
         modelMainFrame.computeNodesValues(nbChips, op);
     }
 
@@ -314,16 +322,22 @@ public class ControlerMainFrame implements ActionListener {
         int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            
-            if(inProgess.get() == true) {
-                System.err.println("Etes vous sur ?");
+
+            if (inProgess.get() == true) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    compute.interrupt();
+                    inProgess.set(false);
+                } else {
+                    return;
+                }
             }
-            
-            
+
             resetSelectedVerticesButtonPerformed();
             modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
             controlerIteration.reset();
             controlerGraphTrans.reset();
+
         }
     }
 }
