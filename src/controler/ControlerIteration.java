@@ -8,8 +8,8 @@ import view.ViewIteration;
 
 public class ControlerIteration implements ActionListener {
 
-    private ModelIteration modelIteration;
-    private ViewIteration viewIteration;
+    private final ModelIteration modelIteration;
+    private final ViewIteration viewIteration;
 
     ControlerIteration(ViewIteration viewIteration, ModelIteration modelIteration) {
         this.modelIteration = modelIteration;
@@ -38,18 +38,23 @@ public class ControlerIteration implements ActionListener {
 
     private void buttonValidatePerformed() {
         String retrivedPattern = viewIteration.getInputPattern().getText();
-        modelIteration.setPattern(retrivedPattern, modelIteration.getNodeCount());
+        modelIteration.setPattern(retrivedPattern, modelIteration.getGraph());
     }
 
     public PatternUpdate getCurrentPattern() {
-        return modelIteration.getPattern();
+        return modelIteration.getCurrentPattern();
     }
 
     private void sequentialButtonPerformed() {
-        modelIteration.setSequentialPattern();
+        viewIteration.getInputPattern().setText(modelIteration.getSequentialPattern());
     }
 
     private void parallelButtonPerformed() {
-        modelIteration.setParallelPattern();
+        viewIteration.getInputPattern().setText(modelIteration.getParallelPattern());
+    }
+
+    void reset() {
+        modelIteration.reset();
+        viewIteration.reset();
     }
 }

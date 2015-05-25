@@ -14,14 +14,13 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import model.ModelEditGraph;
 import model.ModelGraphTrans;
 import model.ModelIteration;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.layout.Layout;
-import org.graphstream.ui.layout.Layouts;
 import view.ViewEditGraph;
 import view.ViewGraphTrans;
 import view.ViewIteration;
@@ -64,6 +63,8 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
+        viewMainFrame.getOpen().addActionListener((ActionListener) this);
+        viewMainFrame.setVisible(true);
 
         modelMainFrame.createViewGraph();
         modelMainFrame.getFromViewer().addViewerListener(new Click(modelMainFrame));
@@ -148,6 +149,10 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getEditGraphButton()) {
             editGraphButtonPerformed();
         }
+
+        if (ae.getSource() == viewMainFrame.getOpen()) {
+            openFileExplorer();
+        }
     }
 
     public void logButtonPerformed() {
@@ -180,7 +185,7 @@ public class ControlerMainFrame implements ActionListener {
 
                 ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
 
-                modelGraphTrans.reset();
+                controlerGraphTrans.reset();
                 viewMainFrame.printLimitCycleSize(0);
 
                 inProgess.set(true);
@@ -201,7 +206,7 @@ public class ControlerMainFrame implements ActionListener {
                     );
 
                     String configTo = configSet.getLastConfig();
-                    System.err.println(configFrom + " -> " + configTo);
+//                    System.err.println(configFrom + " -> " + configTo);
                     modelGraphTrans.addConfig(configFrom, configTo);
                 }
 
@@ -304,7 +309,21 @@ public class ControlerMainFrame implements ActionListener {
         ControlerEditGraph controlerEditGraph = new ControlerEditGraph(viewEditGraph, modelEditGraph);
     }
 
-    public void start() {
-        viewMainFrame.setVisible(true);
+    private void openFileExplorer() {
+        final JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            
+            if(inProgess.get() == true) {
+                System.err.println("Etes vous sur ?");
+            }
+            
+            
+            resetSelectedVerticesButtonPerformed();
+            modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
+            controlerIteration.reset();
+            controlerGraphTrans.reset();
+        }
     }
 }

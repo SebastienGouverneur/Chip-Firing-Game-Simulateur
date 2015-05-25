@@ -38,7 +38,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
         boolean isInserted = configSet.insertConfiguration(config.toString());
 
         if (!isInserted) {
-            System.err.println("Cycle detecté : Taille cycle = " + configSet.retrieveLimitCycleSize());
+//            System.err.println("Cycle detecté : Taille cycle = " + configSet.retrieveLimitCycleSize());
         }
 
         try {

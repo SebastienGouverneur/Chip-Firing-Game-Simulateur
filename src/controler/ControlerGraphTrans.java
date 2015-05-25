@@ -13,4 +13,8 @@ public class ControlerGraphTrans {
                 
         modelGraphTrans.createViewGraph ();
     }
+    
+    public void reset() {
+        modelGraphTrans.reset();
+    }  
 }

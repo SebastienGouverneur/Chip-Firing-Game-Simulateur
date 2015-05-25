@@ -2,15 +2,18 @@ package model;
 
 import core.IChipOperation;
 import core.MyGraph;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
 public class ModelMainFrame extends Observable {
+    
     private final MyGraph graph;
     private final ConcurrentSkipListSet<String> selectedNode;
     private double timeExec;
@@ -21,17 +24,7 @@ public class ModelMainFrame extends Observable {
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
         selectedNode = new ConcurrentSkipListSet<>();
-
-        graph = new MyGraph(new SingleGraph("Tutorial 1", false, true));
-        
-        
-        graph.addEdge("23", "2", "3", true);
-        graph.addEdge("34", "3", "4", true);
-        graph.addEdge("42", "4", "2", true);
-        graph.addEdge("43", "4", "3", true);
-
-        graph.setAllNodesUnmarked();
-        graph.setAllEdgesUnmarked();
+        graph = new MyGraph();
     }
 
     public ConcurrentSkipListSet<String> getSelectedNode() {
@@ -70,10 +63,6 @@ public class ModelMainFrame extends Observable {
 
     public void execute(DynamicAlgorithm algo) {
         graph.execute(algo);
-
-        setChanged();
-        notifyObservers(graph);
-        clearChanged();
     }
 
     public void toggleSelectedNode(String id) {
@@ -99,7 +88,7 @@ public class ModelMainFrame extends Observable {
 
     public void setTimeExec(double timeExec) {
         this.timeExec = timeExec;
-
+        
         setChanged();
         notifyObservers(this);
         clearChanged();
@@ -130,11 +119,11 @@ public class ModelMainFrame extends Observable {
     }
 
     public Iterable<Node> getNodeSet() {
-       return graph.getNodeSet();
+        return graph.getNodeSet();
     }
 
     public Viewer getViewer() {
-        return graph.getViewer ();
+        return graph.getViewer();
     }
 
     public void createViewGraph() {
@@ -142,6 +131,16 @@ public class ModelMainFrame extends Observable {
     }
 
     public ViewerPipe getFromViewer() {
-        return graph.getFromViewer ();
+        return graph.getFromViewer();
+    }
+
+    public void importDOTFile(String filename) {
+        try {
+            graph.importDOTFile(filename);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

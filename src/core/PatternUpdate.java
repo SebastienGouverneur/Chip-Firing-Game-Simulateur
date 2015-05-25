@@ -12,8 +12,8 @@ import org.graphstream.graph.Node;
 public class PatternUpdate {
 
     private LinkedHashMap<Integer, LinkedList<String>> patternUpdate = new LinkedHashMap<>();
-    private Pattern regex;
     private String orderedPartitionText;
+    private final Pattern regex;
     private boolean isValidPattern;
 
     
@@ -33,35 +33,32 @@ public class PatternUpdate {
         this.orderedPartitionText = orderedPartitionText;
     }
 
-    public PatternUpdate(String orderedPartition, int nbVertex) {
+    public PatternUpdate(String orderedPartition, MyGraph graph) {
         this.isValidPattern = false;
         this.orderedPartitionText = new String();
+        orderedPartitionText = orderedPartition;
         regex = Pattern.compile("\\(\\{\\w+(\\,\\w+)*\\}(\\,\\{\\w+(\\,\\w+)*\\})*\\)");
 
-        orderedPartitionText = orderedPartition;
         Matcher m = regex.matcher(orderedPartitionText);
-
-        isValidPattern = m.matches() && isFair(orderedPartition, nbVertex);
+        isValidPattern = m.matches() && isFair(orderedPartitionText, graph);
 
         if (isValidPattern) {
-            initPattern(orderedPartition, nbVertex);
+            initPattern(orderedPartitionText, graph.getNodeCount());
         }
     }
 
-    public PatternUpdate(String regex, String orderedPartition, int nbVertex) {
+    public PatternUpdate(String regex, String orderedPartition, MyGraph graph) {
         this.isValidPattern = false;
         this.orderedPartitionText = new String();
         this.regex = Pattern.compile(regex);
-        this.isValidPattern = false;
-        this.orderedPartitionText = new String();
 
         orderedPartitionText = orderedPartition;
         Matcher m = this.regex.matcher(orderedPartitionText);
 
-        isValidPattern = m.matches() && isFair(orderedPartition, nbVertex);
+        isValidPattern = m.matches() && isFair(orderedPartition, graph);
 
-        if (m.matches() && isFair(orderedPartition, nbVertex)) {
-            initPattern(orderedPartition, nbVertex);
+        if (m.matches() && isFair(orderedPartition, graph)) {
+            initPattern(orderedPartition, graph.getNodeCount());
         }
     }
 
@@ -69,20 +66,20 @@ public class PatternUpdate {
         return isValidPattern;
     }
 
-    private boolean isFair(String orderedPartition, int nbVertex) {
-        Set<Integer> presentNode = new HashSet();
-
+    private boolean isFair(String orderedPartition, MyGraph graph) {
+        Set<String> presentNode = new HashSet();
+        
         orderedPartitionText = orderedPartition;
         Pattern p = Pattern.compile("\\w+");
         Matcher m = p.matcher(orderedPartition);
 
         while (m.find()) {
-            if (!presentNode.add(Integer.parseInt(m.group()))) {
+            if (!presentNode.add(m.group()) || graph.getNode(m.group()) == null) {
                 return false;
             }
         }
 
-        return presentNode.size() == nbVertex;
+        return presentNode.size() == graph.getNodeCount();
     }
 
     private void initPattern(String orderedPartition, int nbVertex) {
@@ -95,10 +92,8 @@ public class PatternUpdate {
 
             Pattern p2 = Pattern.compile("\\w+");
             Matcher m2 = p2.matcher(m.group());
-//            System.out.println(m.group());
 
             while (m2.find()) {
-//                System.out.println(m2.group());
                 parallelGroup.add(m2.group());
             }
 

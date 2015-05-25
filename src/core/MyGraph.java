@@ -1,19 +1,50 @@
 package core;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.ModelMainFrame;
 import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.stream.file.FileSource;
+import org.graphstream.stream.file.FileSourceDOT;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
 public class MyGraph {
+
     private final Graph graph;
     private String format; /*TODO : associer le format a chaque graphe */
+
     private final Viewer viewer;
     private ViewPanel viewCamera;
     private ViewerPipe fromViewer;
+
+    public void importDOTFile(String filename) throws IOException {
+        graph.clear();
+
+        try {
+            FileSource fs = new FileSourceDOT();
+            fs.addSink(graph);
+            fs.readAll(filename);
+            fs.removeSink(graph);
+        } catch (IOException ex) {
+            Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        initGraphAttributes();
+    }
+
+    public MyGraph() {
+        graph = new MultiGraph("imported_graph", false, true);
+
+        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        viewer.enableAutoLayout();
+    }
 
     public MyGraph(Graph graph) {
         this.graph = graph;
@@ -25,8 +56,6 @@ public class MyGraph {
     public void setAllNodesUnmarked() {
         for (Node node : graph) {
             node.addAttribute("ui.class", "unmarked");
-            node.addAttribute("chips", 2);
-            node.addAttribute("ui.label", node.getAttribute("chips").toString());
         }
     }
 
@@ -46,11 +75,11 @@ public class MyGraph {
     public Edge addEdge(String id, String from, String to, boolean b) {
         return graph.addEdge(id, from, to, b);
     }
-    
+
     public void addAttribute(String id, String aclass, String value) {
         graph.getNode(id).addAttribute(id, "ui.class", "marked");
     }
-    
+
     public void pump() {
         fromViewer.pump();
     }
@@ -63,6 +92,14 @@ public class MyGraph {
         this.graph.addAttribute("ui.quality");
         this.graph.addAttribute("ui.antialias");
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
+
+        for (Node node : graph) {
+            node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
+            node.setAttribute("ui.class", "unmarked");
+            for (Edge edgeOut : node.getEachLeavingEdge()) {
+                edgeOut.addAttribute("ui.class", "unmarked");
+            }
+        }
     }
 
     public int getNodeCount() {
@@ -104,13 +141,12 @@ public class MyGraph {
     }
 
     public Object getNode(String id) {
-        return graph.getNode (id);
+        return graph.getNode(id);
     }
 
     public boolean isNodeMarked(String id) {
         return graph.getNode(id).getAttribute("ui.class") == "marked";
     }
-
 
     public Graph getGraph() {
         return graph;
@@ -130,6 +166,6 @@ public class MyGraph {
     }
 
     public void setNodeUnmarked(String id) {
-         graph.getNode(id).setAttribute("ui.class", "unmarked");
+        graph.getNode(id).setAttribute("ui.class", "unmarked");
     }
 }

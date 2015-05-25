@@ -4,7 +4,7 @@ import model.ModelMainFrame;
 import org.graphstream.ui.view.ViewerListener;
 
 public class Click implements ViewerListener {
-    private ModelMainFrame modelMainFrame;
+    private final ModelMainFrame modelMainFrame;
     
     public Click(ModelMainFrame model) {
         this.modelMainFrame = model;

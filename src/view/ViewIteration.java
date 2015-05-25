@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import model.ModelIteration;
 
 public class ViewIteration extends javax.swing.JFrame implements Observer {
+
     private ModelIteration modelIteration;
 
     public ViewIteration() {
@@ -184,19 +185,23 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof ModelIteration) {
-            if (((ModelIteration) o1).getPattern().isValid()) {
+            if (((ModelIteration) o1).getpatternTested().isValid()) {
                 switch (((ModelIteration) o1).getCurrentState()) {
                     case INPUT_PATTERN_UPDATED:
-                        getInputPattern().setText(((ModelIteration) o1).getPattern().getOrderedPartionText());
+                        getInputPattern().setText(((ModelIteration) o1).getCurrentPattern().getOrderedPartionText());
                         getStateTextField().setForeground(Color.black);
                         getStateTextField().setText("");
                         break;
                     case ALL_UPDATED:
-                        getCurrentIterationTextField().setText(((ModelIteration) o1).getPattern().getOrderedPartionText());
+                        getCurrentIterationTextField().setText(((ModelIteration) o1).getCurrentPattern().getOrderedPartionText());
                         getStateTextField().setForeground(Color.green);
                         getStateTextField().setText("Pattern is valid !");
                         break;
-                    default: 
+                    case RESET:
+                        getCurrentIterationTextField().setText("");
+                        getInputPattern().setText("");
+                        getStateTextField().setText("");
+                    default:
                         break;
                 }
             } else {
@@ -204,5 +209,11 @@ public class ViewIteration extends javax.swing.JFrame implements Observer {
                 getStateTextField().setText("Pattern is invalid !");
             }
         }
+    }
+
+    public void reset() {
+        getInputPattern().setText("");
+        getStateTextField().setText("");
+        getStateTextField().setForeground(Color.black);
     }
 }

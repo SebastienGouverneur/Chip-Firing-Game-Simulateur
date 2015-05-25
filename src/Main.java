@@ -1,4 +1,3 @@
-
 import controler.ControlerMainFrame;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,22 +30,10 @@ public class Main {
             UIManager.setLookAndFeel(lookAndFeel);
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
         }
-
-        Graph graph = new MultiGraph("grid", false, false);
-        Generator gen = new CustomGeneratorGrid(false, false, false, true);
-
-        gen.addSink(graph);
-        gen.begin();
-        for (int i = 0; i < 2; i++) {
-            gen.nextEvents();
-        }
-        gen.end();
-//        
+       
         ModelMainFrame modelMainFrame = new ModelMainFrame();
         ViewMainFrame viewMainFrame = new ViewMainFrame(modelMainFrame);
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
-
-        controlerMainFrame.start();
     }
 
     private static Set<List<Integer>> accelAsc(int n, int partSize) {
