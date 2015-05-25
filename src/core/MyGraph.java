@@ -11,6 +11,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
+import org.graphstream.ui.spriteManager.Sprite;
+import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
@@ -19,6 +21,8 @@ public class MyGraph {
 
     private final Graph graph;
     private String format; /*TODO : associer le format a chaque graphe */
+
+    private SpriteManager spriteManager;
 
     private final Viewer viewer;
     private ViewPanel viewCamera;
@@ -35,12 +39,13 @@ public class MyGraph {
         } catch (IOException ex) {
             Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         initGraphAttributes();
     }
 
     public MyGraph() {
         graph = new MultiGraph("imported_graph", false, true);
+        spriteManager = new SpriteManager(graph);
 
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
@@ -94,8 +99,10 @@ public class MyGraph {
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         for (Node node : graph) {
+            displayIdNode(node);
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
             node.setAttribute("ui.class", "unmarked");
+
             for (Edge edgeOut : node.getEachLeavingEdge()) {
                 edgeOut.addAttribute("ui.class", "unmarked");
             }
@@ -112,6 +119,14 @@ public class MyGraph {
                 edgeOut.addAttribute("ui.class", "unmarked");
             }
         }
+    }
+
+    public void displayIdNode(Node node) {
+        Sprite s;
+        s = spriteManager.addSprite(node.getId());
+        s.addAttribute("label", node.getId());
+        s.attachToNode(node.getId());
+        s.setPosition(0.15);
     }
 
     public void setNodeMarked(String id) {
