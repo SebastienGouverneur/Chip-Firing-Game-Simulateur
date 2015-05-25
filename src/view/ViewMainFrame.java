@@ -13,7 +13,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
@@ -44,7 +43,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         iterationMode = new javax.swing.ButtonGroup();
         buttonGroup1 = new javax.swing.ButtonGroup();
-        tabs = new javax.swing.JTabbedPane();
+        mainPanel = new javax.swing.JPanel();
         playCFG = new javax.swing.JPanel();
         viewGraph = new javax.swing.JPanel();
         optionsControl = new javax.swing.JPanel();
@@ -95,6 +94,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         about = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CFG Simulator v1.4.1");
         setMinimumSize(new java.awt.Dimension(800, 600));
 
         viewGraph.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -173,7 +173,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(validateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addComponent(iterationButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphTransButton)
@@ -369,14 +369,29 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addGap(14, 14, 14)
                 .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(optionsChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        tabs.addTab("Play CFG", playCFG);
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1089, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(playCFG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 624, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(playCFG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         file.setText("File");
 
@@ -404,23 +419,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         menu.add(about);
 
         setJMenuBar(menu);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabs)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabs)
-                .addContainerGap())
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -467,6 +465,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel labelCycleLimit;
     private javax.swing.JLabel labelSizeCycleLimit;
     private javax.swing.JButton logButton;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menu;
     private javax.swing.JRadioButton modeAddChips;
     private javax.swing.JRadioButton modeRemoveChips;
@@ -494,7 +493,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPopupMenu.Separator separator3;
     private javax.swing.JSeparator separator4;
     private javax.swing.JSeparator separator5;
-    private javax.swing.JTabbedPane tabs;
     private javax.swing.JButton validateTime;
     private javax.swing.JButton valideOptionChips;
     private javax.swing.JPanel viewGraph;
@@ -670,10 +668,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JSeparator getSeparator5() {
         return separator5;
-    }
-
-    public JTabbedPane getTabs() {
-        return tabs;
     }
 
     public JButton getValideOptionChips() {
