@@ -13,11 +13,14 @@ import view.ViewGeneratorGraph;
 
 public class ControlerFile implements ActionListener, ListSelectionListener {
 
+    private final ControlerMainFrame controlerMainFrame;
     private final ViewGeneratorGraph viewGeneratorGraph;
     private final ModelFile modelFile;
-
-    public ControlerFile(ModelFile modelOpenFile) {
+    
+    public ControlerFile(ControlerMainFrame controlerMainFrame, ModelFile modelOpenFile) {
         this.modelFile = modelOpenFile;
+        this.controlerMainFrame = controlerMainFrame; 
+
         this.viewGeneratorGraph = new ViewGeneratorGraph(modelOpenFile);
 
         viewGeneratorGraph.getListGenerator().getSelectionModel().addListSelectionListener((ListSelectionListener) this);
@@ -29,6 +32,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
             Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
+            controlerMainFrame.resetAll();
         }
     }
 
@@ -39,7 +43,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
         if (lsm.getValueIsAdjusting()) {
             return;
         }
-
+        
         if (lsm.isSelectionEmpty()) {
             System.out.println(" <none>");
         } else {

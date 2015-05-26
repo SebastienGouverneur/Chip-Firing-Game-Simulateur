@@ -68,7 +68,7 @@ public class ControlerMainFrame implements ActionListener {
 
         Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
         Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
-        
+
         modelIteration = new ModelIteration();
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
@@ -317,26 +317,26 @@ public class ControlerMainFrame implements ActionListener {
         int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            if (inProgess.get() == true) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    compute.interrupt();
-                    inProgess.set(false);
-                } else {
-                    return;
-                }
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                resetAll();
+                modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
             }
-
-            resetSelectedVerticesButtonPerformed();
-            modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
-            controlerIteration.reset();
-            controlerGraphTrans.reset();
         }
     }
 
     private void openGeneratorExplorer() {
         ModelFile modelFile = new ModelFile();
-        ControlerFile controllerFile = new ControlerFile(modelFile);
+        ControlerFile controllerFile = new ControlerFile(this, modelFile);
+    }
+
+    public void resetAll() {
+        if (inProgess.get()) {
+            compute.interrupt();
+            inProgess.set(false);
+        }
+        resetSelectedVerticesButtonPerformed();
+        controlerIteration.reset();
+        controlerGraphTrans.reset();
     }
 }
