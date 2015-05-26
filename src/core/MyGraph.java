@@ -39,6 +39,7 @@ public class MyGraph {
             Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        spriteManager = new SpriteManager(graph);
         initGraphAttributes();
     }
 
@@ -53,6 +54,8 @@ public class MyGraph {
 
     public MyGraph(Graph graph) {
         this.graph = graph;
+        spriteManager = new SpriteManager(graph);
+
         initGraphAttributes();
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
