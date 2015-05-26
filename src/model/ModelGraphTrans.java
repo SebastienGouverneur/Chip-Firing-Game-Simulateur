@@ -1,40 +1,34 @@
 package model;
 
-import core.MyGraph;
+import core.Cfg;
 import java.util.Observable;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.Viewer;
 
 public class ModelGraphTrans extends Observable {
-    private final MyGraph graph;
-
-    public ModelGraphTrans() {
-        this.graph = new MyGraph(new SingleGraph("graph_trans", false, true));
-    }
 
     public void reset() {
-        this.graph.clear();
+        Cfg.getInstance().getGraphTrans().clear();
     }  
     
     public void pump() {
-        graph.pump();
+        Cfg.getInstance().getGraphTrans().pump();
     }
 
     public void createViewGraph() {
-        graph.createViewGraph();
+        Cfg.getInstance().getGraphTrans().createViewGraph();
     }
 
     public Viewer getViewer() {
-        return graph.getViewer();
+        return Cfg.getInstance().getGraphTrans().getViewer();
     }
 
     public void addConfig(String configFrom, String configTo) {
-        Node from = graph.addNode(configFrom);
-        Node to = graph.addNode(configTo);
+        Node from = Cfg.getInstance().getGraphTrans().addNode(configFrom);
+        Node to = Cfg.getInstance().getGraphTrans().addNode(configTo);
 
-        Edge e = graph.addEdge(configFrom + configTo, from, to, true);
+        Edge e = Cfg.getInstance().getGraphTrans().addEdge(configFrom + configTo, from, to, true);
 
         from.addAttribute("ui.label", from.getId());
         to.addAttribute("ui.label", to.getId());

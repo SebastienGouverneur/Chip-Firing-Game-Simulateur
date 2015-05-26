@@ -1,39 +1,46 @@
 package model;
 
-import core.EnumTypeGraph;
+import core.Cfg;
+import core.CustomGenerator;
 import core.MyGraph;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.graphstream.ui.view.Viewer;
 
 public class ModelFile {
 
-    private final MyGraph graph;
-    private final MyGraph previewGraph;
-    
-    public ModelFile(MyGraph graph) {
-        this.graph = graph;
-        this.previewGraph = null;
+    private MyGraph previewGraph;
+
+    public ModelFile() {
+        this.previewGraph = new MyGraph();
     }
-    
-    public void importDOTFile (String filename) {
+
+    public void importDOTFile(String filename) {
         try {
-            graph.importDOTFile(filename);
+            Cfg.getInstance().getGraph().importDOTFile(filename);
         } catch (IOException ex) {
             Logger.getLogger(ModelFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void generatePreviewGraph (int dimension, EnumTypeGraph typeGraph){
-        switch (typeGraph) {
-            case EMPTY_GRAPH:
-            case SIMPLE_GRID:
-            case TORE_GRID:
-            case SIMPLE_LINKED_CYCLE:
-            case DOUBLE_LINKED_CYCLE:
-            case CLIQUE:
-        }
+
+    public void createPreviewGraph() {
+        previewGraph.createViewGraph();
     }
     
+    public MyGraph getPreviewGraph() {
+        return previewGraph;
+    }
     
+    public void generateGraph(CustomGenerator generator, int nbVertex, int nbChips) {
+        previewGraph = generator.generate(nbVertex, nbChips);
+    }
+
+    public Viewer getViewer() {
+        return previewGraph.getViewer();
+    }
+
+    public Object getFromViewer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

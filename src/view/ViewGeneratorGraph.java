@@ -2,14 +2,73 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import model.ModelFile;
 
 public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
-
+    private ModelFile modelFile;
+    
     /**
      * Creates new form ViewGeneratorGraph
      */
     public ViewGeneratorGraph() {
         initComponents();
+    }
+    
+    public ViewGeneratorGraph(ModelFile modelFile) {
+        initComponents();
+        this.modelFile = modelFile;
+        previewGraph.add (modelFile.getViewer().addDefaultView(false));
+        setVisible(true);
+    }
+
+    public JButton getButtonCancel() {
+        return buttonCancel;
+    }
+
+    public JTextField getInputAmountOfChips() {
+        return inputAmountOfChips;
+    }
+
+    public JTextField getInputNumberOfVertex() {
+        return inputNumberOfVertex;
+    }
+
+    public JLabel getLabelAmountOfChips() {
+        return labelAmountOfChips;
+    }
+
+    public JLabel getLabelNumberOfVertex() {
+        return labelNumberOfVertex;
+    }
+
+    public JLabel getLabelProp() {
+        return labelProp;
+    }
+
+    public JScrollPane getListGeneratorPanel() {
+        return listGeneratorPanel;
+    }
+
+    public JList getListGenerator() {
+        return listGenerator;
+    }
+
+    public JPanel getPreviewGraph() {
+        return previewGraph;
+    }
+
+    public JPanel getTemplatePanel() {
+        return templatePanel;
+    }
+
+    public JButton getValidateGenerator() {
+        return validateGenerator;
     }
 
     /**
@@ -23,7 +82,7 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
 
         templatePanel = new javax.swing.JPanel();
         listGeneratorPanel = new javax.swing.JScrollPane();
-        listGenrator = new javax.swing.JList();
+        listGenerator = new javax.swing.JList();
         labelAmountOfChips = new javax.swing.JLabel();
         inputAmountOfChips = new javax.swing.JTextField();
         validateGenerator = new javax.swing.JButton();
@@ -33,18 +92,18 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
         buttonCancel = new javax.swing.JButton();
         previewGraph = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         templatePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Template"));
 
-        listGenrator.setModel(new javax.swing.AbstractListModel() {
+        listGenerator.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        listGenrator.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listGeneratorPanel.setViewportView(listGenrator);
+        listGenerator.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listGeneratorPanel.setViewportView(listGenerator);
 
         labelAmountOfChips.setText("Amount of chips");
 
@@ -122,18 +181,7 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
         getContentPane().add(templatePanel);
 
         previewGraph.setBorder(javax.swing.BorderFactory.createTitledBorder("Preview"));
-
-        javax.swing.GroupLayout previewGraphLayout = new javax.swing.GroupLayout(previewGraph);
-        previewGraph.setLayout(previewGraphLayout);
-        previewGraphLayout.setHorizontalGroup(
-            previewGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
-        );
-        previewGraphLayout.setVerticalGroup(
-            previewGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 354, Short.MAX_VALUE)
-        );
-
+        previewGraph.setLayout(new java.awt.BorderLayout());
         getContentPane().add(previewGraph);
 
         pack();
@@ -154,8 +202,8 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel labelAmountOfChips;
     private javax.swing.JLabel labelNumberOfVertex;
     private javax.swing.JLabel labelProp;
+    private javax.swing.JList listGenerator;
     private javax.swing.JScrollPane listGeneratorPanel;
-    private javax.swing.JList listGenrator;
     private javax.swing.JPanel previewGraph;
     private javax.swing.JPanel templatePanel;
     private javax.swing.JButton validateGenerator;

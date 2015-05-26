@@ -1,5 +1,6 @@
 package controler;
 
+import core.Cfg;
 import core.PatternUpdate;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,7 @@ public class ControlerIteration implements ActionListener {
 
     private void buttonValidatePerformed() {
         String retrivedPattern = viewIteration.getInputPattern().getText();
-        modelIteration.setPattern(retrivedPattern, modelIteration.getGraph());
+        modelIteration.setPattern(retrivedPattern, Cfg.getInstance().getGraph());
     }
 
     public PatternUpdate getCurrentPattern() {
