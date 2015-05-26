@@ -332,7 +332,6 @@ public class ControlerMainFrame implements ActionListener {
             modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
             controlerIteration.reset();
             controlerGraphTrans.reset();
-
         }
     }
 
