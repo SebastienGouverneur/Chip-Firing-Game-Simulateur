@@ -1,6 +1,7 @@
 package controler;
 
 import core.Cfg;
+import core.CustomGeneratorClique;
 import core.CustomGeneratorGrid;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,26 +45,41 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
             System.out.println(" <none>");
         } else {
             int minIndex = lsm.getMinSelectionIndex();
+            viewGeneratorGraph.getPreviewGraph().removeAll();
 
             switch (minIndex) {
                 case 0:
-
                     modelFile.generateGraph(
                             new CustomGeneratorGrid(
                                     false,
                                     false,
                                     false,
                                     true
-                            ), 10, 10);
-//                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
-//                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText()));
+                            ),
+                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
+                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                    );
                     break;
+
                 case 1:
-//                    modelFile.generateGraph (new CustomGraphZob ());
+                    modelFile.generateGraph(
+                            new CustomGeneratorGrid(
+                                    false,
+                                    true,
+                                    false,
+                                    true
+                            ),
+                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
+                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                    );
                     break;
+
                 case 2:
-                    break;
-                case 3:
+                    modelFile.generateGraph(
+                            new CustomGeneratorClique(),
+                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
+                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                    );
                     break;
                 default:
                     break;
