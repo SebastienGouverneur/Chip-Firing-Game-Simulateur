@@ -2,8 +2,6 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -99,12 +97,13 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
         templatePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Template"));
 
         listGenerator.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Grid", "Tore", "Cycle" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
         listGenerator.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listGeneratorPanel.setViewportView(listGenerator);
+        listGenerator.getAccessibleContext().setAccessibleName("");
 
         labelAmountOfChips.setText("Amount of chips");
 
@@ -162,7 +161,7 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
             templatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, templatePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(listGeneratorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addComponent(listGeneratorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(labelProp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

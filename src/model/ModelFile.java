@@ -1,7 +1,7 @@
 package model;
 
 import core.Cfg;
-import core.CustomGenerator;
+import core.ICustomGenerator;
 import core.MyGraph;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -32,12 +32,11 @@ public class ModelFile {
         return previewGraph;
     }
     
-    public void generateGraph(CustomGenerator generator, int nbVertex, int nbChips) {
-        previewGraph = generator.generate(previewGraph, nbVertex, nbChips);
+    public void generateGraph(ICustomGenerator generator, int nbVertex, int nbChips) {
+        previewGraph = generator.generate(nbVertex, nbChips);
     }
 
     public Viewer getViewer() {
         return previewGraph.getViewer();
     }
-
 }

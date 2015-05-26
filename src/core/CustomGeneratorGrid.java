@@ -1,15 +1,13 @@
 package core;
 
 
-import core.CustomGenerator;
-import core.MyGraph;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
-public class CustomGeneratorGrid implements CustomGenerator {
+public class CustomGeneratorGrid implements ICustomGenerator {
 
     private final Generator generator;
 
@@ -18,7 +16,7 @@ public class CustomGeneratorGrid implements CustomGenerator {
     }
 
     @Override
-    public MyGraph generate(MyGraph graphToFill, int nbVertex, int nbChips) {
+    public MyGraph generate(int nbVertex, int nbChips) {
         Graph generatedgraph = new MultiGraph("GeneratedGridGraph", false, true);
 
         generator.addSink(generatedgraph);
