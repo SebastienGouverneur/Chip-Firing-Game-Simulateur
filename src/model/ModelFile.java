@@ -13,7 +13,7 @@ public class ModelFile {
     private MyGraph previewGraph;
 
     public ModelFile() {
-        this.previewGraph = new MyGraph();
+        this.previewGraph = null;
     }
 
     public void importDOTFile(String filename) {
@@ -33,14 +33,11 @@ public class ModelFile {
     }
     
     public void generateGraph(CustomGenerator generator, int nbVertex, int nbChips) {
-        previewGraph = generator.generate(nbVertex, nbChips);
+        previewGraph = generator.generate(previewGraph, nbVertex, nbChips);
     }
 
     public Viewer getViewer() {
         return previewGraph.getViewer();
     }
 
-    public Object getFromViewer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

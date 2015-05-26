@@ -41,7 +41,6 @@ public class ControlerMainFrame implements ActionListener {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
-//    private final Thread checkUpdateGraph;
     private Thread compute;
 
     private static AtomicBoolean inProgess;

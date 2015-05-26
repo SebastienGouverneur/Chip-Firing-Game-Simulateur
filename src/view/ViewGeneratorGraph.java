@@ -2,6 +2,8 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,10 +22,9 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
         initComponents();
     }
     
-    public ViewGeneratorGraph(ModelFile modelFile) {
+    public ViewGeneratorGraph(final ModelFile modelFile) {
         initComponents();
         this.modelFile = modelFile;
-        previewGraph.add (modelFile.getViewer().addDefaultView(false));
         setVisible(true);
     }
 

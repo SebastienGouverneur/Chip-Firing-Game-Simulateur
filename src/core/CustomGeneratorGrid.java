@@ -18,7 +18,7 @@ public class CustomGeneratorGrid implements CustomGenerator {
     }
 
     @Override
-    public MyGraph generate(int nbVertex, int nbChips) {
+    public MyGraph generate(MyGraph graphToFill, int nbVertex, int nbChips) {
         Graph generatedgraph = new MultiGraph("GeneratedGridGraph", false, true);
 
         generator.addSink(generatedgraph);
