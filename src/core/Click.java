@@ -10,9 +10,13 @@ public class Click implements ViewerListener {
         this.modelMainFrame = model;
     }
 
+    public ModelMainFrame getModel() {
+        return modelMainFrame;
+    }
+    
     @Override
     public void viewClosed(String viewName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
@@ -22,6 +26,7 @@ public class Click implements ViewerListener {
 
     @Override
     public void buttonReleased(String id) {
+        System.err.println("ooooooooooooo");
         modelMainFrame.toggleSelectedNode(id);
     }
     

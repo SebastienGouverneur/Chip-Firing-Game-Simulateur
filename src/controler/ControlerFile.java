@@ -28,7 +28,6 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-            System.out.println("h");
             Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
         }
     }

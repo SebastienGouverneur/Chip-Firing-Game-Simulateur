@@ -7,7 +7,7 @@ public class CustomGeneratorClique implements ICustomGenerator {
     
     @Override
     public MyGraph generate(int nbVertex, int nbChips) {
-        MyGraph graph = new MyGraph();
+        MyGraph graph = new MyGraph(false);
         
         if (nbVertex <= 1) {
             return graph;

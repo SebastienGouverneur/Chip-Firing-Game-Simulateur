@@ -18,7 +18,13 @@ node.unmarked {
 
 node.marked { 
     shadow-color: blue;  
-} 
+}
+
+sprite { 
+    fill-color: white; 
+    text-size: 13px; 
+    size: 0.1gu;
+}
 
 edge { 
     arrow-shape: arrow;

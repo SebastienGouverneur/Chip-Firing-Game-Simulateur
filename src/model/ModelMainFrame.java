@@ -39,7 +39,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public void setSelectedNode(String id) {
-        Cfg.getInstance().getGraph().setNodeMarked(id);
+        Cfg.getInstance().getGraph().setSelectedNode(id);
         selectedNode.add(id);
 
         setChanged();
@@ -48,7 +48,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public void setUnselectedNode(String id) {
-        Cfg.getInstance().getGraph().setNodeUnmarked(id);
+        Cfg.getInstance().getGraph().setUnselectedNode(id);
         selectedNode.remove(id);
 
         setChanged();
@@ -133,7 +133,6 @@ public class ModelMainFrame extends Observable {
     public void importDOTFile(String filename) {
         try {
             Cfg.getInstance().getGraph().importDOTFile(filename);
-            
         } catch (IOException ex) {
             Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

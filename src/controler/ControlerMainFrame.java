@@ -66,10 +66,9 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
 
-        modelMainFrame.createViewGraph();
-        modelMainFrame.getFromViewer().addViewerListener(new Click(modelMainFrame));
-//        modelMainFrame.getFromViewer().addViewerListener(new Mouse(modelMainFrame));
-
+        Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
+        Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
+        
         modelIteration = new ModelIteration();
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
@@ -140,7 +139,7 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getOpen()) {
             openFileExplorer();
         }
-        
+
         if (ae.getSource() == viewMainFrame.getImport_()) {
             openGeneratorExplorer();
         }
@@ -260,15 +259,15 @@ public class ControlerMainFrame implements ActionListener {
         } else {
             op = new SubstractChipOp();
         }
-        
+
         String valueText = viewMainFrame.getInputNbChips().getText();
-        
+
         try {
             nbChips = Integer.parseInt(valueText);
         } catch (NumberFormatException numberFormatException) {
             return;
         }
-        
+
         modelMainFrame.computeNodesValues(nbChips, op);
     }
 
@@ -280,13 +279,13 @@ public class ControlerMainFrame implements ActionListener {
 
     private void validateTimeButtonPerformed() {
         double timeExec = 0;
-        
+
         try {
             timeExec = Double.parseDouble(viewMainFrame.getOptionControlTime().getText());
         } catch (NumberFormatException numberFormatException) {
             return;
         }
-        
+
         modelMainFrame.setTimeExec(timeExec);
         modelMainFrame.setTimeAnimation(timeExec);
     }
@@ -338,7 +337,7 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     private void openGeneratorExplorer() {
-        ModelFile modelFile = new ModelFile ();
-        ControlerFile controllerFile = new ControlerFile (modelFile);
+        ModelFile modelFile = new ModelFile();
+        ControlerFile controllerFile = new ControlerFile(modelFile);
     }
 }

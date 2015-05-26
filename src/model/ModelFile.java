@@ -34,6 +34,7 @@ public class ModelFile {
     
     public void generateGraph(ICustomGenerator generator, int nbVertex, int nbChips) {
         previewGraph = generator.generate(nbVertex, nbChips);
+        previewGraph.createViewGraph();
     }
 
     public Viewer getViewer() {
