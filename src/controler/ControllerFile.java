@@ -17,7 +17,6 @@ public class ControllerFile {
         this.modelOpenFile = modelOpenFile;
         this.isGraphImported = false;
         
-        
 //        viewOpenFile.getjFileChooser1().addActionListener((ActionListener) this);
     }
 

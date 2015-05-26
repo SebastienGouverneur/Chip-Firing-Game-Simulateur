@@ -97,6 +97,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CFG Simulator v1.4.1");
         setMinimumSize(new java.awt.Dimension(800, 600));
+        setSize(new java.awt.Dimension(800, 600));
 
         viewGraph.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         viewGraph.setLayout(new java.awt.BorderLayout());
