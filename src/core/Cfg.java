@@ -39,9 +39,9 @@ public final class Cfg {
         container.removeAll();
         container.add(this.graph.getViewer().addDefaultView(false));
         graph.startPump();
-        container.revalidate();
-
         graph.initGraphAttributes();
+        
+        container.revalidate();
         graphTrans.clear();
     }
 
