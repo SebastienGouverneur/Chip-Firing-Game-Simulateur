@@ -3,6 +3,7 @@ package core;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import model.ModelMainFrame;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -12,20 +13,18 @@ import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
-import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
+import view.ViewMainFrame;
 
 public class MyGraph {
 
     private final Graph graph;
-    private String format; /*TODO : associer le format a chaque graphe */
-
     private SpriteManager spriteManager;
-
     private final Viewer viewer;
-    private ViewPanel viewCamera;
     private ViewerPipe fromViewer;
+    private Thread checkUpdateGraph;
+    private Click clicklistener;
 
     public void importDOTFile(String filename) throws IOException {
         graph.clear();
@@ -43,22 +42,76 @@ public class MyGraph {
         initGraphAttributes();
     }
 
-    public MyGraph() {
+    public void setClickListener(Click clickListener) {
+        System.out.println("aaaaaaaaaaaaaa");
+        this.clicklistener = clickListener;
+        fromViewer.addViewerListener(clickListener);
+    }
+
+    public Click getClickListener() {
+        return clicklistener;
+    }
+
+    public MyGraph(boolean autoPump) {
         graph = new MultiGraph("imported_graph", false, true);
         spriteManager = new SpriteManager(graph);
 
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
-        createViewGraph();
+
+        fromViewer = viewer.newViewerPipe();
+        fromViewer.addSink(graph);
+
+        checkUpdateGraph = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        fromViewer.blockingPump();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
+        if (autoPump) {
+            checkUpdateGraph.start();
+        }
+    }
+
+    public void stopPump() {
+        checkUpdateGraph.interrupt();
+    }
+
+    public void startPump() {
+        if (!checkUpdateGraph.isAlive()) {
+            checkUpdateGraph.start();
+        }
     }
 
     public MyGraph(Graph graph) {
         this.graph = graph;
         spriteManager = new SpriteManager(graph);
 
-        initGraphAttributes();
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
+
+        fromViewer = viewer.newViewerPipe();
+        fromViewer.addSink(this.graph);
+
+        checkUpdateGraph = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        fromViewer.blockingPump();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
     }
 
     public void setAllNodesUnmarked() {
@@ -96,7 +149,7 @@ public class MyGraph {
         return graph.getNodeSet();
     }
 
-    private void initGraphAttributes() {
+    public void initGraphAttributes() {
         this.graph.addAttribute("ui.quality");
         this.graph.addAttribute("ui.antialias");
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
@@ -189,5 +242,26 @@ public class MyGraph {
 
     Iterable<Edge> getEdgeSet() {
         return graph.getEdgeSet();
+    }
+
+    void toggleSelectedNode(String id) {
+        if (isSelected(id)) {
+            setUnselectedNode(id);
+        } else {
+            setSelectedNode(id);
+        }
+    }
+
+    public void setSelectedNode(String id) {
+        Cfg.getInstance().getGraph().setNodeMarked(id);
+    }
+
+    public void setUnselectedNode(String id) {
+        Cfg.getInstance().getGraph().setNodeUnmarked(id);
+    }
+
+    public void attachViewGraph(JPanel viewGraph) {
+        viewGraph.add(getViewer().addDefaultView(false));
+        viewGraph.revalidate();
     }
 }

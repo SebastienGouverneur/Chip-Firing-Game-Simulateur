@@ -31,23 +31,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public ViewMainFrame(final ModelMainFrame modelMainFrame) {
         initComponents();
         this.modelMailFrame = modelMainFrame;
-        viewGraph.add(modelMainFrame.getViewer().addDefaultView(false));
+
         setVisible(true);
-
-        checkUpdateGraph = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        modelMainFrame.getFromViewer().blockingPump();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    } 
-                }
-            }
-        });
-
-        checkUpdateGraph.start();
     }
 
     /**
@@ -296,7 +281,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         buttonGroup1.add(modeSetChips);
         modeSetChips.setToolTipText("");
         modeSetChips.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/equalst-black.png"))); // NOI18N
-        modeSetChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Equal Sign-32red.png"))); // NOI18N
+        modeSetChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/equals-red.png"))); // NOI18N
         modeSetChips.setVerifyInputWhenFocusTarget(false);
         modeSetChips.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -605,7 +605,7 @@
                       <Image iconType="3" name="/view/icons/equalst-black.png"/>
                     </Property>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/view/icons/Equal Sign-32red.png"/>
+                      <Image iconType="3" name="/view/icons/equals-red.png"/>
                     </Property>
                     <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
                   </Properties>
