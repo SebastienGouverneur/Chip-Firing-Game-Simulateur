@@ -27,14 +27,14 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-            System.out.println ("h");
-            Cfg.getInstance().setGraph (modelFile.getPreviewGraph ());
+            System.out.println("h");
+            Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
         }
     }
 
     @Override
     public void valueChanged(ListSelectionEvent lse) {
-        
+
         ListSelectionModel lsm = (ListSelectionModel) lse.getSource();
         if (lsm.getValueIsAdjusting()) {
             return;
@@ -47,15 +47,16 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
 
             switch (minIndex) {
                 case 0:
+
                     modelFile.generateGraph(
                             new CustomGeneratorGrid(
-                                    false, 
-                                    false, 
-                                    false, 
+                                    false,
+                                    false,
+                                    false,
                                     true
-                            ), 
-                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
-                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText()));
+                            ), 10, 10);
+//                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
+//                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText()));
                     break;
                 case 1:
 //                    modelFile.generateGraph (new CustomGraphZob ());
@@ -68,6 +69,8 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
                     break;
             }
 
+            viewGeneratorGraph.getPreviewGraph().add(modelFile.getViewer().addDefaultView(false));
+            viewGeneratorGraph.getPreviewGraph().revalidate();
         }
     }
 }

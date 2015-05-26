@@ -1,5 +1,5 @@
 package core;
 
 public interface CustomGenerator {
-    MyGraph generate(int nbVertex, int nbChips);
+    MyGraph generate(MyGraph graphToFill, int nbVertex, int nbChips);
 }
