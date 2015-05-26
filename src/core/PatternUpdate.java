@@ -16,7 +16,6 @@ public class PatternUpdate {
     private final Pattern regex;
     private boolean isValidPattern;
 
-    
     private LinkedHashMap<Integer, LinkedList<String>> getPatternUpdate() {
         return patternUpdate;
     }
@@ -68,7 +67,7 @@ public class PatternUpdate {
 
     private boolean isFair(String orderedPartition, MyGraph graph) {
         Set<String> presentNode = new HashSet();
-        
+
         orderedPartitionText = orderedPartition;
         Pattern p = Pattern.compile("\\w+");
         Matcher m = p.matcher(orderedPartition);
@@ -114,6 +113,10 @@ public class PatternUpdate {
     }
 
     public static String buildSequentialPattern(MyGraph graph) {
+        if (graph.getNodeCount() < 1) {
+            return "({})";
+        }
+
         String orderedPattern = "(";
 
         for (Node node : graph.getNodeSet()) {
@@ -126,6 +129,10 @@ public class PatternUpdate {
     }
 
     public static String buildParallelPattern(MyGraph graph) {
+        if (graph.getNodeCount() < 1) {
+            return "({})";
+        }
+
         String orderedPattern = "({";
 
         for (Node node : graph.getNodeSet()) {

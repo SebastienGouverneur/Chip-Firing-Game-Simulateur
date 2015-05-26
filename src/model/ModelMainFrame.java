@@ -1,5 +1,7 @@
 package model;
 
+import core.Algorithm;
+import core.Cfg;
 import core.IChipOperation;
 import core.MyGraph;
 import java.io.IOException;
@@ -7,14 +9,12 @@ import java.util.Observable;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerPipe;
 
 public class ModelMainFrame extends Observable {
     
-    private final MyGraph graph;
     private final ConcurrentSkipListSet<String> selectedNode;
     private double timeExec;
     private double timeAnimation;
@@ -24,7 +24,6 @@ public class ModelMainFrame extends Observable {
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
         selectedNode = new ConcurrentSkipListSet<>();
-        graph = new MyGraph();
     }
 
     public ConcurrentSkipListSet<String> getSelectedNode() {
@@ -32,15 +31,15 @@ public class ModelMainFrame extends Observable {
     }
 
     public void changeColor(String id) {
-        graph.setNodeMarked(id);
+        Cfg.getInstance().getGraph().setNodeMarked(id);
 
         setChanged();
-        notifyObservers(graph.getNode(id));
+        notifyObservers(Cfg.getInstance().getGraph().getNode(id));
         clearChanged();
     }
 
     public void setSelectedNode(String id) {
-        graph.setNodeMarked(id);
+        Cfg.getInstance().getGraph().setNodeMarked(id);
         selectedNode.add(id);
 
         setChanged();
@@ -49,7 +48,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public void setUnselectedNode(String id) {
-        graph.setNodeUnmarked(id);
+        Cfg.getInstance().getGraph().setNodeUnmarked(id);
         selectedNode.remove(id);
 
         setChanged();
@@ -58,11 +57,11 @@ public class ModelMainFrame extends Observable {
     }
 
     public boolean isSelected(String id) {
-        return graph.isSelected(id);
+        return Cfg.getInstance().getGraph().isSelected(id);
     }
 
-    public void execute(DynamicAlgorithm algo) {
-        graph.execute(algo);
+    public void execute(Algorithm algo) {
+        Cfg.getInstance().getGraph().execute(algo);
     }
 
     public void toggleSelectedNode(String id) {
@@ -74,6 +73,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public void computeNodesValues(int nbToApply, IChipOperation op) {
+        MyGraph graph = Cfg.getInstance().getGraph();
         for (String nodeId : selectedNode) {
             int nodeCurrentChips = graph.getNbChipsNode(nodeId);
             graph.setNbChipsNode(nodeId, op.compute(nbToApply, nodeCurrentChips));
@@ -107,36 +107,32 @@ public class ModelMainFrame extends Observable {
     }
 
     public void addSelectedNode(String id) {
-        graph.addAttribute(id, "ui.class", "marked");
+        Cfg.getInstance().getGraph().addAttribute(id, "ui.class", "marked");
     }
 
     public double getTimeAnimation() {
         return timeAnimation;
     }
 
-    public MyGraph getGraph() {
-        return graph;
-    }
-
     public Iterable<Node> getNodeSet() {
-        return graph.getNodeSet();
+        return Cfg.getInstance().getGraph().getNodeSet();
     }
 
     public Viewer getViewer() {
-        return graph.getViewer();
+        return Cfg.getInstance().getGraph().getViewer();
     }
 
     public void createViewGraph() {
-        graph.createViewGraph();
+        Cfg.getInstance().getGraph().createViewGraph();
     }
 
     public ViewerPipe getFromViewer() {
-        return graph.getFromViewer();
+        return Cfg.getInstance().getGraph().getFromViewer();
     }
 
     public void importDOTFile(String filename) {
         try {
-            graph.importDOTFile(filename);
+            Cfg.getInstance().getGraph().importDOTFile(filename);
             
         } catch (IOException ex) {
             Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);

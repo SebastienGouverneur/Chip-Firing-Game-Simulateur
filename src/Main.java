@@ -6,9 +6,6 @@ import java.util.Set;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.ModelMainFrame;
-import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.MultiGraph;
 import view.ViewMainFrame;
 
 

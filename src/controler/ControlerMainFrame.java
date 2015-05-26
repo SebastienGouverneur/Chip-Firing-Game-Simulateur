@@ -2,6 +2,7 @@ package controler;
 
 import core.Click;
 import core.AddChipOp;
+import core.Cfg;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
 import core.ModeSequentialBlock;
@@ -12,11 +13,10 @@ import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.ModelEditGraph;
+import model.ModelFile;
 import model.ModelGraphTrans;
 import model.ModelIteration;
 import model.ModelLogFrame;
@@ -41,12 +41,12 @@ public class ControlerMainFrame implements ActionListener {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
-    private final Thread checkUpdateGraph;
+//    private final Thread checkUpdateGraph;
     private Thread compute;
 
     private static AtomicBoolean inProgess;
 
-    public ControlerMainFrame(ViewMainFrame viewMainFrame, final ModelMainFrame modelMainFrame) {
+    public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
         this.viewMainFrame = viewMainFrame;
         this.modelMainFrame = modelMainFrame;
 
@@ -65,13 +65,13 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
-        viewMainFrame.setVisible(true);
+        viewMainFrame.getImport_().addActionListener((ActionListener) this);
 
         modelMainFrame.createViewGraph();
         modelMainFrame.getFromViewer().addViewerListener(new Click(modelMainFrame));
 //        modelMainFrame.getFromViewer().addViewerListener(new Mouse(modelMainFrame));
 
-        modelIteration = new ModelIteration(modelMainFrame.getGraph());
+        modelIteration = new ModelIteration();
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
 
@@ -82,31 +82,17 @@ public class ControlerMainFrame implements ActionListener {
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
-        checkUpdateGraph = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        modelMainFrame.getFromViewer().blockingPump();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
-        
-        checkUpdateGraph.start();
     }
 
     public void changeColorNode(String id) {
-        modelMainFrame.getGraph().setNodeMarked(id);
+        Cfg.getInstance().getGraph().setNodeMarked(id);
     }
 
     public void selectedNodeForChange(String id) {
-        if (modelMainFrame.getGraph().isNodeMarked(id)) {
+        if (Cfg.getInstance().getGraph().isNodeMarked(id)) {
             modelMainFrame.addSelectedNode(id);
         } else {
-            modelMainFrame.getGraph().setNodeMarked(id);
+            Cfg.getInstance().getGraph().setNodeMarked(id);
         }
     }
 
@@ -155,6 +141,10 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getOpen()) {
             openFileExplorer();
         }
+        
+        if (ae.getSource() == viewMainFrame.getImport_()) {
+            openGeneratorExplorer();
+        }
     }
 
     public void logButtonPerformed() {
@@ -178,7 +168,7 @@ public class ControlerMainFrame implements ActionListener {
 
             @Override
             public void run() {
-                final MyGraph graph = modelMainFrame.getGraph();
+                final MyGraph graph = Cfg.getInstance().getGraph();
                 StringBuilder config = new StringBuilder(graph.getNodeCount());
 
                 for (Node node : graph.getNodeSet()) {
@@ -232,7 +222,7 @@ public class ControlerMainFrame implements ActionListener {
 
             @Override
             public void run() {
-                final MyGraph graph = modelMainFrame.getGraph();
+                final MyGraph graph = Cfg.getInstance().getGraph();
                 StringBuilder config = new StringBuilder(graph.getNodeCount());
 
                 for (Node node : graph.getNodeSet()) {
@@ -290,7 +280,14 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     private void validateTimeButtonPerformed() {
-        double timeExec = Double.parseDouble(viewMainFrame.getOptionControlTime().getText());
+        double timeExec = 0;
+        
+        try {
+            timeExec = Double.parseDouble(viewMainFrame.getOptionControlTime().getText());
+        } catch (NumberFormatException numberFormatException) {
+            return;
+        }
+        
         modelMainFrame.setTimeExec(timeExec);
         modelMainFrame.setTimeAnimation(timeExec);
     }
@@ -312,7 +309,7 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     private void editGraphButtonPerformed() {
-        ModelEditGraph modelEditGraph = new ModelEditGraph(modelMainFrame.getGraph());
+        ModelEditGraph modelEditGraph = new ModelEditGraph();
         ViewEditGraph viewEditGraph = new ViewEditGraph(modelEditGraph);
         ControlerEditGraph controlerEditGraph = new ControlerEditGraph(viewEditGraph, modelEditGraph);
     }
@@ -339,5 +336,10 @@ public class ControlerMainFrame implements ActionListener {
             controlerGraphTrans.reset();
 
         }
+    }
+
+    private void openGeneratorExplorer() {
+        ModelFile modelFile = new ModelFile ();
+        ControlerFile controllerFile = new ControlerFile (modelFile);
     }
 }

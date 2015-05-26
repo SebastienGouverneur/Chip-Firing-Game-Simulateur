@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ModelMainFrame;
-import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -44,6 +43,7 @@ public class MyGraph {
 
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
+        createViewGraph();
     }
 
     public MyGraph(Graph graph) {
@@ -122,8 +122,8 @@ public class MyGraph {
         return graph.getNode(id).getAttribute("ui.class").equals("marked");
     }
 
-    public void execute(DynamicAlgorithm algo) {
-        algo.init(graph);
+    public void execute(Algorithm algo) {
+        algo.init(Cfg.getInstance().getGraph());
         algo.compute();
         algo.terminate();
     }
@@ -140,7 +140,7 @@ public class MyGraph {
         graph.getNode(nodeId).setAttribute("chips", nbChips);
     }
 
-    public Object getNode(String id) {
+    public Node getNode(String id) {
         return graph.getNode(id);
     }
 
@@ -167,5 +167,9 @@ public class MyGraph {
 
     public void setNodeUnmarked(String id) {
         graph.getNode(id).setAttribute("ui.class", "unmarked");
+    }
+
+    Iterable<Edge> getEdgeSet() {
+        return graph.getEdgeSet();
     }
 }

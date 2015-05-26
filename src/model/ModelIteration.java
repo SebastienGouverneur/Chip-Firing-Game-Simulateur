@@ -1,5 +1,6 @@
 package model;
 
+import core.Cfg;
 import core.MyGraph;
 import core.PatternUpdate;
 import core.UpdateStateEnum;
@@ -7,24 +8,14 @@ import java.util.Observable;
 
 public class ModelIteration extends Observable {
 
-    private MyGraph graph;
     private PatternUpdate currentPattern;
     private PatternUpdate patternTested;
     private UpdateStateEnum currentState;
 
+
     public ModelIteration() {
-        currentPattern = new PatternUpdate("", graph);
-        currentState = UpdateStateEnum.NOTHING_UPDATED;
-    }
-
-    public MyGraph getGraph() {
-        return graph;
-    }
-
-    public ModelIteration(MyGraph graph) {
-        this.graph = graph;
-        currentPattern = new PatternUpdate("", graph);
-        patternTested = new PatternUpdate("", graph);
+        currentPattern = new PatternUpdate("", Cfg.getInstance().getGraph());
+        patternTested = new PatternUpdate("", Cfg.getInstance().getGraph());
         currentState = UpdateStateEnum.NOTHING_UPDATED;
     }
 
@@ -55,19 +46,15 @@ public class ModelIteration extends Observable {
     }
 
     public String getSequentialPattern() {
-        return PatternUpdate.buildSequentialPattern(graph);
+        return PatternUpdate.buildSequentialPattern(Cfg.getInstance().getGraph());
     }
 
     public String getParallelPattern() {
-        return PatternUpdate.buildParallelPattern(graph);
-    }
-
-    public int getNodeCount() {
-        return graph.getNodeCount();
+        return PatternUpdate.buildParallelPattern(Cfg.getInstance().getGraph());
     }
 
     public void reset() {
-        currentPattern = new PatternUpdate("", graph);
+        currentPattern = new PatternUpdate("", Cfg.getInstance().getGraph());
         currentState = UpdateStateEnum.RESET;
         
         setChanged();

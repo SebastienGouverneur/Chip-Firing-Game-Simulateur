@@ -3,16 +3,14 @@ package core;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import org.graphstream.algorithm.DynamicAlgorithm;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-public class ModeSequentialBlock implements DynamicAlgorithm {
+public class ModeSequentialBlock implements Algorithm {
 
     private final PatternUpdate patternUpdate;
     private final ConfigurationContrainer configSet;
-    private Graph graph;
+    private MyGraph graph;
     private final double time;
     private final double timeAnimation;
 
@@ -22,13 +20,14 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
         this.configSet = configSet;
         this.time = time;
     }
-
+    
+    
     @Override
     public void terminate() {
 
         StringBuilder config = new StringBuilder(graph.getNodeCount());
 
-        for (Node node : graph) {
+        for (Node node : graph.getNodeSet()) {
             config.append(node.getAttribute("chips"));
             node.setAttribute("ui.label", node.getAttribute("chips").toString());
         }
@@ -45,11 +44,12 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
         }
     }
 
+    
     @Override
-    public void init(Graph graph) {
+    public void init(MyGraph graph) {
         this.graph = graph;
     }
-
+    
     @Override
     public void compute() {
 
@@ -61,7 +61,7 @@ public class ModeSequentialBlock implements DynamicAlgorithm {
             HashMap<String, Integer> initialState = new HashMap<>(parallelPattern.size());
 
             for (String nodeId : parallelPattern) {
-                initialState.put(nodeId, (int) graph.getNode(nodeId).getAttribute("chips"));
+                initialState.put(nodeId, graph.getNbChipsNode(nodeId));
             }
 
             for (Map.Entry<String, Integer> entry : initialState.entrySet()) {

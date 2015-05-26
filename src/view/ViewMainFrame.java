@@ -2,6 +2,8 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,20 +20,36 @@ import javax.swing.JTextField;
 import model.ModelMainFrame;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
-    // L'instance de notre objet contrôleur
+
     private ModelMainFrame modelMailFrame;
+    private Thread checkUpdateGraph;
 
     public ViewMainFrame() {
         initComponents();
     }
 
-    public ViewMainFrame(ModelMainFrame modelMainFrame) {
+    public ViewMainFrame(final ModelMainFrame modelMainFrame) {
         initComponents();
         this.modelMailFrame = modelMainFrame;
-        
         viewGraph.add(modelMainFrame.getViewer().addDefaultView(false));
+        setVisible(true);
+
+        checkUpdateGraph = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        modelMainFrame.getFromViewer().blockingPump();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                }
+            }
+        });
+
+        checkUpdateGraph.start();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
