@@ -1,5 +1,6 @@
 package view;
 
+import core.Cfg;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
+import org.graphstream.ui.swingViewer.ViewPanel;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
@@ -31,7 +33,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public ViewMainFrame(final ModelMainFrame modelMainFrame) {
         initComponents();
         this.modelMailFrame = modelMainFrame;
-        viewGraph.add(modelMainFrame.getViewer().addDefaultView(false));
+        addDefaultView = modelMainFrame.getViewer().addDefaultView(false);
+        modelMainFrame.getViewer().getDefaultView().getParent();
+        viewGraph.add(addDefaultView);
+        
         setVisible(true);
 
         checkUpdateGraph = new Thread(new Runnable() {
@@ -49,6 +54,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         checkUpdateGraph.start();
     }
+    private ViewPanel addDefaultView;
 
     /**
      * This method is called from within the constructor to initialize the form.

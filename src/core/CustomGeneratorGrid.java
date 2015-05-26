@@ -36,5 +36,4 @@ public class CustomGeneratorGrid implements ICustomGenerator {
 
         return graph;
     }
-
 }

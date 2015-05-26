@@ -118,7 +118,7 @@ public class ModelMainFrame extends Observable {
         return Cfg.getInstance().getGraph().getNodeSet();
     }
 
-    public Viewer getViewer() {
+    public Viewer getViewer() {      
         return Cfg.getInstance().getGraph().getViewer();
     }
 

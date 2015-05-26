@@ -49,8 +49,10 @@ public class MyGraph {
     public MyGraph(Graph graph) {
         this.graph = graph;
         initGraphAttributes();
+        
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
+        createViewGraph();
     }
 
     public void setAllNodesUnmarked() {
@@ -156,7 +158,7 @@ public class MyGraph {
         return viewer;
     }
 
-    public void createViewGraph() {
+    public final void createViewGraph() {
         fromViewer = viewer.newViewerPipe();
         fromViewer.addSink(graph);
     }
