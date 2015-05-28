@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-//        accelAsc(100, 4);
+//        accelAsc(2, 2);
         
 //        System.out.println(accelAsc(3, 3));
 //        List<Integer> a = new ArrayList<>();

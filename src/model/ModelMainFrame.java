@@ -136,6 +136,5 @@ public class ModelMainFrame extends Observable {
         } catch (IOException ex) {
             Logger.getLogger(ModelMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 }

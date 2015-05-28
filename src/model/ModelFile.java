@@ -10,10 +10,10 @@ import org.graphstream.ui.view.Viewer;
 
 public class ModelFile {
 
-    private MyGraph previewGraph;
+    private final MyGraph previewGraph;
 
     public ModelFile() {
-        this.previewGraph = null;
+        this.previewGraph = new MyGraph(false);
     }
 
     public void importDOTFile(String filename) {
@@ -24,17 +24,16 @@ public class ModelFile {
         }
     }
 
-    public void createPreviewGraph() {
-        previewGraph.createViewGraph();
-    }
-    
     public MyGraph getPreviewGraph() {
         return previewGraph;
     }
     
     public void generateGraph(ICustomGenerator generator, int nbVertex, int nbChips) {
-        previewGraph = generator.generate(nbVertex, nbChips);
-        previewGraph.createViewGraph();
+        try {
+            previewGraph.setGraph(generator.generate(nbVertex, nbChips), false);
+        } catch (IOException ex) {
+            Logger.getLogger(ModelFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Viewer getViewer() {
