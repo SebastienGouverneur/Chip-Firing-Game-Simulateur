@@ -8,6 +8,7 @@ import model.ModelMainFrame;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
@@ -23,7 +24,7 @@ public class MyGraph {
     private SpriteManager spriteManager;
     private final Viewer viewer;
     private ViewerPipe fromViewer;
-    private Thread checkUpdateGraph;
+    private final Thread checkUpdateGraph;
     private Click clicklistener;
 
     public void importDOTFile(String filename) throws IOException {
@@ -42,8 +43,18 @@ public class MyGraph {
         initGraphAttributes();
     }
 
+    public void setGraph(MyGraph graph, boolean initAttribute) throws IOException {
+        this.graph.clear();
+        Graphs.mergeIn(this.graph, graph.getGraph());
+        graph.clear();
+        graph = null;
+        if (initAttribute) {
+            spriteManager = new SpriteManager(this.graph);
+            initGraphAttributes();
+        }
+    }
+
     public void setClickListener(Click clickListener) {
-        System.out.println("aaaaaaaaaaaaaa");
         this.clicklistener = clickListener;
         fromViewer.addViewerListener(clickListener);
     }
@@ -69,7 +80,6 @@ public class MyGraph {
                     try {
                         fromViewer.blockingPump();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -219,7 +229,7 @@ public class MyGraph {
         return graph.getNode(id).getAttribute("ui.class") == "marked";
     }
 
-    public Graph getGraph() {
+    private Graph getGraph() {
         return graph;
     }
 
@@ -227,7 +237,7 @@ public class MyGraph {
         return viewer;
     }
 
-    public void createViewGraph() {
+    public final void createViewGraph() {
         fromViewer = viewer.newViewerPipe();
         fromViewer.addSink(graph);
     }

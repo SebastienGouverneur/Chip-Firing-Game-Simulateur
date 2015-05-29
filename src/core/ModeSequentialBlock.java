@@ -34,10 +34,6 @@ public class ModeSequentialBlock implements Algorithm {
 
         boolean isInserted = configSet.insertConfiguration(config.toString());
 
-        if (!isInserted) {
-//            System.err.println("Cycle detecté : Taille cycle = " + configSet.retrieveLimitCycleSize());
-        }
-
         try {
             Thread.sleep((long) (time));
         } catch (InterruptedException ex) {

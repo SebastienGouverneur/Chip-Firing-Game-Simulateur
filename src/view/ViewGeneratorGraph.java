@@ -23,7 +23,6 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
     public ViewGeneratorGraph(final ModelFile modelFile) {
         initComponents();
         this.modelFile = modelFile;
-        setVisible(true);
     }
 
     public JButton getButtonCancel() {

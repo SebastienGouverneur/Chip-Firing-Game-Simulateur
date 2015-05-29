@@ -2,8 +2,6 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +16,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
+import org.graphstream.ui.swingViewer.ViewPanel;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
@@ -31,9 +30,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public ViewMainFrame(final ModelMainFrame modelMainFrame) {
         initComponents();
         this.modelMailFrame = modelMainFrame;
-
         setVisible(true);
     }
+    private ViewPanel addDefaultView;
 
     /**
      * This method is called from within the constructor to initialize the form.

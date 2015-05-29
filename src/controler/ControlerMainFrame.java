@@ -23,6 +23,7 @@ import model.ModelLogFrame;
 import model.ModelMainFrame;
 import org.graphstream.graph.Node;
 import view.ViewEditGraph;
+import view.ViewGeneratorGraph;
 import view.ViewGraphTrans;
 import view.ViewIteration;
 import view.ViewLog;
@@ -41,6 +42,11 @@ public class ControlerMainFrame implements ActionListener {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
+   private final ModelFile modelFile;
+   private final ViewGeneratorGraph viewGeneratorGraph;
+   private final ControlerFile controllerFile;
+        
+    
     private Thread compute;
 
     private static AtomicBoolean inProgess;
@@ -68,7 +74,7 @@ public class ControlerMainFrame implements ActionListener {
 
         Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
         Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
-        
+
         modelIteration = new ModelIteration();
         viewIteration = new ViewIteration(modelIteration);
         controlerIteration = new ControlerIteration(viewIteration, modelIteration);
@@ -77,6 +83,11 @@ public class ControlerMainFrame implements ActionListener {
         viewGraphTrans = new ViewGraphTrans(modelGraphTrans);
         controlerGraphTrans = new ControlerGraphTrans(viewGraphTrans, modelGraphTrans);
 
+        modelFile = new ModelFile();
+        viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
+        controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
+        
+        
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
@@ -317,26 +328,34 @@ public class ControlerMainFrame implements ActionListener {
         int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            if (inProgess.get() == true) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    compute.interrupt();
-                    inProgess.set(false);
-                } else {
-                    return;
-                }
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                resetAll();
+                modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
             }
-
-            resetSelectedVerticesButtonPerformed();
-            modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
-            controlerIteration.reset();
-            controlerGraphTrans.reset();
         }
     }
 
     private void openGeneratorExplorer() {
-        ModelFile modelFile = new ModelFile();
-        ControlerFile controllerFile = new ControlerFile(modelFile);
+        viewGeneratorGraph.setVisible(true);
+    }
+
+    public boolean askAndstopAlgo() {
+        if (inProgess.get() == true) {
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                compute.interrupt();
+                inProgess.set(false);
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public void resetAll() {
+        resetSelectedVerticesButtonPerformed();
+        controlerIteration.reset();
+        controlerGraphTrans.reset();
     }
 }

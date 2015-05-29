@@ -18,7 +18,6 @@ public class CustomGeneratorClique implements ICustomGenerator {
         while(j < nbVertex) {
             j++;
             graph.addEdge(""+i+""+j, ""+i, ""+j, true);
-            System.err.println(i+"->"+j);
             i++;
         }
         
