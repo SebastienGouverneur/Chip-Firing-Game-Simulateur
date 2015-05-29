@@ -24,6 +24,7 @@ sprite {
     fill-color: white; 
     text-size: 13px; 
     size: 0.1gu;
+    z-index: 0;
 }
 
 edge { 

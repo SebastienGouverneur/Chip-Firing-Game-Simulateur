@@ -1,8 +1,0 @@
- digraph graphname {
-     a [label="2"];
-     b [label="2"];
-     c [label="2"];
-     d [label="2"];
-     a -> b -> c;
-     b -> d;
- }
