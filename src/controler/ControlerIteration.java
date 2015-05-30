@@ -54,7 +54,7 @@ public class ControlerIteration implements ActionListener {
         viewIteration.getInputPattern().setText(modelIteration.getParallelPattern());
     }
 
-    void reset() {
+    public void reset() {
         modelIteration.reset();
         viewIteration.reset();
     }

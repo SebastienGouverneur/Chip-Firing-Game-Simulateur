@@ -1,6 +1,6 @@
 package model;
 
-import core.Algorithm;
+import core.IAlgorithm;
 import core.Cfg;
 import core.IChipOperation;
 import core.MyGraph;
@@ -60,7 +60,7 @@ public class ModelMainFrame extends Observable {
         return Cfg.getInstance().getGraph().isSelected(id);
     }
 
-    public void execute(Algorithm algo) {
+    public void execute(IAlgorithm algo) {
         Cfg.getInstance().getGraph().execute(algo);
     }
 

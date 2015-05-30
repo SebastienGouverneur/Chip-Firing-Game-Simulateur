@@ -13,7 +13,6 @@ public final class Cfg {
     private MyGraph graph = null;
     private MyGraph graphTrans = null;
 
-    // Lazy Initialization (If required then only)
     public static Cfg getInstance() {
         return instance;
     }

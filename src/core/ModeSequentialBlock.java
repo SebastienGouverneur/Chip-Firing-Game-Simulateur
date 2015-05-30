@@ -6,7 +6,7 @@ import java.util.Map;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 
-public class ModeSequentialBlock implements Algorithm {
+public class ModeSequentialBlock implements IAlgorithm {
 
     private final PatternUpdate patternUpdate;
     private final ConfigurationContrainer configSet;
@@ -24,7 +24,6 @@ public class ModeSequentialBlock implements Algorithm {
     
     @Override
     public void terminate() {
-
         StringBuilder config = new StringBuilder(graph.getNodeCount());
 
         for (Node node : graph.getNodeSet()) {
@@ -37,6 +36,7 @@ public class ModeSequentialBlock implements Algorithm {
         try {
             Thread.sleep((long) (time));
         } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -71,6 +71,7 @@ public class ModeSequentialBlock implements Algorithm {
             try {
                 Thread.sleep((long) (timeAnimation));
             } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
                 return;
             }
 

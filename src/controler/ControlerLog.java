@@ -6,8 +6,8 @@ import model.ModelLogFrame;
 import view.ViewLog;
 
 public class ControlerLog implements ActionListener {
-    private ModelLogFrame modelLogFrame;
-    private ViewLog viewLog;
+    private final ModelLogFrame modelLogFrame;
+    private final ViewLog viewLog;
     
     ControlerLog(ViewLog viewLog, ModelLogFrame modelLogFrame) {
         this.modelLogFrame = modelLogFrame;

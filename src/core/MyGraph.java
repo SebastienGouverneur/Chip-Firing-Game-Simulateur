@@ -12,6 +12,7 @@ import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
+import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants.Units;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
@@ -46,8 +47,7 @@ public class MyGraph {
     public void setGraph(MyGraph graph, boolean initAttribute) throws IOException {
         this.graph.clear();
         Graphs.mergeIn(this.graph, graph.getGraph());
-        graph.clear();
-        graph = null;
+
         if (initAttribute) {
             spriteManager = new SpriteManager(this.graph);
             initGraphAttributes();
@@ -80,6 +80,8 @@ public class MyGraph {
                     try {
                         fromViewer.blockingPump();
                     } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -88,10 +90,6 @@ public class MyGraph {
         if (autoPump) {
             checkUpdateGraph.start();
         }
-    }
-
-    public void stopPump() {
-        checkUpdateGraph.interrupt();
     }
 
     public void startPump() {
@@ -118,6 +116,7 @@ public class MyGraph {
                         fromViewer.blockingPump();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -165,7 +164,7 @@ public class MyGraph {
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         for (Node node : graph) {
-//            displayIdNode(node);
+            displayIdNode(node);
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
             node.setAttribute("ui.class", "unmarked");
 
@@ -188,11 +187,10 @@ public class MyGraph {
     }
 
     public void displayIdNode(Node node) {
-        Sprite s;
-        s = spriteManager.addSprite(node.getId());
-        s.addAttribute("label", node.getId());
+        Sprite s = spriteManager.addSprite(node.getId());
+        s.setPosition(Units.PX, 20, 20, 10);
         s.attachToNode(node.getId());
-        s.setPosition(0.15);
+        s.addAttribute("label", node.getId());
     }
 
     public void setNodeMarked(String id) {
@@ -203,9 +201,14 @@ public class MyGraph {
         return graph.getNode(id).getAttribute("ui.class").equals("marked");
     }
 
-    public void execute(Algorithm algo) {
+    public void execute(IAlgorithm algo) {
         algo.init(Cfg.getInstance().getGraph());
         algo.compute();
+        if (Thread.currentThread().isInterrupted()) {
+            System.err.println("ne pas executer terminate() !!!");
+            Thread.currentThread().interrupt();
+            return;
+        }
         algo.terminate();
     }
 

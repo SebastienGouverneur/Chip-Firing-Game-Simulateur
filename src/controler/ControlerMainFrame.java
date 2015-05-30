@@ -13,6 +13,8 @@ import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.ModelEditGraph;
@@ -42,13 +44,11 @@ public class ControlerMainFrame implements ActionListener {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
-   private final ModelFile modelFile;
-   private final ViewGeneratorGraph viewGeneratorGraph;
-   private final ControlerFile controllerFile;
-        
-    
-    private Thread compute;
+    private final ModelFile modelFile;
+    private final ViewGeneratorGraph viewGeneratorGraph;
+    private final ControlerFile controllerFile;
 
+    private Thread compute;
     private static AtomicBoolean inProgess;
 
     public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
@@ -86,8 +86,7 @@ public class ControlerMainFrame implements ActionListener {
         modelFile = new ModelFile();
         viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
         controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
-        
-        
+
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
@@ -328,34 +327,52 @@ public class ControlerMainFrame implements ActionListener {
         int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                resetAll();
-                modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
+
+            if (inProgess.get() == true) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    compute.interrupt();
+                    try {
+                        compute.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    inProgess.set(false);
+                } else {
+                    return;
+                }
             }
+
+            resetSelectedVerticesButtonPerformed();
+            modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
+            controlerIteration.reset();
+            controlerGraphTrans.reset();
         }
     }
+
+    
 
     private void openGeneratorExplorer() {
         viewGeneratorGraph.setVisible(true);
-    }
-
-    public boolean askAndstopAlgo() {
-        if (inProgess.get() == true) {
-            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                compute.interrupt();
-                inProgess.set(false);
-                return true;
-            }
-            return false;
-        }
-        return true;
     }
 
     public void resetAll() {
         resetSelectedVerticesButtonPerformed();
         controlerIteration.reset();
         controlerGraphTrans.reset();
+    }
+
+    public boolean inProgess() {
+        return inProgess.get();
+    }
+
+    void interruptCompute() {
+        compute.interrupt();
+        try {
+            compute.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        inProgess.set(false);
     }
 }

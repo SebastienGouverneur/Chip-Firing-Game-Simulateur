@@ -60,9 +60,6 @@
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[800, 600]"/>
     </Property>
-    <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[800, 600]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menu"/>
@@ -79,7 +76,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-31,0,0,4,-17"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-71,0,0,5,5"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -94,7 +91,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="1263" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="1285" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Component id="playCFG" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -102,9 +99,12 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="716" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="674" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Component id="playCFG" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="playCFG" min="-2" pref="674" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -133,15 +133,16 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="optionsControl" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="viewGraph" min="-2" pref="470" max="-2" attributes="0"/>
+                      <Component id="viewGraph" min="-2" pref="431" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="optionsChips" max="32767" attributes="0"/>
                           <Component id="InformationsPanel" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -213,21 +214,6 @@
                       <Component id="graphTransButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="editGraphButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="infoGraphButton" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="iterationModeParallel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="iterationModeSeqentiel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="optionControlBackward" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="optionControlRun" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="optionControlEnd" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="optionControlForward" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
-                              <Component id="optionControlBegin" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="optionControlTimeLabel" alignment="3" max="32767" attributes="0"/>
                           <Component id="optionControlTime" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -239,6 +225,21 @@
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       </Group>
                       <Component id="iterationButton" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="optionControlForward" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="iterationModeParallel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="iterationModeSeqentiel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="optionControlBackward" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="optionControlRun" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="optionControlEnd" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="optionControlBegin" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -476,44 +477,39 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="nbChipsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="inputNbChips" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="nbChipsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="inputNbChips" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="separator5" min="-2" pref="92" max="-2" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="separator5" min="-2" pref="92" max="-2" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Component id="modeAddChips" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="modeRemoveChips" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="3" attributes="0">
-                                                      <Component id="modeSetChips" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="selectAllVerticesButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="resetSelectedVerticesButton" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
+                                          <Component id="modeAddChips" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="modeRemoveChips" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="modeSetChips" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="selectAllVerticesButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="resetSelectedVerticesButton" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      </Group>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="selectedNode" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="valideOptionChips" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="selectedNode" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="valideOptionChips" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

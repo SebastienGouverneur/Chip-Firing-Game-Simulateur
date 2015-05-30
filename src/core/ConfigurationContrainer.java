@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 public class ConfigurationContrainer {
 
-    private LinkedHashMap<String, Long> configurationSet;
+    private final LinkedHashMap<String, Long> configurationSet;
     private long nextConfigurationId;
     private boolean limitCycleDetected;
     private long limitCycleSize;

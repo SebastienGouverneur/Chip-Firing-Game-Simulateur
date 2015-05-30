@@ -3,8 +3,11 @@ package controler;
 import core.Cfg;
 import core.CustomGeneratorClique;
 import core.CustomGeneratorGrid;
+import core.KChips;
+import core.MyGraph;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,7 +34,16 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-            if(! controlerMainFrame.askAndstopAlgo()) return;
+
+            if (controlerMainFrame.inProgess() == true) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    controlerMainFrame.interruptCompute();
+                } else {
+                    return;
+                }
+            }
+            
             controlerMainFrame.resetAll();
             Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
         }
@@ -85,6 +97,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
                             Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
                     );
                     break;
+    
                 default:
                     break;
             }
