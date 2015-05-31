@@ -1,6 +1,8 @@
 package core;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -164,13 +166,13 @@ public class MyGraph {
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         for (Node node : graph) {
-            displayIdNode(node);
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
             node.setAttribute("ui.class", "unmarked");
 
             for (Edge edgeOut : node.getEachLeavingEdge()) {
                 edgeOut.addAttribute("ui.class", "unmarked");
             }
+            displayIdNode(node);
         }
     }
 
@@ -188,9 +190,9 @@ public class MyGraph {
 
     public void displayIdNode(Node node) {
         Sprite s = spriteManager.addSprite(node.getId());
-        s.setPosition(Units.PX, 20, 20, 10);
+        s.setPosition(Units.PX, 200, 200, 100);
         s.attachToNode(node.getId());
-        s.addAttribute("label", node.getId());
+        s.addAttribute("ui.label", node.getId());
     }
 
     public void setNodeMarked(String id) {
@@ -222,6 +224,18 @@ public class MyGraph {
 
     public void setNbChipsNode(String nodeId, int nbChips) {
         graph.getNode(nodeId).setAttribute("chips", nbChips);
+    }
+    
+    public void setNbChipsNodes(Iterable<Node> nodes, Iterable<Integer> config) {
+        
+        Iterator<Node> itNodes = nodes.iterator();
+        Iterator<Integer> itConf = config.iterator();
+        
+        while(itNodes.hasNext() && itConf.hasNext()) {
+            final Node curNode = itNodes.next();   
+            graph.getNode(curNode.getId()).setAttribute("chips", itConf.next());
+            
+        }
     }
 
     public Node getNode(String id) {

@@ -24,7 +24,7 @@ public class ModelGraphTrans extends Observable {
         return Cfg.getInstance().getGraphTrans().getViewer();
     }
 
-    public void addConfig(String configFrom, String configTo) {
+    public void addTransition(String configFrom, String configTo) {
         Node from = Cfg.getInstance().getGraphTrans().addNode(configFrom);
         Node to = Cfg.getInstance().getGraphTrans().addNode(configTo);
 

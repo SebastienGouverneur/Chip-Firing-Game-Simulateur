@@ -5,6 +5,7 @@ import core.AddChipOp;
 import core.Cfg;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
+import core.KChips;
 import core.ModeSequentialBlock;
 import core.MyGraph;
 import core.PatternUpdate;
@@ -12,6 +13,8 @@ import core.SetChipOp;
 import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,7 +146,8 @@ public class ControlerMainFrame implements ActionListener {
         }
 
         if (ae.getSource() == viewMainFrame.getEditGraphButton()) {
-            editGraphButtonPerformed();
+//            editGraphButtonPerformed();
+            kchipsPerformed();
         }
 
         if (ae.getSource() == viewMainFrame.getOpen()) {
@@ -205,7 +209,7 @@ public class ControlerMainFrame implements ActionListener {
 
                     String configTo = configSet.getLastConfig();
 //                    System.err.println(configFrom + " -> " + configTo);
-                    modelGraphTrans.addConfig(configFrom, configTo);
+                    modelGraphTrans.addTransition(configFrom, configTo);
                 }
 
                 viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
@@ -350,8 +354,6 @@ public class ControlerMainFrame implements ActionListener {
         }
     }
 
-    
-
     private void openGeneratorExplorer() {
         viewGeneratorGraph.setVisible(true);
     }
@@ -374,5 +376,63 @@ public class ControlerMainFrame implements ActionListener {
             Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         inProgess.set(false);
+    }
+
+    private void kchipsPerformed() {
+
+        KChips k = new KChips(3, 3);
+        Set<Set<List<Integer>>> n = k.getAllDistribution();
+        final MyGraph graph = Cfg.getInstance().getGraph();
+        Iterable<Node> nodes = graph.getNodeSet();
+
+        controlerGraphTrans.reset();
+        viewMainFrame.printLimitCycleSize(0);
+
+        for (Set<List<Integer>> permutations : n) {
+            for (List<Integer> config : permutations) {
+                System.err.println(config);
+                graph.setNbChipsNodes(nodes, config);
+
+                compute = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        StringBuilder config = new StringBuilder(graph.getNodeCount());
+
+                        for (Node node : graph.getNodeSet()) {
+                            config.append(node.getAttribute("chips"));
+                        }
+
+                        ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
+                        inProgess.set(true);
+
+                        while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
+                            PatternUpdate p = controlerIteration.getCurrentPattern();
+                            String configFrom = configSet.getLastConfig();
+
+                            modelMainFrame.execute(
+                                    new ModeSequentialBlock(
+                                            p,
+                                            configSet,
+                                            modelMainFrame.getTimeExec(),
+                                            modelMainFrame.getTimeAnimation()
+                                    )
+                            );
+
+                            String configTo = configSet.getLastConfig();
+//                    System.err.println(configFrom + " -> " + configTo);
+                            modelGraphTrans.addTransition(configFrom, configTo);
+                        }
+
+//                        viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
+                        inProgess.set(false);
+                    }
+                });
+
+                compute.start();
+
+            }
+        }
+
     }
 }

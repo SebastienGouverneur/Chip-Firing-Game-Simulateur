@@ -1,5 +1,4 @@
 import controler.ControlerMainFrame;
-import core.KChips;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.ModelMainFrame;
@@ -20,7 +19,4 @@ public class Main {
         ViewMainFrame viewMainFrame = new ViewMainFrame(modelMainFrame);
         ControlerMainFrame controlerMainFrame = new ControlerMainFrame(viewMainFrame, modelMainFrame);
     }
-
-
-
 }

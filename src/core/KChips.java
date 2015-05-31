@@ -19,7 +19,7 @@ public class KChips {
         }
     }   
     
-    public Set getAllDistribution() {
+    public Set<Set<List<Integer>>> getAllDistribution() {
         return returnValue;
     }
     
