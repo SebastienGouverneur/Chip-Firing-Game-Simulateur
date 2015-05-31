@@ -26,6 +26,7 @@ import view.ViewEditGraph;
 import view.ViewGeneratorGraph;
 import view.ViewGraphTrans;
 import view.ViewIteration;
+import view.ViewKChips;
 import view.ViewLog;
 import view.ViewMainFrame;
 
@@ -42,11 +43,10 @@ public class ControlerMainFrame implements ActionListener {
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
 
-   private final ModelFile modelFile;
-   private final ViewGeneratorGraph viewGeneratorGraph;
-   private final ControlerFile controllerFile;
-        
-    
+    private final ModelFile modelFile;
+    private final ViewGeneratorGraph viewGeneratorGraph;
+    private final ControlerFile controllerFile;
+
     private Thread compute;
 
     private static AtomicBoolean inProgess;
@@ -71,6 +71,7 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
+        viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
 
         Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
         Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
@@ -86,8 +87,7 @@ public class ControlerMainFrame implements ActionListener {
         modelFile = new ModelFile();
         viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
         controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
-        
-        
+
         modelMainFrame.setTimeAnimation(1000);
         modelMainFrame.setTimeExec(1000);
 
@@ -154,6 +154,7 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getImport_()) {
             openGeneratorExplorer();
         }
+
     }
 
     public void logButtonPerformed() {
@@ -164,57 +165,66 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     public void optionControlRunPerformed() {
-        if (inProgess.get()) {
-            return;
-        }
 
-        if (!controlerIteration.getCurrentPattern().isValid()) {
-            iterationButtonPerformed();
-            return;
-        }
-
-        compute = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                final MyGraph graph = Cfg.getInstance().getGraph();
-                StringBuilder config = new StringBuilder(graph.getNodeCount());
-
-                for (Node node : graph.getNodeSet()) {
-                    config.append(node.getAttribute("chips"));
-                }
-
-                ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
-
-                controlerGraphTrans.reset();
-                viewMainFrame.printLimitCycleSize(0);
-
-                inProgess.set(true);
-
-                while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
-                    PatternUpdate p = controlerIteration.getCurrentPattern();
-                    String configFrom = configSet.getLastConfig();
-
-                    modelMainFrame.execute(
-                            new ModeSequentialBlock(
-                                    p,
-                                    configSet,
-                                    modelMainFrame.getTimeExec(),
-                                    modelMainFrame.getTimeAnimation()
-                            )
-                    );
-
-                    String configTo = configSet.getLastConfig();
-//                    System.err.println(configFrom + " -> " + configTo);
-                    modelGraphTrans.addConfig(configFrom, configTo);
-                }
-
-                viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
-                inProgess.set(false);
+        if (viewMainFrame.getIterationModeKChips().isSelected()) 
+        {
+            ViewKChips viewKChips = new ViewKChips(modelGraphTrans);
+        } 
+        else if (viewMainFrame.getIterationModeParallel().isSelected()) 
+        {
+            if (inProgess.get()) {
+                return;
             }
-        });
 
-        compute.start();
+            if (!controlerIteration.getCurrentPattern().isValid()) {
+                iterationButtonPerformed();
+                return;
+            }
+
+            compute = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    final MyGraph graph = Cfg.getInstance().getGraph();
+                    StringBuilder config = new StringBuilder(graph.getNodeCount());
+
+                    for (Node node : graph.getNodeSet()) {
+                        config.append(node.getAttribute("chips"));
+                    }
+
+                    ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
+
+                    controlerGraphTrans.reset();
+                    viewMainFrame.printLimitCycleSize(0);
+
+                    inProgess.set(true);
+
+                    while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
+                        PatternUpdate p = controlerIteration.getCurrentPattern();
+                        String configFrom = configSet.getLastConfig();
+
+                        modelMainFrame.execute(
+                                new ModeSequentialBlock(
+                                        p,
+                                        configSet,
+                                        modelMainFrame.getTimeExec(),
+                                        modelMainFrame.getTimeAnimation()
+                                )
+                        );
+
+                        String configTo = configSet.getLastConfig();
+//                    System.err.println(configFrom + " -> " + configTo);
+                        modelGraphTrans.addConfig(configFrom, configTo);
+                    }
+
+                    viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
+                    inProgess.set(false);
+                }
+            });
+
+            compute.start();
+        }
+
     }
 
     public void optionControlForwardPerformed() {

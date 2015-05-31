@@ -31,6 +31,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         initComponents();
         this.modelMailFrame = modelMainFrame;
         setVisible(true);
+        setLocationRelativeTo(null);  // *** this will center your app ***
     }
     private ViewPanel addDefaultView;
 
@@ -68,6 +69,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
+        iterationModeKChips = new javax.swing.JRadioButton();
         optionsChips = new javax.swing.JPanel();
         inputNbChips = new javax.swing.JTextField();
         modeRemoveChips = new javax.swing.JRadioButton();
@@ -106,7 +108,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         iterationMode.add(iterationModeParallel);
         iterationModeParallel.setSelected(true);
-        iterationModeParallel.setText("Bloc-Seq");
+        iterationModeParallel.setText("Par/S");
         iterationModeParallel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32.png"))); // NOI18N
         iterationModeParallel.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png"))); // NOI18N
         iterationModeParallel.addActionListener(new java.awt.event.ActionListener() {
@@ -175,6 +177,16 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         jLabel1.setText("ms");
 
+        iterationMode.add(iterationModeKChips);
+        iterationModeKChips.setText("K-Ch");
+        iterationModeKChips.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/States Filled-32.png"))); // NOI18N
+        iterationModeKChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/States Filled-32red.png"))); // NOI18N
+        iterationModeKChips.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iterationModeKChipsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout optionsControlLayout = new javax.swing.GroupLayout(optionsControl);
         optionsControl.setLayout(optionsControlLayout);
         optionsControlLayout.setHorizontalGroup(
@@ -196,7 +208,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(iterationModeParallel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(iterationModeSeqentiel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(iterationModeKChips)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionControlTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,50 +218,53 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(optionControlTime, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(6, 6, 6)
-                .addComponent(validateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(validateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(iterationButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphTransButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(editGraphButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoGraphButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(infoGraphButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logButton)
                 .addGap(0, 0, 0))
         );
         optionsControlLayout.setVerticalGroup(
             optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(separator4)
-            .addComponent(graphTransButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(editGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(infoGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(optionsControlLayout.createSequentialGroup()
-                .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(iterationModeParallel)
-                        .addComponent(iterationModeSeqentiel))
-                    .addComponent(optionControlBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(optionControlEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(optionControlForward, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(optionControlBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jSeparator1))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(infoGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(editGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(graphTransButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(iterationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(optionControlTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(optionControlTime, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(validateTime)
                 .addComponent(jLabel1))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsControlLayout.createSequentialGroup()
                 .addComponent(jSeparator2)
                 .addGap(4, 4, 4))
-            .addComponent(iterationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(optionsControlLayout.createSequentialGroup()
+                .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(validateTime)
+                    .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(iterationModeParallel)
+                            .addComponent(iterationModeSeqentiel)
+                            .addComponent(iterationModeKChips))
+                        .addComponent(optionControlBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(optionControlEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(optionControlForward, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(optionControlBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jSeparator1))
+                    .addComponent(logButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         optionsChips.setBorder(javax.swing.BorderFactory.createTitledBorder("Options Chip"));
@@ -334,34 +351,30 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionsChipsLayout.setVerticalGroup(
             optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionsChipsLayout.createSequentialGroup()
+                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nbChipsLabel)
+                    .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nbChipsLabel)
-                            .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(optionsChipsLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(optionsChipsLayout.createSequentialGroup()
-                                        .addComponent(modeAddChips)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(modeRemoveChips)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(modeSetChips)
-                                            .addComponent(selectAllVerticesButton)
-                                            .addComponent(resetSelectedVerticesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(optionsChipsLayout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(jLabel2)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(modeAddChips)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(modeRemoveChips)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(modeSetChips)
+                                    .addComponent(selectAllVerticesButton)
+                                    .addComponent(resetSelectedVerticesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addComponent(selectedNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(valideOptionChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel2))))
+            .addGroup(optionsChipsLayout.createSequentialGroup()
+                .addComponent(selectedNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(valideOptionChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         InformationsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Informations")));
@@ -409,11 +422,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         playCFGLayout.setVerticalGroup(
             playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(playCFGLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(viewGraph, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(optionsChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -423,15 +436,17 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1263, Short.MAX_VALUE)
+            .addGap(0, 1283, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(playCFG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
+            .addGap(0, 651, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(playCFG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addComponent(playCFG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -482,6 +497,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_validateTimeActionPerformed
 
+    private void iterationModeKChipsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterationModeKChipsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iterationModeKChipsActionPerformed
+
     //Implémentation du pattern observer
     @Override
     public void update(Observable o, Object o1) {
@@ -504,6 +523,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField inputNbChips;
     private javax.swing.JButton iterationButton;
     private javax.swing.ButtonGroup iterationMode;
+    private javax.swing.JRadioButton iterationModeKChips;
     private javax.swing.JRadioButton iterationModeParallel;
     private javax.swing.JRadioButton iterationModeSeqentiel;
     private javax.swing.JLabel jLabel1;
@@ -546,6 +566,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel viewGraph;
     // End of variables declaration//GEN-END:variables
 
+
+    
     public JButton getResetSelectedVerticesButton() {
         return resetSelectedVerticesButton;
     }
@@ -698,6 +720,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         return selectedNodeText;
     }
 
+    public JRadioButton getIterationModeKChips() {
+        return iterationModeKChips;
+    }
+    
     public JPopupMenu.Separator getSeparator1() {
         return separator1;
     }

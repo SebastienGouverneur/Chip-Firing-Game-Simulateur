@@ -165,7 +165,7 @@ public class MyGraph {
         this.graph.addAttribute("ui.stylesheet", "url('view/graph.css')");
 
         for (Node node : graph) {
-//            displayIdNode(node);
+            displayIdNode(node);
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
             node.setAttribute("ui.class", "unmarked");
 
