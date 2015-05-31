@@ -2,7 +2,6 @@ package core;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -167,7 +166,7 @@ public class MyGraph {
 
         for (Node node : graph) {
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
-            node.setAttribute("ui.class", "unmarked");
+            node.addAttribute("ui.class", "unmarked");
 
             for (Edge edgeOut : node.getEachLeavingEdge()) {
                 edgeOut.addAttribute("ui.class", "unmarked");
@@ -196,7 +195,7 @@ public class MyGraph {
     }
 
     public void setNodeMarked(String id) {
-        graph.getNode(id).setAttribute("ui.class", "marked");
+        graph.getNode(id).addAttribute("ui.class", "marked");
     }
 
     public boolean isSelected(String id) {
@@ -219,11 +218,11 @@ public class MyGraph {
     }
 
     public void setNodeLabel(String nodeId, int nbChips) {
-        graph.getNode(nodeId).setAttribute("ui.label", nbChips);
+        graph.getNode(nodeId).addAttribute("ui.label", nbChips);
     }
 
     public void setNbChipsNode(String nodeId, int nbChips) {
-        graph.getNode(nodeId).setAttribute("chips", nbChips);
+        graph.getNode(nodeId).addAttribute("chips", nbChips);
     }
     
     public void setNbChipsNodes(Iterable<Node> nodes, Iterable<Integer> config) {
@@ -233,8 +232,9 @@ public class MyGraph {
         
         while(itNodes.hasNext() && itConf.hasNext()) {
             final Node curNode = itNodes.next();   
-            graph.getNode(curNode.getId()).setAttribute("chips", itConf.next());
-            
+            final Integer curConf = itConf.next();
+            graph.getNode(curNode.getId()).addAttribute("chips", curConf);
+            graph.getNode(curNode.getId()).addAttribute("ui.label", curConf);
         }
     }
 
@@ -264,7 +264,7 @@ public class MyGraph {
     }
 
     public void setNodeUnmarked(String id) {
-        graph.getNode(id).setAttribute("ui.class", "unmarked");
+        graph.getNode(id).addAttribute("ui.class", "unmarked");
     }
 
     Iterable<Edge> getEdgeSet() {

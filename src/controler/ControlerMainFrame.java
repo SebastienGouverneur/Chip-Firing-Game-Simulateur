@@ -380,23 +380,23 @@ public class ControlerMainFrame implements ActionListener {
 
     private void kchipsPerformed() {
 
-        KChips k = new KChips(3, 3);
-        Set<Set<List<Integer>>> n = k.getAllDistribution();
+        KChips k = new KChips(2, 2);
+        final Set<Set<List<Integer>>> n = k.getAllDistribution();
         final MyGraph graph = Cfg.getInstance().getGraph();
-        Iterable<Node> nodes = graph.getNodeSet();
+        final Iterable<Node> nodes = graph.getNodeSet();
 
         controlerGraphTrans.reset();
         viewMainFrame.printLimitCycleSize(0);
 
-        for (Set<List<Integer>> permutations : n) {
-            for (List<Integer> config : permutations) {
-                System.err.println(config);
-                graph.setNbChipsNodes(nodes, config);
+        compute = new Thread(new Runnable() {
 
-                compute = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                    @Override
-                    public void run() {
+                for (Set<List<Integer>> permutations : n) {
+                    for (List<Integer> currConfig : permutations) {
+                        graph.setNbChipsNodes(nodes, currConfig);
+
                         StringBuilder config = new StringBuilder(graph.getNodeCount());
 
                         for (Node node : graph.getNodeSet()) {
@@ -420,19 +420,18 @@ public class ControlerMainFrame implements ActionListener {
                             );
 
                             String configTo = configSet.getLastConfig();
-//                    System.err.println(configFrom + " -> " + configTo);
+                            System.err.println(configFrom + " -> " + configTo);
                             modelGraphTrans.addTransition(configFrom, configTo);
                         }
 
 //                        viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
                         inProgess.set(false);
                     }
-                });
-
-                compute.start();
-
+                }
             }
-        }
+        });
+
+        compute.start();
 
     }
 }

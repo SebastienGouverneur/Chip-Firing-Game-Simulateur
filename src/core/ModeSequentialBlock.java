@@ -28,7 +28,7 @@ public class ModeSequentialBlock implements IAlgorithm {
 
         for (Node node : graph.getNodeSet()) {
             config.append(node.getAttribute("chips"));
-            node.setAttribute("ui.label", node.getAttribute("chips").toString());
+            node.addAttribute("ui.label", node.getAttribute("chips").toString());
         }
 
         boolean isInserted = configSet.insertConfiguration(config.toString());
@@ -63,7 +63,7 @@ public class ModeSequentialBlock implements IAlgorithm {
             for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
                 if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
                     for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
-                        edgeOut.setAttribute("ui.class", "marked");
+                        edgeOut.addAttribute("ui.class", "marked");
                     }
                 }
             }
@@ -76,17 +76,18 @@ public class ModeSequentialBlock implements IAlgorithm {
             }
 
             for (Edge e : graph.getEdgeSet()) {
-                e.setAttribute("ui.class", "unmarked");
+                e.addAttribute("ui.class", "unmarked");
             }
 
             /* Mise a jour des tokens */
             for (Map.Entry<String, Integer> entry : initialState.entrySet()) {
                 if (entry.getValue() >= graph.getNode(entry.getKey()).getOutDegree()) {
                     for (Edge edgeOut : graph.getNode(entry.getKey()).getEachLeavingEdge()) {
-                        edgeOut.getNode1().setAttribute("chips", (int) edgeOut.getNode1().getAttribute("chips") + 1);
-                        edgeOut.getNode1().setAttribute("ui.label", edgeOut.getNode1().getAttribute("chips").toString());
-                        edgeOut.getNode0().setAttribute("chips", (int) edgeOut.getNode0().getAttribute("chips") - 1);
-                        edgeOut.getNode0().setAttribute("ui.label", edgeOut.getNode0().getAttribute("chips").toString());
+                        edgeOut.getNode1().addAttribute("chips", (int) edgeOut.getNode1().getAttribute("chips") + 1);
+                        edgeOut.getNode1().addAttribute("ui.label", edgeOut.getNode1().getAttribute("chips").toString());
+                        
+                        edgeOut.getNode0().addAttribute("chips", (int) edgeOut.getNode0().getAttribute("chips") - 1);
+                        edgeOut.getNode0().addAttribute("ui.label", edgeOut.getNode0().getAttribute("chips").toString());
                     }
                 }
             }
