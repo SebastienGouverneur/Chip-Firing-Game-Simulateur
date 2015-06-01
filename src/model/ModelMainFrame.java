@@ -1,6 +1,6 @@
 package model;
 
-import core.Algorithm;
+import core.IAlgorithm;
 import core.Cfg;
 import core.IChipOperation;
 import core.MyGraph;
@@ -16,8 +16,6 @@ import org.graphstream.ui.view.ViewerPipe;
 public class ModelMainFrame extends Observable {
     
     private final ConcurrentSkipListSet<String> selectedNode;
-    private double timeExec;
-    private double timeAnimation;
 
     public ModelMainFrame() {
         System.setProperty("sun.java2d.opengl", "True");
@@ -60,7 +58,7 @@ public class ModelMainFrame extends Observable {
         return Cfg.getInstance().getGraph().isSelected(id);
     }
 
-    public void execute(Algorithm algo) {
+    public void execute(IAlgorithm algo) {
         Cfg.getInstance().getGraph().execute(algo);
     }
 
@@ -87,7 +85,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public void setTimeExec(double timeExec) {
-        this.timeExec = timeExec;
+        Cfg.setTimeExec(timeExec);
         
         setChanged();
         notifyObservers(this);
@@ -95,11 +93,11 @@ public class ModelMainFrame extends Observable {
     }
 
     public double getTimeExec() {
-        return timeExec;
+        return Cfg.getTimeExec();
     }
 
     public void setTimeAnimation(double timeAnimation) {
-        this.timeAnimation = timeAnimation;
+        Cfg.setTimeAnimation(timeAnimation);
 
         setChanged();
         notifyObservers(this);
@@ -111,7 +109,7 @@ public class ModelMainFrame extends Observable {
     }
 
     public double getTimeAnimation() {
-        return timeAnimation;
+        return Cfg.getTimeAnimation();
     }
 
     public Iterable<Node> getNodeSet() {

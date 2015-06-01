@@ -1,5 +1,7 @@
 package core;
 
+import org.graphstream.graph.Node;
+
 public class CustomGeneratorClique implements ICustomGenerator {
 
     public CustomGeneratorClique() {
@@ -22,6 +24,10 @@ public class CustomGeneratorClique implements ICustomGenerator {
         }
         
         graph.addEdge(""+nbVertex+"1", ""+nbVertex, "1", true);
+        
+        for (Node node : graph.getNodeSet()) {
+            node.addAttribute("label", nbChips);
+        }
         
         return graph;
     }

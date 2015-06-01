@@ -1,6 +1,6 @@
 package core;
 
-public interface Algorithm {
+public interface IAlgorithm {
 
     public void terminate();
 

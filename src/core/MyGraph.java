@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
+import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants.Units;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
@@ -46,8 +48,7 @@ public class MyGraph {
     public void setGraph(MyGraph graph, boolean initAttribute) throws IOException {
         this.graph.clear();
         Graphs.mergeIn(this.graph, graph.getGraph());
-        graph.clear();
-        graph = null;
+
         if (initAttribute) {
             spriteManager = new SpriteManager(this.graph);
             initGraphAttributes();
@@ -80,6 +81,8 @@ public class MyGraph {
                     try {
                         fromViewer.blockingPump();
                     } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -88,10 +91,6 @@ public class MyGraph {
         if (autoPump) {
             checkUpdateGraph.start();
         }
-    }
-
-    public void stopPump() {
-        checkUpdateGraph.interrupt();
     }
 
     public void startPump() {
@@ -118,6 +117,7 @@ public class MyGraph {
                         fromViewer.blockingPump();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ViewMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -167,11 +167,12 @@ public class MyGraph {
         for (Node node : graph) {
             displayIdNode(node);
             node.addAttribute("chips", Integer.parseInt(node.getAttribute("label").toString()));
-            node.setAttribute("ui.class", "unmarked");
+            node.addAttribute("ui.class", "unmarked");
 
             for (Edge edgeOut : node.getEachLeavingEdge()) {
                 edgeOut.addAttribute("ui.class", "unmarked");
             }
+            displayIdNode(node);
         }
     }
 
@@ -188,24 +189,28 @@ public class MyGraph {
     }
 
     public void displayIdNode(Node node) {
-        Sprite s;
-        s = spriteManager.addSprite(node.getId());
-        s.addAttribute("label", node.getId());
+        Sprite s = spriteManager.addSprite(node.getId());
+        s.setPosition(Units.PX, 200, 200, 100);
         s.attachToNode(node.getId());
-        s.setPosition(0.15);
+        s.addAttribute("ui.label", node.getId());
     }
 
     public void setNodeMarked(String id) {
-        graph.getNode(id).setAttribute("ui.class", "marked");
+        graph.getNode(id).addAttribute("ui.class", "marked");
     }
 
     public boolean isSelected(String id) {
         return graph.getNode(id).getAttribute("ui.class").equals("marked");
     }
 
-    public void execute(Algorithm algo) {
+    public void execute(IAlgorithm algo) {
         algo.init(Cfg.getInstance().getGraph());
         algo.compute();
+        if (Thread.currentThread().isInterrupted()) {
+            System.err.println("ne pas executer terminate() !!!");
+            Thread.currentThread().interrupt();
+            return;
+        }
         algo.terminate();
     }
 
@@ -214,11 +219,24 @@ public class MyGraph {
     }
 
     public void setNodeLabel(String nodeId, int nbChips) {
-        graph.getNode(nodeId).setAttribute("ui.label", nbChips);
+        graph.getNode(nodeId).addAttribute("ui.label", nbChips);
     }
 
     public void setNbChipsNode(String nodeId, int nbChips) {
-        graph.getNode(nodeId).setAttribute("chips", nbChips);
+        graph.getNode(nodeId).addAttribute("chips", nbChips);
+    }
+    
+    public void setNbChipsNodes(Iterable<Node> nodes, Iterable<Integer> config) {
+        
+        Iterator<Node> itNodes = nodes.iterator();
+        Iterator<Integer> itConf = config.iterator();
+        
+        while(itNodes.hasNext() && itConf.hasNext()) {
+            final Node curNode = itNodes.next();   
+            final Integer curConf = itConf.next();
+            graph.getNode(curNode.getId()).addAttribute("chips", curConf);
+            graph.getNode(curNode.getId()).addAttribute("ui.label", curConf);
+        }
     }
 
     public Node getNode(String id) {
@@ -247,7 +265,7 @@ public class MyGraph {
     }
 
     public void setNodeUnmarked(String id) {
-        graph.getNode(id).setAttribute("ui.class", "unmarked");
+        graph.getNode(id).addAttribute("ui.class", "unmarked");
     }
 
     Iterable<Edge> getEdgeSet() {
@@ -274,4 +292,5 @@ public class MyGraph {
         viewGraph.add(getViewer().addDefaultView(false));
         viewGraph.revalidate();
     }
+
 }

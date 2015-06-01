@@ -13,12 +13,15 @@ import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.ModelEditGraph;
 import model.ModelFile;
 import model.ModelGraphTrans;
 import model.ModelIteration;
+import model.ModelKChips;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
 import org.graphstream.graph.Node;
@@ -48,7 +51,6 @@ public class ControlerMainFrame implements ActionListener {
     private final ControlerFile controllerFile;
 
     private Thread compute;
-
     private static AtomicBoolean inProgess;
 
     public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
@@ -72,7 +74,10 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
-
+        
+        modelMainFrame.setTimeAnimation(Cfg.getTimeAnimation());
+        modelMainFrame.setTimeExec(Cfg.getTimeExec());
+        
         Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
         Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
 
@@ -83,14 +88,10 @@ public class ControlerMainFrame implements ActionListener {
         modelGraphTrans = new ModelGraphTrans();
         viewGraphTrans = new ViewGraphTrans(modelGraphTrans);
         controlerGraphTrans = new ControlerGraphTrans(viewGraphTrans, modelGraphTrans);
-
+        
         modelFile = new ModelFile();
         viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
         controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
-
-        modelMainFrame.setTimeAnimation(1000);
-        modelMainFrame.setTimeExec(1000);
-
     }
 
     public void changeColorNode(String id) {
@@ -168,7 +169,11 @@ public class ControlerMainFrame implements ActionListener {
 
         if (viewMainFrame.getIterationModeKChips().isSelected()) 
         {
-            ViewKChips viewKChips = new ViewKChips(modelGraphTrans);
+            viewMainFrame.printLimitCycleSize(0);
+            
+            ModelKChips modelKChips = new ModelKChips ();
+            ViewKChips viewKChips = new ViewKChips(modelKChips);
+            ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
         } 
         else if (viewMainFrame.getIterationModeParallel().isSelected()) 
         {
@@ -213,12 +218,9 @@ public class ControlerMainFrame implements ActionListener {
                         );
 
                         String configTo = configSet.getLastConfig();
-//                    System.err.println(configFrom + " -> " + configTo);
-                        modelGraphTrans.addConfig(configFrom, configTo);
-                    }
 
-                    viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
-                    inProgess.set(false);
+                    modelGraphTrans.addTransition(configFrom, configTo);
+                    }                
                 }
             });
 
@@ -338,11 +340,26 @@ public class ControlerMainFrame implements ActionListener {
         int returnVal = fc.showOpenDialog(viewMainFrame.getMenu());
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                resetAll();
-                modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
+
+            if (inProgess.get() == true) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    compute.interrupt();
+                    try {
+                        compute.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    inProgess.set(false);
+                } else {
+                    return;
+                }
             }
+
+            resetSelectedVerticesButtonPerformed();
+            modelMainFrame.importDOTFile(fc.getSelectedFile().getAbsolutePath());
+            controlerIteration.reset();
+            controlerGraphTrans.reset();
         }
     }
 
@@ -350,22 +367,23 @@ public class ControlerMainFrame implements ActionListener {
         viewGeneratorGraph.setVisible(true);
     }
 
-    public boolean askAndstopAlgo() {
-        if (inProgess.get() == true) {
-            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                compute.interrupt();
-                inProgess.set(false);
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
-
     public void resetAll() {
         resetSelectedVerticesButtonPerformed();
         controlerIteration.reset();
         controlerGraphTrans.reset();
+    }
+
+    public boolean inProgess() {
+        return inProgess.get();
+    }
+
+    void interruptCompute() {
+        compute.interrupt();
+        try {
+            compute.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        inProgess.set(false);
     }
 }

@@ -1,28 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package model;
 
 import core.Cfg;
+import core.ConfigurationContrainer;
+import core.KChips;
+import core.ModeSequentialBlock;
+import core.MyGraph;
+import core.PatternUpdate;
+import java.util.List;
 import java.util.Observable;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.view.Viewer;
 
-public class ModelGraphTrans extends Observable {
+/**
+ *
+ * @author jon-snow
+ */
+public class ModelKChips extends Observable {
 
-    public void reset() {
-        Cfg.getInstance().getGraphTrans().clear();
-    }  
-    
-    public void pump() {
-        Cfg.getInstance().getGraphTrans().pump();
-    }
-
-    public void createViewGraph() {
-        Cfg.getInstance().getGraphTrans().createViewGraph();
-    }
-
-    public Viewer getViewer() {
-        return Cfg.getInstance().getGraphTrans().getViewer();
-    }
+    private static final MyGraph graph = Cfg.getInstance().getGraph();
 
     public void addTransition(String configFrom, String configTo) {
         Node from = Cfg.getInstance().getGraphTrans().addNode(configFrom);
@@ -37,5 +39,6 @@ public class ModelGraphTrans extends Observable {
         notifyObservers(this);
         clearChanged();
     }
-    
+ 
+
 }
