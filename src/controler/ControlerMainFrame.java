@@ -73,11 +73,12 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
+        viewMainFrame.getSave().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
-        
+
         modelMainFrame.setTimeAnimation(Cfg.getTimeAnimation());
         modelMainFrame.setTimeExec(Cfg.getTimeExec());
-        
+
         Cfg.getInstance().getGraph().attachViewGraph(viewMainFrame.getViewGraph());
         Cfg.getInstance().getGraph().setClickListener(new Click(modelMainFrame));
 
@@ -88,7 +89,7 @@ public class ControlerMainFrame implements ActionListener {
         modelGraphTrans = new ModelGraphTrans();
         viewGraphTrans = new ViewGraphTrans(modelGraphTrans);
         controlerGraphTrans = new ControlerGraphTrans(viewGraphTrans, modelGraphTrans);
-        
+
         modelFile = new ModelFile();
         viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
         controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
@@ -156,6 +157,9 @@ public class ControlerMainFrame implements ActionListener {
             openGeneratorExplorer();
         }
 
+        if (ae.getSource() == viewMainFrame.getSave()) {
+            saveCurrentCFG();
+        }
     }
 
     public void logButtonPerformed() {
@@ -167,16 +171,13 @@ public class ControlerMainFrame implements ActionListener {
 
     public void optionControlRunPerformed() {
 
-        if (viewMainFrame.getIterationModeKChips().isSelected()) 
-        {
+        if (viewMainFrame.getIterationModeKChips().isSelected()) {
             viewMainFrame.printLimitCycleSize(0);
-            
-            ModelKChips modelKChips = new ModelKChips ();
+
+            ModelKChips modelKChips = new ModelKChips();
             ViewKChips viewKChips = new ViewKChips(modelKChips);
             ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
-        } 
-        else if (viewMainFrame.getIterationModeParallel().isSelected()) 
-        {
+        } else if (viewMainFrame.getIterationModeParallel().isSelected()) {
             if (inProgess.get()) {
                 return;
             }
@@ -218,9 +219,10 @@ public class ControlerMainFrame implements ActionListener {
                         );
 
                         String configTo = configSet.getLastConfig();
-
-                    modelGraphTrans.addTransition(configFrom, configTo);
-                    }                
+                        modelGraphTrans.addTransition(configFrom, configTo);
+                    }
+                    viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
+                    inProgess.set(false);
                 }
             });
 
@@ -252,8 +254,13 @@ public class ControlerMainFrame implements ActionListener {
 
                 ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
 
-                PatternUpdate p = controlerIteration.getCurrentPattern();
+                controlerGraphTrans.reset();
+                viewMainFrame.printLimitCycleSize(0);
+
                 inProgess.set(true);
+
+                PatternUpdate p = controlerIteration.getCurrentPattern();
+                String configFrom = configSet.getLastConfig();
 
                 modelMainFrame.execute(
                         new ModeSequentialBlock(
@@ -264,6 +271,10 @@ public class ControlerMainFrame implements ActionListener {
                         )
                 );
 
+                String configTo = configSet.getLastConfig();
+                modelGraphTrans.addTransition(configFrom, configTo);
+
+                viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
                 inProgess.set(false);
             }
         });
@@ -385,5 +396,10 @@ public class ControlerMainFrame implements ActionListener {
             Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         inProgess.set(false);
+    }
+
+    private void saveCurrentCFG() {
+        System.err.println("saaved");
+        Cfg.getInstance().saveInDirectory("/home/abdelhak/Documents/saved-CFG/");     
     }
 }

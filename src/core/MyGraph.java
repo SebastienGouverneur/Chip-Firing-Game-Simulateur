@@ -11,6 +11,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.stream.file.FileSinkDOT;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
 import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants.Units;
@@ -190,7 +191,7 @@ public class MyGraph {
 
     public void displayIdNode(Node node) {
         Sprite s = spriteManager.addSprite(node.getId());
-        s.setPosition(Units.PX, 200, 200, 100);
+        s.setPosition(0.15);
         s.attachToNode(node.getId());
         s.addAttribute("ui.label", node.getId());
     }
@@ -225,14 +226,14 @@ public class MyGraph {
     public void setNbChipsNode(String nodeId, int nbChips) {
         graph.getNode(nodeId).addAttribute("chips", nbChips);
     }
-    
+
     public void setNbChipsNodes(Iterable<Node> nodes, Iterable<Integer> config) {
-        
+
         Iterator<Node> itNodes = nodes.iterator();
         Iterator<Integer> itConf = config.iterator();
-        
-        while(itNodes.hasNext() && itConf.hasNext()) {
-            final Node curNode = itNodes.next();   
+
+        while (itNodes.hasNext() && itConf.hasNext()) {
+            final Node curNode = itNodes.next();
             final Integer curConf = itConf.next();
             graph.getNode(curNode.getId()).addAttribute("chips", curConf);
             graph.getNode(curNode.getId()).addAttribute("ui.label", curConf);
@@ -291,6 +292,15 @@ public class MyGraph {
     public void attachViewGraph(JPanel viewGraph) {
         viewGraph.add(getViewer().addDefaultView(false));
         viewGraph.revalidate();
+    }
+
+    void saveGraph(String path) {
+        try {
+            FileSinkDOT fs = new FileSinkDOT();
+            fs.writeAll(graph, path);
+        } catch (IOException ex) {
+            Logger.getLogger(MyGraph.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

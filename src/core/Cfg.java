@@ -1,6 +1,8 @@
 package core;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,5 +58,15 @@ public final class Cfg {
         } catch (IOException ex) {
             Logger.getLogger(Cfg.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void saveInDirectory(String directory) {
+        Date dNow = new Date();
+        SimpleDateFormat ft
+                = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
+        
+        graph.saveGraph("/home/abdelhak/Documents/saved-CFG/graph-" + ft.format(dNow));
+        graph.saveGraph("/home/abdelhak/Documents/saved-CFG/graphTrans-" + ft.format(dNow));
+        
     }
 }

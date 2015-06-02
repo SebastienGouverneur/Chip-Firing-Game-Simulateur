@@ -3,8 +3,6 @@ package controler;
 import core.Cfg;
 import core.CustomGeneratorClique;
 import core.CustomGeneratorGrid;
-import core.KChips;
-import core.MyGraph;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
