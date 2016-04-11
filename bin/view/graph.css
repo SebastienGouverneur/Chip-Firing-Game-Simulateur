@@ -1,0 +1,49 @@
+node { 
+    size: 0.1gu; 
+    fill-color: #cceeff, green, red;
+    fill-mode: dyn-plain;
+    stroke-mode: plain; 
+    stroke-color: #999; 
+    shadow-mode: plain; 
+    shadow-width: 0.011gu; 
+    shadow-color: grey; 
+    shadow-offset: 0px; 
+    text-style: bold;
+    text-size: 13px;   
+}
+
+node.unmarked {
+    shadow-color: grey;  
+}
+
+node.marked { 
+    shadow-color: blue;  
+}
+
+sprite { 
+    fill-color: white; 
+    text-size: 13px; 
+    size: 0.1gu;
+    z-index: 0;
+}
+
+edge { 
+    arrow-shape: arrow;
+    arrow-size: 0.02gu;
+    size: 0.009gu;
+    fill-color: #025c79; 
+    shadow-mode: plain; 
+    shadow-width: 0.002gu; 
+    shadow-color: #b4b7b8; 
+    shadow-offset: 0px; 
+}
+
+edge.unmarked { 
+    fill-color: #025c79; 
+    shadow-color: #b4b7b8;
+}
+
+edge.marked { 
+    fill-color: #fa0810;
+    shadow-color: #f71530;
+}
