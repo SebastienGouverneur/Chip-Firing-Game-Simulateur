@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import model.ModelMainFrame;
 import org.graphstream.graph.Edge;
@@ -294,7 +296,7 @@ public class MyGraph {
         viewGraph.revalidate();
     }
 
-    void saveGraph(String path) {
+    public void saveGraph(String path) {
         try {
             FileSinkDOT fs = new FileSinkDOT();
             fs.writeAll(graph, path);
@@ -302,5 +304,7 @@ public class MyGraph {
             Logger.getLogger(MyGraph.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+   
 
 }

@@ -12,6 +12,9 @@ import core.SetChipOp;
 import core.SubstractChipOp;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +65,7 @@ public class ControlerMainFrame implements ActionListener {
         modelMainFrame.addObserver(viewMainFrame);
         viewMainFrame.getLogButton().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlRun().addActionListener((ActionListener) this);
+        viewMainFrame.getOptionControlPause().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlForward().addActionListener((ActionListener) this);
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
@@ -74,7 +78,9 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOpen().addActionListener((ActionListener) this);
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
         viewMainFrame.getSave().addActionListener((ActionListener) this);
+        viewMainFrame.getSaveAs().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
+        viewMainFrame.getQuit().addActionListener((ActionListener) this);
 
         modelMainFrame.setTimeAnimation(Cfg.getTimeAnimation());
         modelMainFrame.setTimeExec(Cfg.getTimeExec());
@@ -112,11 +118,15 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getLogButton()) {
             logButtonPerformed();
         }
-
+        
+        if (ae.getSource() == viewMainFrame.getOptionControlPause()) {
+            optionControlPausePerformed();
+        }
+        
         if (ae.getSource() == viewMainFrame.getOptionControlRun()) {
             optionControlRunPerformed();
         }
-
+        
         if (ae.getSource() == viewMainFrame.getOptionControlForward()) {
             optionControlForwardPerformed();
         }
@@ -160,6 +170,14 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getSave()) {
             saveCurrentCFG();
         }
+        
+        if (ae.getSource() == viewMainFrame.getSaveAs()) {
+        	saveAsCurrentCFG();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getQuit()) {
+        	quitSimulator();
+        }
     }
 
     public void logButtonPerformed() {
@@ -168,9 +186,14 @@ public class ControlerMainFrame implements ActionListener {
         ControlerLog controlerLog = new ControlerLog(viewLog, modelLogFrame);
         viewLog.setVisible(true);
     }
+    
+    public void optionControlPausePerformed() {
+        
+		interruptCompute();
+}
 
     public void optionControlRunPerformed() {
-
+    	
         if (viewMainFrame.getIterationModeKChips().isSelected()) {
             viewMainFrame.printLimitCycleSize(0);
 
@@ -191,6 +214,7 @@ public class ControlerMainFrame implements ActionListener {
 
                 @Override
                 public void run() {
+                	
                     final MyGraph graph = Cfg.getInstance().getGraph();
                     StringBuilder config = new StringBuilder(graph.getNodeCount());
 
@@ -206,6 +230,7 @@ public class ControlerMainFrame implements ActionListener {
                     inProgess.set(true);
 
                     while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
+  
                         PatternUpdate p = controlerIteration.getCurrentPattern();
                         String configFrom = configSet.getLastConfig();
 
@@ -222,10 +247,11 @@ public class ControlerMainFrame implements ActionListener {
                         modelGraphTrans.addTransition(configFrom, configTo);
                     }
                     viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
+                    
                     inProgess.set(false);
+                    
                 }
             });
-
             compute.start();
         }
 
@@ -389,17 +415,33 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     void interruptCompute() {
-        compute.interrupt();
-        try {
-            compute.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        inProgess.set(false);
+    	if (inProgess()) {
+	        compute.interrupt();
+	        try {
+	            compute.join();
+	        } catch (InterruptedException ex) {
+	            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+	        }
+	        inProgess.set(false);
+	        
+	        viewMainFrame.printLimitCycleSize(0);
+    	}
     }
 
     private void saveCurrentCFG() {
-        System.err.println("saaved");
-        Cfg.getInstance().saveInDirectory("/home/abdelhak/Documents/saved-CFG/");     
+        Cfg.getInstance().saveInDirectory("/home/sebastien/Documents/saved-CFG/");     
+    }
+    
+    private void saveAsCurrentCFG() {
+    	JFileChooser fileChooser = new JFileChooser();
+    	Cfg.getInstance().saveAsInJFileChooser(fileChooser);	
+    }
+    private void quitSimulator() {
+    	int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the simulator ?", "Close?", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        } else {
+            return;
+        }
     }
 }

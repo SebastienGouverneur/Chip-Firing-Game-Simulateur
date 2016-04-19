@@ -1,10 +1,13 @@
 package core;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFileChooser;
 
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -65,8 +68,19 @@ public final class Cfg {
         SimpleDateFormat ft
                 = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
         
-        graph.saveGraph("/home/abdelhak/Documents/saved-CFG/graph-" + ft.format(dNow));
-        graph.saveGraph("/home/abdelhak/Documents/saved-CFG/graphTrans-" + ft.format(dNow));
+        graph.saveGraph("/home/sebastien/Documents/saved-CFG/graph-" + ft.format(dNow)+".txt");
+        graph.saveGraph("/home/sebastien/Documents/saved-CFG/graphTrans-" + ft.format(dNow)+".txt");
         
     }
+    
+    public void saveAsInJFileChooser(JFileChooser fileChooser) {
+    	fileChooser = new JFileChooser();
+   	 Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
+        String fileSave = "graph-"+ft.format(dNow)+".txt";
+        fileChooser.setSelectedFile(new File(fileSave));
+        fileChooser.showSaveDialog(null);
+        graph.saveGraph(fileChooser.getSelectedFile().toString());  
+    }
+   
 }

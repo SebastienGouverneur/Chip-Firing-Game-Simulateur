@@ -20,7 +20,7 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
-    private ModelMainFrame modelMailFrame;
+    private ModelMainFrame modelMainFrame;
     private Thread checkUpdateGraph;
 
     public ViewMainFrame() {
@@ -29,7 +29,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public ViewMainFrame(final ModelMainFrame modelMainFrame) {
         initComponents();
-        this.modelMailFrame = modelMainFrame;
+        this.modelMainFrame = modelMainFrame;
         setVisible(true);
         setLocationRelativeTo(null);  // *** this will center your app ***
     }
@@ -55,6 +55,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         iterationModeSeqentiel = new javax.swing.JRadioButton();
         separator4 = new javax.swing.JSeparator();
         optionControlRun = new javax.swing.JButton();
+        optionControlPause = new javax.swing.JButton();
         optionControlForward = new javax.swing.JButton();
         optionControlBegin = new javax.swing.JButton();
         optionControlBackward = new javax.swing.JButton();
@@ -128,6 +129,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
         optionControlRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Play-32.png"))); // NOI18N
         optionControlRun.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Play-32grey.png"))); // NOI18N
+        
+        optionControlPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
+        optionControlPause.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
 
         optionControlForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32.png"))); // NOI18N
         optionControlForward.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32grey.png"))); // NOI18N
@@ -196,6 +200,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(optionControlPause, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionControlForward)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionControlEnd)
@@ -251,6 +257,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                             .addComponent(iterationModeKChips))
                         .addComponent(optionControlBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(optionControlPause, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(optionControlEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(optionControlBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(jSeparator1)
@@ -533,6 +540,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton optionControlEnd;
     private javax.swing.JButton optionControlForward;
     private javax.swing.JButton optionControlRun;
+    private javax.swing.JButton optionControlPause;
     private javax.swing.JTextField optionControlTime;
     private javax.swing.JLabel optionControlTimeLabel;
     private javax.swing.JPanel optionsChips;
@@ -554,7 +562,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel viewGraph;
     // End of variables declaration//GEN-END:variables
 
-
+    
     
     public JButton getResetSelectedVerticesButton() {
         return resetSelectedVerticesButton;
@@ -569,7 +577,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     }
 
     public ModelMainFrame getModel() {
-        return modelMailFrame;
+        return modelMainFrame;
     }
 
     public JMenuItem getSave() {
@@ -663,6 +671,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public JButton getOptionControlForward() {
         return optionControlForward;
     }
+    
+    public JButton getOptionControlPause() {
+    	return optionControlPause;
+    }
 
     public JButton getOptionControlRun() {
         return optionControlRun;
@@ -696,7 +708,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         return quit;
     }
 
-    public JMenuItem getSaveas() {
+    public JMenuItem getSaveAs() {
         return saveas;
     }
 
@@ -751,4 +763,5 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public void printLimitCycleSize(long limitCycleSize) {
         labelSizeCycleLimit.setText(Long.toString(limitCycleSize));
     }
+    
 }

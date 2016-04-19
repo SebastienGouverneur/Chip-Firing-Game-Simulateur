@@ -51,7 +51,7 @@ public class ModeSequentialBlock implements IAlgorithm {
 
         /* start */       
         for (Map.Entry<Integer, LinkedList<String>> stepIter : patternUpdate.getAllStep()) {
-          //  int numStep = stepIter.getKey();
+            int numStep = stepIter.getKey();
             LinkedList<String> parallelPattern = stepIter.getValue();
 
             HashMap<String, Integer> initialState = new HashMap<>(parallelPattern.size());
