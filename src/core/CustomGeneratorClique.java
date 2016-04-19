@@ -20,10 +20,12 @@ public class CustomGeneratorClique implements ICustomGenerator {
         while(j < nbVertex) {
             j++;
             graph.addEdge(""+i+""+j, ""+i, ""+j, true);
+            graph.addEdge(""+j+""+i, ""+j, ""+i, true);
             i++;
         }
         
         graph.addEdge(""+nbVertex+"1", ""+nbVertex, "1", true);
+        graph.addEdge("1"+nbVertex+"", "1", ""+nbVertex, true);
         
         for (Node node : graph.getNodeSet()) {
             node.addAttribute("label", nbChips);
