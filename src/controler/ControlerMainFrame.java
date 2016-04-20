@@ -5,6 +5,7 @@ import core.AddChipOp;
 import core.Cfg;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
+import core.ModeAsynchrone;
 import core.ModeSequentialBlock;
 import core.MyGraph;
 import core.PatternUpdate;
@@ -200,7 +201,9 @@ public class ControlerMainFrame implements ActionListener {
             ModelKChips modelKChips = new ModelKChips();
             ViewKChips viewKChips = new ViewKChips(modelKChips);
             ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
-        } else if (viewMainFrame.getIterationModeParallel().isSelected()) {
+        } 
+        
+        else if (viewMainFrame.getIterationModeParallel().isSelected()) {
             if (inProgess.get()) {
                 return;
             }
@@ -254,7 +257,57 @@ public class ControlerMainFrame implements ActionListener {
             });
             compute.start();
         }
+        
+        else if (viewMainFrame.getIterationModeSeqentiel().isSelected()) {
+        	if (inProgess.get())
+        		return;
+        	
+        	compute = new Thread(new Runnable() {
 
+				@Override
+				public void run() {
+					
+					final MyGraph graph = Cfg.getInstance().getGraph();
+                    StringBuilder config = new StringBuilder(graph.getNodeCount());
+
+                    for (Node node : graph.getNodeSet()) {
+                        config.append(node.getAttribute("chips"));
+                    }
+
+                    ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
+
+                    controlerGraphTrans.reset();
+                    viewMainFrame.printLimitCycleSize(0);
+
+                    inProgess.set(true);
+                    
+                    while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
+                    	
+                    	 PatternUpdate p = controlerIteration.getCurrentPattern();
+                         String configFrom = configSet.getLastConfig();
+                    	
+                    	 modelMainFrame.execute(
+                                 new ModeAsynchrone(
+                                         p,
+                                         configSet,
+                                         modelMainFrame.getTimeExec(),
+                                         modelMainFrame.getTimeAnimation()
+                                 )
+                         );
+
+                         String configTo = configSet.getLastConfig();
+                         modelGraphTrans.addTransition(configFrom, configTo);
+                    	
+                    	
+                    }
+                    
+                    viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
+                    inProgess.set(false);
+					
+				}
+        	});
+        	compute.start();
+        }
     }
 
     public void optionControlForwardPerformed() {
@@ -429,13 +482,14 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     private void saveCurrentCFG() {
-        Cfg.getInstance().saveInDirectory("/home/sebastien/Documents/saved-CFG/");     
+    	Cfg.getInstance().saveInDirectory("/home/sebastien/Documents/saved-CFG/");     
     }
     
     private void saveAsCurrentCFG() {
     	JFileChooser fileChooser = new JFileChooser();
     	Cfg.getInstance().saveAsInJFileChooser(fileChooser);	
     }
+    
     private void quitSimulator() {
     	int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the simulator ?", "Close?", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {

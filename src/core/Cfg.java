@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -64,23 +66,40 @@ public final class Cfg {
     }
 
     public void saveInDirectory(String directory) {
-        Date dNow = new Date();
-        SimpleDateFormat ft
-                = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
-        
-        graph.saveGraph("/home/sebastien/Documents/saved-CFG/graph-" + ft.format(dNow)+".txt");
-        graph.saveGraph("/home/sebastien/Documents/saved-CFG/graphTrans-" + ft.format(dNow)+".txt");
+    	if (graph.getNodeCount() != 0) {
+	        Date dNow = new Date();
+	        SimpleDateFormat ft
+	                = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
+	        
+	        graph.saveGraph("/home/sebastien/Documents/saved-CFG/graph-" + ft.format(dNow)+".txt");
+	        //graph.saveGraph("/home/sebastien/Documents/saved-CFG/graphTrans-" + ft.format(dNow)+".txt");
+    	}
+    	else {
+    		JOptionPane.showMessageDialog(new JFrame(),
+    			    "There's no graph that needs to be saved.",
+    			    "Save error",
+    			    JOptionPane.ERROR_MESSAGE);
+    	}
+    		
         
     }
     
     public void saveAsInJFileChooser(JFileChooser fileChooser) {
-    	fileChooser = new JFileChooser();
-   	 Date dNow = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
-        String fileSave = "graph-"+ft.format(dNow)+".txt";
-        fileChooser.setSelectedFile(new File(fileSave));
-        fileChooser.showSaveDialog(null);
-        graph.saveGraph(fileChooser.getSelectedFile().toString());  
+    	if (graph.getNodeCount() != 0) {
+	    	fileChooser = new JFileChooser();
+	   	 	Date dNow = new Date();
+	        SimpleDateFormat ft = new SimpleDateFormat("E dd-MM-yy_hh:mm:ss");
+	        String fileSave = "graph-"+ft.format(dNow)+".txt";
+	        fileChooser.setSelectedFile(new File(fileSave));
+	        fileChooser.showSaveDialog(null);
+	        graph.saveGraph(fileChooser.getSelectedFile().toString()); 
+    	}
+    	else {
+    		JOptionPane.showMessageDialog(new JFrame(),
+    			    "There's no graph that needs to be saved.",
+    			    "Save As error",
+    			    JOptionPane.ERROR_MESSAGE);
+    	}
     }
    
 }

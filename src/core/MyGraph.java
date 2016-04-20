@@ -210,7 +210,7 @@ public class MyGraph {
         algo.init(Cfg.getInstance().getGraph());
         algo.compute();
         if (Thread.currentThread().isInterrupted()) {
-            System.err.println("ne pas executer terminate() !!!");
+            //System.err.println("ne pas executer terminate() !!!");
             Thread.currentThread().interrupt();
             return;
         }
