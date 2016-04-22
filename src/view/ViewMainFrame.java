@@ -132,7 +132,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlRun.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Play-32grey.png"))); // NOI18N
         
         optionControlPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
-        optionControlPause.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause-grey.png")));
+        optionControlPause.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
 
         optionControlForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32.png"))); // NOI18N
         optionControlForward.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32grey.png"))); // NOI18N
