@@ -23,7 +23,7 @@ GraphStream - Une bibliothèque logicielle en java de manipulation de graphes dy
 
 git clone https://github.com/SebastienGouverneur/Chip-Firing-Game-Simulateur.git
 	ou
-cliquez sur "Download ZIP
+cliquez sur "Download ZIP"
 
 
 ## Développement

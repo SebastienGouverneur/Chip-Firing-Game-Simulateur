@@ -17,6 +17,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
 import org.graphstream.ui.swingViewer.ViewPanel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
@@ -51,8 +54,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         playCFG = new javax.swing.JPanel();
         viewGraph = new javax.swing.JPanel();
         optionsControl = new javax.swing.JPanel();
-        iterationModeParallel = new javax.swing.JRadioButton();
-        iterationModeSeqentiel = new javax.swing.JRadioButton();
+        IterationModeSynchrone = new javax.swing.JRadioButton();
+        IterationModeAsynchrone = new javax.swing.JRadioButton();
         separator4 = new javax.swing.JSeparator();
         optionControlRun = new javax.swing.JButton();
         optionControlPause = new javax.swing.JButton();
@@ -62,7 +65,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlEnd = new javax.swing.JButton();
         optionControlTime = new javax.swing.JTextField();
         optionControlTimeLabel = new javax.swing.JLabel();
-        iterationButton = new javax.swing.JButton();
         graphTransButton = new javax.swing.JButton();
         editGraphButton = new javax.swing.JButton();
         infoGraphButton = new javax.swing.JButton();
@@ -109,21 +111,20 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         viewGraph.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         viewGraph.setLayout(new java.awt.BorderLayout());
 
-        iterationMode.add(iterationModeParallel);
-        iterationModeParallel.setSelected(true);
-        iterationModeParallel.setText("Par/S");
-        iterationModeParallel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32.png"))); // NOI18N
-        iterationModeParallel.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png"))); // NOI18N
-        iterationModeParallel.addActionListener(new java.awt.event.ActionListener() {
+        iterationMode.add(IterationModeSynchrone);
+        IterationModeSynchrone.setText("Par/S");
+        IterationModeSynchrone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32.png"))); // NOI18N
+        IterationModeSynchrone.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png"))); // NOI18N
+        IterationModeSynchrone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                iterationModeParallelActionPerformed(evt);
+                IterationModeSynchroneActionPerformed(evt);
             }
         });
 
-        iterationMode.add(iterationModeSeqentiel);
-        iterationModeSeqentiel.setText("Async");
-        iterationModeSeqentiel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32.png"))); // NOI18N
-        iterationModeSeqentiel.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32red.png"))); // NOI18N
+        iterationMode.add(IterationModeAsynchrone);
+        IterationModeAsynchrone.setText("Async");
+        IterationModeAsynchrone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32.png"))); // NOI18N
+        IterationModeAsynchrone.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32red.png"))); // NOI18N
 
         separator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -131,7 +132,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlRun.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Play-32grey.png"))); // NOI18N
         
         optionControlPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
-        optionControlPause.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause.png")));
+        optionControlPause.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Pause-grey.png")));
 
         optionControlForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32.png"))); // NOI18N
         optionControlForward.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Fast Forward-32grey.png"))); // NOI18N
@@ -148,9 +149,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlTimeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Watch-32.png"))); // NOI18N
         optionControlTimeLabel.setText("ms");
         optionControlTimeLabel.setToolTipText("");
-
-        iterationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Plus-25.png"))); // NOI18N
-        iterationButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Plus-25grey.png"))); // NOI18N
 
         graphTransButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Active Directory-25.png"))); // NOI18N
         graphTransButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Active Directory-25grey.png"))); // NOI18N
@@ -189,92 +187,92 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         });
 
         javax.swing.GroupLayout optionsControlLayout = new javax.swing.GroupLayout(optionsControl);
-        optionsControl.setLayout(optionsControlLayout);
         optionsControlLayout.setHorizontalGroup(
-            optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(optionsControlLayout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addComponent(optionControlBegin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlBackward)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlPause, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlForward)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlEnd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(separator4, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(iterationModeParallel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(iterationModeSeqentiel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(iterationModeKChips)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(optionControlTime, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(validateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(iterationButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(graphTransButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editGraphButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoGraphButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(logButton)
-                .addGap(44, 44, 44))
+        	optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addGap(3)
+        			.addComponent(optionControlBegin)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(optionControlBackward)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(optionControlRun, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(optionControlPause, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(optionControlForward)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(optionControlEnd)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(separator4, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(IterationModeSynchrone)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(IterationModeAsynchrone)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(iterationModeKChips)
+        			.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addComponent(optionControlTimeLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel1)
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(optionsControlLayout.createSequentialGroup()
+        							.addGap(100)
+        							.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(optionsControlLayout.createSequentialGroup()
+        							.addGap(12)
+        							.addComponent(validateTime, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+        							.addGap(135)
+        							.addComponent(graphTransButton)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(editGraphButton)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(infoGraphButton)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(logButton)))))
+        			.addGap(44))
         );
         optionsControlLayout.setVerticalGroup(
-            optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(separator4)
-            .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(optionControlTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(optionControlTime, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel1))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsControlLayout.createSequentialGroup()
-                .addComponent(jSeparator2)
-                .addGap(4, 4, 4))
-            .addGroup(optionsControlLayout.createSequentialGroup()
-                .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(validateTime)
-                    .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(iterationModeParallel)
-                            .addComponent(iterationModeSeqentiel)
-                            .addComponent(iterationModeKChips))
-                        .addComponent(optionControlBackward, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(optionControlRun, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(optionControlPause, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(optionControlEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(optionControlBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jSeparator1)
-                        .addComponent(optionControlForward, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsControlLayout.createSequentialGroup()
-                .addGroup(optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(optionsControlLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(logButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, optionsControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(infoGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(editGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(graphTransButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(iterationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        		.addComponent(separator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addGap(0, 3, Short.MAX_VALUE)
+        					.addComponent(logButton))
+        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(infoGraphButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+        					.addComponent(editGraphButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+        					.addComponent(graphTransButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)))
+        			.addContainerGap())
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
+        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(IterationModeSynchrone)
+        					.addComponent(IterationModeAsynchrone)
+        					.addComponent(iterationModeKChips)
+        					.addComponent(optionControlTimeLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(jLabel1)
+        					.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(optionControlBackward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        				.addComponent(optionControlRun, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        				.addComponent(optionControlPause, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        				.addComponent(optionControlEnd, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        				.addComponent(optionControlBegin, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        				.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(optionControlForward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+        			.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(4))
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addComponent(validateTime)
+        			.addContainerGap())
         );
+        optionsControl.setLayout(optionsControlLayout);
 
         optionsChips.setBorder(javax.swing.BorderFactory.createTitledBorder("Options Chip"));
 
@@ -492,9 +490,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_validateTimeActionPerformed
 
-    private void iterationModeParallelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterationModeParallelActionPerformed
+    private void IterationModeSynchroneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IterationModeSynchroneActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_iterationModeParallelActionPerformed
+    }//GEN-LAST:event_IterationModeSynchroneActionPerformed
 
     //Implémentation du pattern observer
     @Override
@@ -516,11 +514,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenuItem import_;
     private javax.swing.JButton infoGraphButton;
     private javax.swing.JTextField inputNbChips;
-    private javax.swing.JButton iterationButton;
     private javax.swing.ButtonGroup iterationMode;
     private javax.swing.JRadioButton iterationModeKChips;
-    private javax.swing.JRadioButton iterationModeParallel;
-    private javax.swing.JRadioButton iterationModeSeqentiel;
+    private javax.swing.JRadioButton IterationModeSynchrone;
+    private javax.swing.JRadioButton IterationModeAsynchrone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
@@ -616,20 +613,16 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         return inputNbChips;
     }
 
-    public JButton getIterationButton() {
-        return iterationButton;
-    }
-
     public ButtonGroup getIterationMode() {
         return iterationMode;
     }
 
-    public JRadioButton getIterationModeParallel() {
-        return iterationModeParallel;
+    public JRadioButton getIterationModeSynchrone() {
+        return IterationModeSynchrone;
     }
 
-    public JRadioButton getIterationModeSeqentiel() {
-        return iterationModeSeqentiel;
+    public JRadioButton getIterationModeAsynchrone() {
+        return IterationModeAsynchrone;
     }
 
     public JLabel getjLabel2() {

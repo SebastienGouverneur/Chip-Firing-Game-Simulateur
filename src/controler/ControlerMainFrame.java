@@ -28,6 +28,8 @@ import model.ModelIteration;
 import model.ModelKChips;
 import model.ModelLogFrame;
 import model.ModelMainFrame;
+
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import view.ViewEditGraph;
 import view.ViewGeneratorGraph;
@@ -69,8 +71,8 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOptionControlPause().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlForward().addActionListener((ActionListener) this);
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
+        viewMainFrame.getIterationModeSynchrone().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
-        viewMainFrame.getIterationButton().addActionListener((ActionListener) this);
         viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
         viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
@@ -135,9 +137,9 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getValideOptionChips()) {
             valideOptionChipsPerformed();
         }
-
-        if (ae.getSource() == viewMainFrame.getIterationButton()) {
-            iterationButtonPerformed();
+        
+        if (ae.getSource() == viewMainFrame.getIterationModeSynchrone()) {
+            iterationSynchronePerformed();
         }
 
         if (ae.getSource() == viewMainFrame.getValidateTime()) {
@@ -191,28 +193,24 @@ public class ControlerMainFrame implements ActionListener {
     public void optionControlPausePerformed() {
         
 		interruptCompute();
-}
+    }
 
+    
     public void optionControlRunPerformed() {
     	
         if (viewMainFrame.getIterationModeKChips().isSelected()) {
-            viewMainFrame.printLimitCycleSize(0);
-
-            ModelKChips modelKChips = new ModelKChips();
-            ViewKChips viewKChips = new ViewKChips(modelKChips);
-            ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
+            setUpKChips();
         } 
         
-        else if (viewMainFrame.getIterationModeParallel().isSelected()) {
+        else if (viewMainFrame.getIterationModeSynchrone().isSelected()) {
             if (inProgess.get()) {
                 return;
             }
 
             if (!controlerIteration.getCurrentPattern().isValid()) {
-                iterationButtonPerformed();
-                return;
+                iterationSynchronePerformed();
             }
-
+            
             compute = new Thread(new Runnable() {
 
                 @Override
@@ -258,8 +256,8 @@ public class ControlerMainFrame implements ActionListener {
             compute.start();
         }
         
-        else if (viewMainFrame.getIterationModeSeqentiel().isSelected()) {
-        	if (inProgess.get())
+        else if (viewMainFrame.getIterationModeAsynchrone().isSelected()) {
+        	if (inProgess.get() == true)
         		return;
         	
         	compute = new Thread(new Runnable() {
@@ -316,7 +314,7 @@ public class ControlerMainFrame implements ActionListener {
         }
 
         if (!controlerIteration.getCurrentPattern().isValid()) {
-            iterationButtonPerformed();
+            iterationSynchronePerformed();
             return;
         }
 
@@ -383,11 +381,27 @@ public class ControlerMainFrame implements ActionListener {
 
         modelMainFrame.computeNodesValues(nbChips, op);
     }
+    
+    private void setUpKChips() {
+    	viewMainFrame.printLimitCycleSize(0);
 
-    private void iterationButtonPerformed() {
-        viewIteration.getInputPattern().setText("");
-        viewIteration.getStateTextField().setText("");
-        viewIteration.setVisible(true);
+        ModelKChips modelKChips = new ModelKChips();
+        ViewKChips viewKChips = new ViewKChips(modelKChips);
+        ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
+    }
+
+    private void iterationSynchronePerformed() {
+    	viewMainFrame.getIterationModeSynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png")));
+    	if(Cfg.getInstance().getGraph().getNodeCount() == 0) { 
+    		JOptionPane.showMessageDialog(null, "There's no graph yet, please open a graph or import one from a template before.",
+    				"Iteration Warning", JOptionPane.WARNING_MESSAGE);
+    		viewMainFrame.getIterationModeSynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32.png")));
+    	}
+    	else {
+	        viewIteration.getInputPattern().setText("");
+	        viewIteration.getStateTextField().setText("");
+	        viewIteration.setVisible(true);
+    	}
     }
 
     private void validateTimeButtonPerformed() {
@@ -468,7 +482,7 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     void interruptCompute() {
-    	if (inProgess()) {
+    	if (inProgess() == true) {
 	        compute.interrupt();
 	        try {
 	            compute.join();
