@@ -198,17 +198,22 @@ public class ControlerMainFrame implements ActionListener {
     
     public void optionControlRunPerformed() {
     	
-        if (viewMainFrame.getIterationModeKChips().isSelected()) {
+    	if (Cfg.getInstance().getGraph().getNodeCount() == 0) { 
+    		errorDialogMessage();
+    	}
+    	
+    	else if (viewMainFrame.getIterationModeKChips().isSelected()) {
             setUpKChips();
         } 
         
-        else if (viewMainFrame.getIterationModeSynchrone().isSelected()) {
+        
+    	else if (viewMainFrame.getIterationModeSynchrone().isSelected()) {
             if (inProgess.get()) {
                 return;
             }
 
             if (!controlerIteration.getCurrentPattern().isValid()) {
-                iterationSynchronePerformed();
+            	invalidDialogMessage();
             }
             
             compute = new Thread(new Runnable() {
@@ -389,12 +394,16 @@ public class ControlerMainFrame implements ActionListener {
         ViewKChips viewKChips = new ViewKChips(modelKChips);
         ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
     }
+    
+    private void errorDialogMessage() {
+    	JOptionPane.showMessageDialog(null, "There's no graph yet, please open a graph or import one from a template before.",
+				"Iteration Warning", JOptionPane.WARNING_MESSAGE);
+    }
 
     private void iterationSynchronePerformed() {
     	viewMainFrame.getIterationModeSynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png")));
     	if(Cfg.getInstance().getGraph().getNodeCount() == 0) { 
-    		JOptionPane.showMessageDialog(null, "There's no graph yet, please open a graph or import one from a template before.",
-    				"Iteration Warning", JOptionPane.WARNING_MESSAGE);
+    		errorDialogMessage();
     		viewMainFrame.getIterationModeSynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32.png")));
     	}
     	else {
@@ -504,12 +513,23 @@ public class ControlerMainFrame implements ActionListener {
     	Cfg.getInstance().saveAsInJFileChooser(fileChooser);	
     }
     
+    private void invalidDialogMessage() {
+    	int reply = JOptionPane.showConfirmDialog(null, "Current pattern is invalid or as not been set yet, do you want to choose a pattern to valid ?",
+    										"Invalid Pattern",
+    										JOptionPane.YES_NO_OPTION);
+    	if (reply == JOptionPane.YES_OPTION) {
+    		iterationSynchronePerformed();
+    	}
+    	else
+    		return;
+    }
+    
     private void quitSimulator() {
-    	int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the simulator ?", "Close?", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+    	int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the simulator ?", "Exit CFG-Simulator", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION)
             System.exit(0);
-        } else {
+        else 
             return;
-        }
+        
     }
 }
