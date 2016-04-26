@@ -5,7 +5,6 @@ import core.AddChipOp;
 import core.Cfg;
 import core.ConfigurationContrainer;
 import core.IChipOperation;
-import core.ModeAsynchrone;
 import core.ModeSequentialBlock;
 import core.MyGraph;
 import core.PatternUpdate;
@@ -21,6 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import model.ModelAsynchrone;
 import model.ModelEditGraph;
 import model.ModelFile;
 import model.ModelGraphTrans;
@@ -31,6 +32,8 @@ import model.ModelMainFrame;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import view.ViewAsynchrone;
 import view.ViewEditGraph;
 import view.ViewGeneratorGraph;
 import view.ViewGraphTrans;
@@ -57,13 +60,13 @@ public class ControlerMainFrame implements ActionListener {
     private final ControlerFile controllerFile;
 
     private Thread compute;
-    private static AtomicBoolean inProgess;
+    private static AtomicBoolean inProgress;
 
     public ControlerMainFrame(ViewMainFrame viewMainFrame, ModelMainFrame modelMainFrame) {
         this.viewMainFrame = viewMainFrame;
         this.modelMainFrame = modelMainFrame;
 
-        inProgess = new AtomicBoolean(false);
+        inProgress = new AtomicBoolean(false);
 
         modelMainFrame.addObserver(viewMainFrame);
         viewMainFrame.getLogButton().addActionListener((ActionListener) this);
@@ -72,6 +75,8 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOptionControlForward().addActionListener((ActionListener) this);
         viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeSynchrone().addActionListener((ActionListener) this);
+        viewMainFrame.getIterationModeAsynchrone().addActionListener((ActionListener) this);
+        viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
         viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
@@ -82,7 +87,6 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getImport_().addActionListener((ActionListener) this);
         viewMainFrame.getSave().addActionListener((ActionListener) this);
         viewMainFrame.getSaveAs().addActionListener((ActionListener) this);
-        viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
         viewMainFrame.getQuit().addActionListener((ActionListener) this);
 
         modelMainFrame.setTimeAnimation(Cfg.getTimeAnimation());
@@ -139,9 +143,17 @@ public class ControlerMainFrame implements ActionListener {
         }
         
         if (ae.getSource() == viewMainFrame.getIterationModeSynchrone()) {
-            iterationSynchronePerformed();
+            iterationModeSynchronePerformed();
         }
-
+        
+        if (ae.getSource() == viewMainFrame.getIterationModeAsynchrone()) {
+        	iterationModeAsynchronePerformed();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getIterationModeKChips()) {
+        	iterationModeKChipsPerformed();
+        }
+        
         if (ae.getSource() == viewMainFrame.getValidateTime()) {
             validateTimeButtonPerformed();
         }
@@ -203,17 +215,21 @@ public class ControlerMainFrame implements ActionListener {
     	}
     	
     	else if (viewMainFrame.getIterationModeKChips().isSelected()) {
+    		if (inProgress.get()) {
+    			return;
+    		}
+    		
             setUpKChips();
         } 
         
         
     	else if (viewMainFrame.getIterationModeSynchrone().isSelected()) {
-            if (inProgess.get()) {
+            if (inProgress.get()) {
                 return;
             }
 
             if (!controlerIteration.getCurrentPattern().isValid()) {
-            	invalidDialogMessage();
+            	invalidPatternDialogMessage();
             }
             
             compute = new Thread(new Runnable() {
@@ -233,7 +249,7 @@ public class ControlerMainFrame implements ActionListener {
                     controlerGraphTrans.reset();
                     viewMainFrame.printLimitCycleSize(0);
 
-                    inProgess.set(true);
+                    inProgress.set(true);
 
                     while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
   
@@ -254,7 +270,7 @@ public class ControlerMainFrame implements ActionListener {
                     }
                     viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
                     
-                    inProgess.set(false);
+                    inProgress.set(false);
                     
                 }
             });
@@ -262,64 +278,20 @@ public class ControlerMainFrame implements ActionListener {
         }
         
         else if (viewMainFrame.getIterationModeAsynchrone().isSelected()) {
-        	if (inProgess.get() == true)
+        	if (inProgress.get())
         		return;
         	
-        	compute = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					
-					final MyGraph graph = Cfg.getInstance().getGraph();
-                    StringBuilder config = new StringBuilder(graph.getNodeCount());
-
-                    for (Node node : graph.getNodeSet()) {
-                        config.append(node.getAttribute("chips"));
-                    }
-
-                    ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
-
-                    controlerGraphTrans.reset();
-                    viewMainFrame.printLimitCycleSize(0);
-
-                    inProgess.set(true);
-                    
-                    while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
-                    	
-                    	 PatternUpdate p = controlerIteration.getCurrentPattern();
-                         String configFrom = configSet.getLastConfig();
-                    	
-                    	 modelMainFrame.execute(
-                                 new ModeAsynchrone(
-                                         p,
-                                         configSet,
-                                         modelMainFrame.getTimeExec(),
-                                         modelMainFrame.getTimeAnimation()
-                                 )
-                         );
-
-                         String configTo = configSet.getLastConfig();
-                         modelGraphTrans.addTransition(configFrom, configTo);
-                    	
-                    	
-                    }
-                    
-                    viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
-                    inProgess.set(false);
-					
-				}
-        	});
-        	compute.start();
+        	iterationModeAsynchronePerformed();
         }
     }
 
     public void optionControlForwardPerformed() {
-        if (inProgess.get()) {
+        if (inProgress.get()) {
             return;
         }
 
         if (!controlerIteration.getCurrentPattern().isValid()) {
-            iterationSynchronePerformed();
+            iterationModeSynchronePerformed();
             return;
         }
 
@@ -339,7 +311,7 @@ public class ControlerMainFrame implements ActionListener {
                 controlerGraphTrans.reset();
                 viewMainFrame.printLimitCycleSize(0);
 
-                inProgess.set(true);
+                inProgress.set(true);
 
                 PatternUpdate p = controlerIteration.getCurrentPattern();
                 String configFrom = configSet.getLastConfig();
@@ -357,13 +329,13 @@ public class ControlerMainFrame implements ActionListener {
                 modelGraphTrans.addTransition(configFrom, configTo);
 
                 viewMainFrame.printLimitCycleSize(configSet.retrieveLimitCycleSize());
-                inProgess.set(false);
+                inProgress.set(false);
             }
         });
 
         compute.start();
     }
-
+    
     private void valideOptionChipsPerformed() {
         IChipOperation op;
         int nbChips = 0;
@@ -400,7 +372,7 @@ public class ControlerMainFrame implements ActionListener {
 				"Iteration Warning", JOptionPane.WARNING_MESSAGE);
     }
 
-    private void iterationSynchronePerformed() {
+    private void iterationModeSynchronePerformed() {
     	viewMainFrame.getIterationModeSynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png")));
     	if(Cfg.getInstance().getGraph().getNodeCount() == 0) { 
     		errorDialogMessage();
@@ -412,6 +384,34 @@ public class ControlerMainFrame implements ActionListener {
 	        viewIteration.setVisible(true);
     	}
     }
+    
+    private void iterationModeAsynchronePerformed() {
+    	viewMainFrame.printLimitCycleSize(0);
+    	viewMainFrame.getIterationModeAsynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32red.png")));
+    	if(Cfg.getInstance().getGraph().getNodeCount() == 0) { 
+    		errorDialogMessage();
+    		viewMainFrame.getIterationModeAsynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32.png")));
+    	}
+    	else {
+    		System.out.println("passe ici");
+    		 ModelAsynchrone modelAsynchrone = new ModelAsynchrone();
+    		 ViewAsynchrone viewAsynchrone = new ViewAsynchrone(this);
+    		 ViewGeneratorGraph viewGeneratorGraph = new ViewGeneratorGraph(modelAsynchrone);
+    		 ControlerAsynchrone controlerAsynchrone = new ControlerAsynchrone(viewMainFrame, viewGeneratorGraph, modelAsynchrone);
+    	}
+    }
+    
+    private void iterationModeKChipsPerformed() {
+    	viewMainFrame.getIterationModeKChips().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/States Filled-32red.png")));
+    	if(Cfg.getInstance().getGraph().getNodeCount() == 0) { 
+    		errorDialogMessage();
+    		viewMainFrame.getIterationModeKChips().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/States Filled-32.png")));
+    	}
+    	else {
+    		setUpKChips();
+    	}
+    }
+
 
     private void validateTimeButtonPerformed() {
         double timeExec = 0;
@@ -426,7 +426,7 @@ public class ControlerMainFrame implements ActionListener {
         modelMainFrame.setTimeAnimation(timeExec);
     }
 
-    private void graphTransButtonPerformed() {
+    public void graphTransButtonPerformed() {
         viewGraphTrans.setVisible(true);
     }
 
@@ -454,7 +454,7 @@ public class ControlerMainFrame implements ActionListener {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-            if (inProgess.get() == true) {
+            if (inProgress.get() == true) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     compute.interrupt();
@@ -463,7 +463,7 @@ public class ControlerMainFrame implements ActionListener {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    inProgess.set(false);
+                    inProgress.set(false);
                 } else {
                     return;
                 }
@@ -487,7 +487,7 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     public boolean inProgess() {
-        return inProgess.get();
+        return inProgress.get();
     }
 
     void interruptCompute() {
@@ -498,7 +498,7 @@ public class ControlerMainFrame implements ActionListener {
 	        } catch (InterruptedException ex) {
 	            Logger.getLogger(ControlerMainFrame.class.getName()).log(Level.SEVERE, null, ex);
 	        }
-	        inProgess.set(false);
+	        inProgress.set(false);
 	        
 	        viewMainFrame.printLimitCycleSize(0);
     	}
@@ -513,12 +513,12 @@ public class ControlerMainFrame implements ActionListener {
     	Cfg.getInstance().saveAsInJFileChooser(fileChooser);	
     }
     
-    private void invalidDialogMessage() {
+    private void invalidPatternDialogMessage() {
     	int reply = JOptionPane.showConfirmDialog(null, "Current pattern is invalid or as not been set yet, do you want to choose a pattern to valid ?",
     										"Invalid Pattern",
     										JOptionPane.YES_NO_OPTION);
     	if (reply == JOptionPane.YES_OPTION) {
-    		iterationSynchronePerformed();
+    		iterationModeSynchronePerformed();
     	}
     	else
     		return;

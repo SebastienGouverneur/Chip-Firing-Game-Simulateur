@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.ModelFile;
@@ -17,6 +19,8 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
     private final ControlerMainFrame controlerMainFrame;
     private final ViewGeneratorGraph viewGeneratorGraph;
     private final ModelFile modelFile;
+    private int nbVertex;
+    private int nbChips;
     
     public ControlerFile(ControlerMainFrame controlerMainFrame, ModelFile modelOpenFile, ViewGeneratorGraph viewGeneratorGraph) {
         this.modelFile = modelOpenFile;
@@ -31,8 +35,10 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+    	if (ae.getSource() == viewGeneratorGraph.getButtonCancel()) {
+    		viewGeneratorGraph.dispose();
+    	}
         if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-
             if (controlerMainFrame.inProgess() == true) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
@@ -57,7 +63,10 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
         
         if (lsm.isSelectionEmpty()) {
             System.out.println(" <none>");
-        } else {
+        } 
+        
+ 
+        else {
             int minIndex = lsm.getMinSelectionIndex();
             viewGeneratorGraph.getPreviewGraph().removeAll();
 
@@ -70,8 +79,8 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
                                     false,
                                     true
                             ),
-                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
-                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                            nbVertex,
+                            nbChips
                     );
                     break;
 
@@ -83,16 +92,16 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
                                     false,
                                     true
                             ),
-                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
-                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                            nbVertex,
+                            nbChips
                     );
                     break;
 
                 case 2:
                     modelFile.generateGraph(
                             new CustomGeneratorClique(),
-                            Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText()),
-                            Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText())
+                            nbVertex,
+                            nbChips
                     );
                     break;
     
@@ -103,5 +112,19 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
             viewGeneratorGraph.getPreviewGraph().add(modelFile.getViewer().addDefaultView(false));
             viewGeneratorGraph.getPreviewGraph().revalidate();
         }
+        
+        viewGeneratorGraph.getInputAmountOfChips().getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            public void changedUpdate(javax.swing.event.DocumentEvent e){
+                
+            }
+            public void insertUpdate(javax.swing.event.DocumentEvent e){
+            	nbVertex = Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText());
+                nbChips = Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText());  
+            } 
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+               
+            }
+        });
+        
     }
 }

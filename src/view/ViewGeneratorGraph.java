@@ -8,10 +8,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import model.ModelAsynchrone;
 import model.ModelFile;
 
 public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
     private ModelFile modelFile;
+    private ModelAsynchrone modelAsynchrone;
     
     /**
      * Creates new form ViewGeneratorGraph
@@ -23,6 +26,11 @@ public class ViewGeneratorGraph extends javax.swing.JFrame implements Observer {
     public ViewGeneratorGraph(final ModelFile modelFile) {
         initComponents();
         this.modelFile = modelFile;
+    }
+    
+    public ViewGeneratorGraph(final ModelAsynchrone modelAsynchrone) {
+        initComponents();
+        this.modelAsynchrone = modelAsynchrone;
     }
 
     public JButton getButtonCancel() {

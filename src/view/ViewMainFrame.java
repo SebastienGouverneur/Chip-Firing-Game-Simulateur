@@ -20,6 +20,8 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
@@ -59,6 +61,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         separator4 = new javax.swing.JSeparator();
         optionControlRun = new javax.swing.JButton();
         optionControlPause = new javax.swing.JButton();
+        optionControlPause.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         optionControlForward = new javax.swing.JButton();
         optionControlBegin = new javax.swing.JButton();
         optionControlBackward = new javax.swing.JButton();
@@ -66,6 +72,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlTime = new javax.swing.JTextField();
         optionControlTimeLabel = new javax.swing.JLabel();
         graphTransButton = new javax.swing.JButton();
+        graphTransButton.setToolTipText("");
+        graphTransButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         editGraphButton = new javax.swing.JButton();
         infoGraphButton = new javax.swing.JButton();
         logButton = new javax.swing.JButton();
@@ -151,6 +162,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionControlTimeLabel.setToolTipText("");
 
         graphTransButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Active Directory-25.png"))); // NOI18N
+        graphTransButton.setText("Trans");
         graphTransButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Active Directory-25grey.png"))); // NOI18N
 
         editGraphButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Settings3-25.png"))); // NOI18N
@@ -200,77 +212,90 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         			.addComponent(optionControlPause, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(optionControlForward)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(optionControlEnd)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(separator4, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(IterationModeSynchrone)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(IterationModeAsynchrone)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(iterationModeKChips)
-        			.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+        			.addGap(6)
         			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
         				.addGroup(optionsControlLayout.createSequentialGroup()
-        					.addComponent(optionControlTimeLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-        					.addGap(18)
-        					.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+        					.addGap(78)
+        					.addComponent(separator4, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(optionsControlLayout.createSequentialGroup()
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(jLabel1)
+        					.addComponent(optionControlEnd)
+        					.addGap(12)
+        					.addComponent(IterationModeSynchrone)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(IterationModeAsynchrone)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(iterationModeKChips)
+        					.addGap(33)
+        					.addComponent(optionControlTimeLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
         						.addGroup(optionsControlLayout.createSequentialGroup()
-        							.addGap(100)
-        							.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-        						.addGroup(optionsControlLayout.createSequentialGroup()
-        							.addGap(12)
+        							.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(jLabel1)
+        							.addGap(2)
         							.addComponent(validateTime, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-        							.addGap(135)
-        							.addComponent(graphTransButton)
+        							.addGap(107)
+        							.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        								.addGroup(optionsControlLayout.createSequentialGroup()
+        									.addComponent(graphTransButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+        									.addComponent(editGraphButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+        									.addGap(20))
+        								.addGroup(optionsControlLayout.createSequentialGroup()
+        									.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.RELATED, 175, Short.MAX_VALUE)))
         							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(editGraphButton)
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(infoGraphButton)
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(logButton)))))
+        							.addComponent(infoGraphButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+        							.addGap(20)
+        							.addComponent(logButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+        							.addGap(17)))))
         			.addGap(44))
         );
         optionsControlLayout.setVerticalGroup(
-        	optionsControlLayout.createParallelGroup(Alignment.LEADING)
-        		.addComponent(separator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        	optionsControlLayout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(optionsControlLayout.createSequentialGroup()
-        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(optionsControlLayout.createSequentialGroup()
-        					.addGap(0, 3, Short.MAX_VALUE)
-        					.addComponent(logButton))
-        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
-        					.addComponent(infoGraphButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-        					.addComponent(editGraphButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-        					.addComponent(graphTransButton, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)))
-        			.addContainerGap())
-        		.addGroup(optionsControlLayout.createSequentialGroup()
-        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
-        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
-        					.addComponent(IterationModeSynchrone)
-        					.addComponent(IterationModeAsynchrone)
-        					.addComponent(iterationModeKChips)
-        					.addComponent(optionControlTimeLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        					.addComponent(jLabel1)
-        					.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-        				.addComponent(optionControlBackward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        				.addComponent(optionControlRun, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        				.addComponent(optionControlPause, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        				.addComponent(optionControlEnd, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        				.addComponent(optionControlBegin, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        				.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(optionControlForward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-        			.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(jSeparator1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(graphTransButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(4))
         		.addGroup(optionsControlLayout.createSequentialGroup()
-        			.addComponent(validateTime)
-        			.addContainerGap())
+        			.addContainerGap()
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(infoGraphButton, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING, false)
+        					.addComponent(logButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(editGraphButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)))
+        			.addContainerGap(22, Short.MAX_VALUE))
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(IterationModeSynchrone)
+        						.addComponent(IterationModeAsynchrone)
+        						.addComponent(iterationModeKChips)
+        						.addComponent(optionControlTimeLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jLabel1)))
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addGap(20)
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(optionControlForward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        						.addComponent(optionControlPause, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        						.addComponent(optionControlRun, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        						.addComponent(optionControlBackward, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        						.addComponent(optionControlBegin, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        						.addComponent(optionControlEnd, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(validateTime)))
+        			.addGap(20)
+        			.addComponent(separator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
         optionsControl.setLayout(optionsControlLayout);
 
@@ -412,33 +437,33 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         );
 
         javax.swing.GroupLayout playCFGLayout = new javax.swing.GroupLayout(playCFG);
-        playCFG.setLayout(playCFGLayout);
         playCFGLayout.setHorizontalGroup(
-            playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(playCFGLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(optionsControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(playCFGLayout.createSequentialGroup()
-                        .addComponent(optionsChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	playCFGLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(playCFGLayout.createSequentialGroup()
+        			.addGap(20)
+        			.addGroup(playCFGLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(optionsControl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addGroup(playCFGLayout.createSequentialGroup()
+        					.addComponent(optionsChips, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(InformationsPanel, GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
+        				.addComponent(viewGraph, GroupLayout.DEFAULT_SIZE, 1309, Short.MAX_VALUE))
+        			.addContainerGap())
         );
         playCFGLayout.setVerticalGroup(
-            playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(playCFGLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(optionsControl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(viewGraph, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(playCFGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(optionsChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(InformationsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
+        	playCFGLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(playCFGLayout.createSequentialGroup()
+        			.addGap(6)
+        			.addComponent(optionsControl, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(viewGraph, GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(playCFGLayout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(optionsChips, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(InformationsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addGap(6))
         );
+        playCFG.setLayout(playCFGLayout);
 
         mainPanel.add(playCFG, java.awt.BorderLayout.CENTER);
 
@@ -756,5 +781,4 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public void printLimitCycleSize(long limitCycleSize) {
         labelSizeCycleLimit.setText(Long.toString(limitCycleSize));
     }
-    
 }
