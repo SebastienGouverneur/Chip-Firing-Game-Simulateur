@@ -53,5 +53,29 @@ cliquez sur "Download ZIP"
 * Améliorer l'affichage des transitions,
 * Dans l'option Chip, enlever le bouton de validation et la présélection en rouge sur les "+", "-", "=" et faire correspondre le choix d'ajout ou de substraction de jetons aux action sur les cliques des boutons précédents si un sommet du graphe est pré-sélectionné.
 
+### Résultat Deuxième Itération
 
-							
+* Modifier le bouton des transitions pour le rendre plus visible et lui donner plus d'importance.
+
+### Objectif Troisième Itération
+
+##### Priorité : Asynchrone et K-Chips
+
+* Implémenter le mode Asynchrone qui doit nous calculer toutes les configurations c' partant d'une configuration c. Faire correspondre au click du bouton une pop-up avec une barre d'évolution qui nous donne le pourcentage de calcul effectué. Lors de la terminaison, affiche un message disant que l'on ai a 100% du calcul et nous donne la possibilité de cliquer sur le bouton d'affichage des transition,
+
+* Le bouton K-Chips doit se lancer la fenêtre automatiquement sans que l'on soit obligé de cliquer sur le bouton de lecture,
+
+##### Ergonomie
+
+* Améliorer l'affichage des transitions,
+* Dans l'option Chip, enlever le bouton de validation et la présélection en rouge sur les "+", "-", "=" et faire correspondre le choix d'ajout ou de substraction de jetons aux action sur les cliques des boutons précédents si un sommet du graphe est pré-sélectionné.
+
+##### Gestion des évènements/synchronisation
+
+* Trouver et réparer le problème du bouton pause,
+* Lors du choix du template (Grid, Tore, Cycle), le refresh du bouton "OK" n'est pas fait correctement sur le preview ainsi que sur la fenêtre d'affichage du graphe, trouver et fixer le problème,
+* Supprimer le bouton "+" du simulateur et faire en sorte que chaque clique sur "Par/S" ouvre la fenêtre du choix du mode d'itération directement.
+
+##### Organisation
+
+* Incorporer les issues à la doc du git,
