@@ -81,7 +81,7 @@ cliquez sur "Download ZIP"
 
 * Incorporer les issues à la doc du git,
 
-### Résultat Deuxième Itération
+### Résultat Troisième Itération
 
 * Le bouton K-Chips lance la fenêtre automatiquement sans que l'on soit obligé de cliquer sur le bouton de lecture,
 * On a enlevé le bouton de validation et la présélection en rouge sur les "+", "-", "=" et fait correspondre le choix d'ajout ou de substraction de jetons aux action sur les cliques des boutons précédents si un sommet du graphe est pré-sélectionné,
