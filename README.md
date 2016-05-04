@@ -86,3 +86,4 @@ cliquez sur "Download ZIP"
 * Le bouton K-Chips lance la fenêtre automatiquement sans que l'on soit obligé de cliquer sur le bouton de lecture,
 * On a enlevé le bouton de validation et la présélection en rouge sur les "+", "-", "=" et fait correspondre le choix d'ajout ou de substraction de jetons aux action sur les cliques des boutons précédents si un sommet du graphe est pré-sélectionné,
 * Lors du choix du template (Grid, Tore, Cycle), le refresh du bouton "OK" est maintenant fait correctement sur le preview ainsi que sur la fenêtre d'affichage du graphe,
+* Début d'implémentation de l'algo du mode Asynchrone : manque la condition pour boucler sur toutes les configurations fils ainsi que l'ajout correct des transitions.
