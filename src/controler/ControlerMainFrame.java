@@ -73,7 +73,9 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getOptionControlRun().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlPause().addActionListener((ActionListener) this);
         viewMainFrame.getOptionControlForward().addActionListener((ActionListener) this);
-        viewMainFrame.getValideOptionChips().addActionListener((ActionListener) this);
+        viewMainFrame.getModeAddChips().addActionListener((ActionListener) this);
+        viewMainFrame.getModeRemoveChips().addActionListener((ActionListener) this);
+        viewMainFrame.getModeSetChips().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeSynchrone().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeAsynchrone().addActionListener((ActionListener) this);
         viewMainFrame.getIterationModeKChips().addActionListener((ActionListener) this);
@@ -138,8 +140,16 @@ public class ControlerMainFrame implements ActionListener {
             optionControlForwardPerformed();
         }
 
-        if (ae.getSource() == viewMainFrame.getValideOptionChips()) {
-            valideOptionChipsPerformed();
+        if (ae.getSource() == viewMainFrame.getModeAddChips()) {
+        	validateModeAddChipsPerformed();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getModeRemoveChips()) {
+        	validateModeRemoveChipsPerformed();
+        }
+        
+        if (ae.getSource() == viewMainFrame.getModeSetChips()) {
+        	validateModeSetChipsPerformed();
         }
         
         if (ae.getSource() == viewMainFrame.getIterationModeSynchrone()) {
@@ -278,8 +288,9 @@ public class ControlerMainFrame implements ActionListener {
         }
         
         else if (viewMainFrame.getIterationModeAsynchrone().isSelected()) {
-        	if (inProgress.get())
-        		return;
+        	 if (inProgress.get()) {
+                 return;
+             }
         	
         	iterationModeAsynchronePerformed();
         }
@@ -336,20 +347,39 @@ public class ControlerMainFrame implements ActionListener {
         compute.start();
     }
     
-    private void valideOptionChipsPerformed() {
-        IChipOperation op;
+    private void validateModeAddChipsPerformed() {
+    	IChipOperation op;
         int nbChips = 0;
-
-        if (viewMainFrame.getModeAddChips().isSelected()) {
-            op = new AddChipOp();
-        } else if (viewMainFrame.getModeSetChips().isSelected()) {
-            op = new SetChipOp();
-        } else {
-            op = new SubstractChipOp();
+        op = new AddChipOp();
+        String valueText = viewMainFrame.getInputNbChips().getText();
+        try {
+            nbChips = Integer.parseInt(valueText);
+        } catch (NumberFormatException numberFormatException) {
+            return;
         }
 
+        modelMainFrame.computeNodesValues(nbChips, op);
+    }
+  
+    private void validateModeRemoveChipsPerformed() {
+    	IChipOperation op;
+        int nbChips = 0;
+        op = new SubstractChipOp();
         String valueText = viewMainFrame.getInputNbChips().getText();
+        try {
+            nbChips = Integer.parseInt(valueText);
+        } catch (NumberFormatException numberFormatException) {
+            return;
+        }
 
+        modelMainFrame.computeNodesValues(nbChips, op);
+    }
+    
+    private void validateModeSetChipsPerformed() {
+    	IChipOperation op;
+        int nbChips = 0;
+        op = new SetChipOp();
+        String valueText = viewMainFrame.getInputNbChips().getText();
         try {
             nbChips = Integer.parseInt(valueText);
         } catch (NumberFormatException numberFormatException) {
@@ -393,9 +423,8 @@ public class ControlerMainFrame implements ActionListener {
     		viewMainFrame.getIterationModeAsynchrone().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Broadcasting Filled-32.png")));
     	}
     	else {
-    		System.out.println("passe ici");
     		 ModelAsynchrone modelAsynchrone = new ModelAsynchrone();
-    		 ViewAsynchrone viewAsynchrone = new ViewAsynchrone(this);
+    		 //ViewAsynchrone viewAsynchrone = new ViewAsynchrone(this);
     		 ViewGeneratorGraph viewGeneratorGraph = new ViewGeneratorGraph(modelAsynchrone);
     		 ControlerAsynchrone controlerAsynchrone = new ControlerAsynchrone(viewMainFrame, viewGeneratorGraph, modelAsynchrone);
     	}
@@ -427,7 +456,10 @@ public class ControlerMainFrame implements ActionListener {
     }
 
     public void graphTransButtonPerformed() {
-        viewGraphTrans.setVisible(true);
+    	if (Cfg.getInstance().getGraphTrans().getNodeCount() == 0)
+    		errorDialogMessage();
+    	else
+    		viewGraphTrans.setVisible(true);
     }
 
     private void selectAllVerticesButtonPerformed() {

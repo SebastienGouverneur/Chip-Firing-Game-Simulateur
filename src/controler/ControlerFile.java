@@ -16,115 +16,158 @@ import view.ViewGeneratorGraph;
 
 public class ControlerFile implements ActionListener, ListSelectionListener {
 
-    private final ControlerMainFrame controlerMainFrame;
-    private final ViewGeneratorGraph viewGeneratorGraph;
-    private final ModelFile modelFile;
-    private int nbVertex;
-    private int nbChips;
-    
-    public ControlerFile(ControlerMainFrame controlerMainFrame, ModelFile modelOpenFile, ViewGeneratorGraph viewGeneratorGraph) {
-        this.modelFile = modelOpenFile;
-        this.controlerMainFrame = controlerMainFrame; 
+	private final ControlerMainFrame controlerMainFrame;
+	private final ViewGeneratorGraph viewGeneratorGraph;
+	private final ModelFile modelFile;
+	private int nbVertex;
+	private int nbChips;
 
-        this.viewGeneratorGraph = viewGeneratorGraph;
+	public ControlerFile(ControlerMainFrame controlerMainFrame,
+			ModelFile modelOpenFile, ViewGeneratorGraph viewGeneratorGraph) {
+		this.modelFile = modelOpenFile;
+		this.controlerMainFrame = controlerMainFrame;
 
-        viewGeneratorGraph.getListGenerator().getSelectionModel().addListSelectionListener((ListSelectionListener) this);
-        viewGeneratorGraph.getValidateGenerator().addActionListener((ActionListener) this);
-        viewGeneratorGraph.getButtonCancel().addActionListener((ActionListener) this);
-    }
+		this.viewGeneratorGraph = viewGeneratorGraph;
 
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-    	if (ae.getSource() == viewGeneratorGraph.getButtonCancel()) {
-    		viewGeneratorGraph.dispose();
-    	}
-        if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-            if (controlerMainFrame.inProgess() == true) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the current simulation ?", "Close?", JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    controlerMainFrame.interruptCompute();
-                } else {
-                    return;
-                }
-            }
-            
-            controlerMainFrame.resetAll();
-            Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
-        }
-    }
+		viewGeneratorGraph.getListGenerator().getSelectionModel()
+				.addListSelectionListener((ListSelectionListener) this);
+		viewGeneratorGraph.getValidateGenerator().addActionListener(
+				(ActionListener) this);
+		viewGeneratorGraph.getButtonCancel().addActionListener(
+				(ActionListener) this);
+	}
 
-    @Override
-    public void valueChanged(ListSelectionEvent lse) {
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == viewGeneratorGraph.getButtonCancel()) {
+			viewGeneratorGraph.dispose();
+		}
+		if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
+			if (controlerMainFrame.inProgess() == true) {
+				int reply = JOptionPane
+						.showConfirmDialog(
+								null,
+								"Are you sure you want to quit the current simulation ?",
+								"Close?", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					controlerMainFrame.interruptCompute();
+				} else {
+					return;
+				}
+			}
 
-        ListSelectionModel lsm = (ListSelectionModel) lse.getSource();
-        if (lsm.getValueIsAdjusting()) {
-            return;
-        }
-        
-        if (lsm.isSelectionEmpty()) {
-            System.out.println(" <none>");
-        } 
-        
- 
-        else {
-            int minIndex = lsm.getMinSelectionIndex();
-            viewGeneratorGraph.getPreviewGraph().removeAll();
+			controlerMainFrame.resetAll();
+			Cfg.getInstance().setGraph(modelFile.getPreviewGraph());
+		}
+	}
 
-            switch (minIndex) {
-                case 0:
-                    modelFile.generateGraph(
-                            new CustomGeneratorGrid(
-                                    false,
-                                    false,
-                                    false,
-                                    true
-                            ),
-                            nbVertex,
-                            nbChips
-                    );
-                    break;
+	public void updatePerformed() {
+		nbVertex = Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex()
+				.getText());
+		nbChips = Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips()
+				.getText());
+		int index = viewGeneratorGraph.getListGenerator().getSelectionModel()
+				.getAnchorSelectionIndex();
+		switch (index) {
+		case 0:
+			modelFile.generateGraph(new CustomGeneratorGrid(false, false,
+					false, true), nbVertex, nbChips);
+			viewGeneratorGraph.getPreviewGraph().add(
+					modelFile.getViewer().addDefaultView(false));
+			viewGeneratorGraph.getPreviewGraph().revalidate();
+			break;
+		case 1:
+			modelFile.generateGraph(new CustomGeneratorGrid(false, true, false,
+					true), nbVertex, nbChips);
+			viewGeneratorGraph.getPreviewGraph().add(
+					modelFile.getViewer().addDefaultView(false));
+			viewGeneratorGraph.getPreviewGraph().revalidate();
+			break;
+		case 2:
+			modelFile.generateGraph(new CustomGeneratorClique(), nbVertex,
+					nbChips);
+			viewGeneratorGraph.getPreviewGraph().add(
+					modelFile.getViewer().addDefaultView(false));
+			viewGeneratorGraph.getPreviewGraph().revalidate();
+			break;
+		}
+	}
 
-                case 1:
-                    modelFile.generateGraph(
-                            new CustomGeneratorGrid(
-                                    false,
-                                    true,
-                                    false,
-                                    true
-                            ),
-                            nbVertex,
-                            nbChips
-                    );
-                    break;
+	@Override
+	public void valueChanged(ListSelectionEvent lse) {
 
-                case 2:
-                    modelFile.generateGraph(
-                            new CustomGeneratorClique(),
-                            nbVertex,
-                            nbChips
-                    );
-                    break;
-    
-                default:
-                    break;
-            }
+		nbVertex = Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex()
+				.getText());
+		nbChips = Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips()
+				.getText());
 
-            viewGeneratorGraph.getPreviewGraph().add(modelFile.getViewer().addDefaultView(false));
-            viewGeneratorGraph.getPreviewGraph().revalidate();
-        }
-        
-        viewGeneratorGraph.getInputAmountOfChips().getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-            public void changedUpdate(javax.swing.event.DocumentEvent e){
-                
-            }
-            public void insertUpdate(javax.swing.event.DocumentEvent e){
-            	nbVertex = Integer.parseInt(viewGeneratorGraph.getInputNumberOfVertex().getText());
-                nbChips = Integer.parseInt(viewGeneratorGraph.getInputAmountOfChips().getText());  
-            } 
-            public void removeUpdate(javax.swing.event.DocumentEvent e) {
-               
-            }
-        });
-        
-    }
+		ListSelectionModel lsm = (ListSelectionModel) lse.getSource();
+		if (lsm.getValueIsAdjusting()) {
+			return;
+		}
+
+		if (lsm.isSelectionEmpty()) {
+			System.out.println(" <none>");
+		}
+
+		else {
+			int minIndex = lsm.getMinSelectionIndex();
+			viewGeneratorGraph.getPreviewGraph().removeAll();
+
+			switch (minIndex) {
+			case 0:
+				modelFile.generateGraph(new CustomGeneratorGrid(false, false,
+						false, true), nbVertex, nbChips);
+				break;
+
+			case 1:
+				modelFile.generateGraph(new CustomGeneratorGrid(false, true,
+						false, true), nbVertex, nbChips);
+				break;
+
+			case 2:
+				modelFile.generateGraph(new CustomGeneratorClique(), nbVertex,
+						nbChips);
+				break;
+
+			default:
+				break;
+			}
+
+			viewGeneratorGraph.getPreviewGraph().add(
+					modelFile.getViewer().addDefaultView(false));
+			viewGeneratorGraph.getPreviewGraph().revalidate();
+		}
+
+		viewGeneratorGraph.getInputAmountOfChips().getDocument()
+				.addDocumentListener(new javax.swing.event.DocumentListener() {
+					public void changedUpdate(javax.swing.event.DocumentEvent e) {
+
+					}
+
+					public void insertUpdate(javax.swing.event.DocumentEvent e) {
+						updatePerformed();
+					}
+
+					public void removeUpdate(javax.swing.event.DocumentEvent e) {
+
+					}
+				});
+
+		viewGeneratorGraph.getInputNumberOfVertex().getDocument()
+				.addDocumentListener(new javax.swing.event.DocumentListener() {
+					public void changedUpdate(javax.swing.event.DocumentEvent e) {
+
+					}
+
+					public void insertUpdate(javax.swing.event.DocumentEvent e) {
+						updatePerformed();
+					}
+
+					public void removeUpdate(javax.swing.event.DocumentEvent e) {
+
+					}
+				});
+
+	}
 }

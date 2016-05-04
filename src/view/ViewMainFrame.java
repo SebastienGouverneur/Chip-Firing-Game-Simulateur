@@ -89,7 +89,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         inputNbChips = new javax.swing.JTextField();
         modeRemoveChips = new javax.swing.JRadioButton();
         modeAddChips = new javax.swing.JRadioButton();
-        valideOptionChips = new javax.swing.JButton();
         selectedNode = new javax.swing.JScrollPane();
         selectedNodeText = new javax.swing.JTextArea();
         nbChipsLabel = new javax.swing.JLabel();
@@ -306,12 +305,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         modeRemoveChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/minus-red.png"))); // NOI18N
 
         buttonGroup1.add(modeAddChips);
-        modeAddChips.setSelected(true);
         modeAddChips.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/plus-black.png"))); // NOI18N
-        modeAddChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/plus-red.png"))); // NOI18N
-
-        valideOptionChips.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/valid-black.png"))); // NOI18N
-        valideOptionChips.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/valid-grey.png"))); // NOI18N
+        modeAddChips.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/plus-red.png")));
 
         selectedNodeText.setEditable(false);
         selectedNodeText.setColumns(20);
@@ -350,64 +345,61 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         });
 
         javax.swing.GroupLayout optionsChipsLayout = new javax.swing.GroupLayout(optionsChips);
-        optionsChips.setLayout(optionsChipsLayout);
         optionsChipsLayout.setHorizontalGroup(
-            optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(optionsChipsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(modeRemoveChips)
-                            .addComponent(modeSetChips)
-                            .addComponent(modeAddChips)))
-                    .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addComponent(nbChipsLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(selectedNode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsChipsLayout.createSequentialGroup()
-                        .addComponent(selectAllVerticesButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resetSelectedVerticesButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(valideOptionChips, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+        	optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(optionsChipsLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(optionsChipsLayout.createSequentialGroup()
+        					.addComponent(jLabel2)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(separator5, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(modeRemoveChips)
+        						.addComponent(modeSetChips)
+        						.addComponent(modeAddChips)))
+        				.addGroup(optionsChipsLayout.createSequentialGroup()
+        					.addComponent(nbChipsLabel)
+        					.addGap(18)
+        					.addComponent(inputNbChips, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)))
+        			.addPreferredGap(ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+        			.addGroup(optionsChipsLayout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(selectedNode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(Alignment.LEADING, optionsChipsLayout.createSequentialGroup()
+        					.addComponent(selectAllVerticesButton)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(resetSelectedVerticesButton)))
+        			.addContainerGap())
         );
         optionsChipsLayout.setVerticalGroup(
-            optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(optionsChipsLayout.createSequentialGroup()
-                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nbChipsLabel)
-                    .addComponent(inputNbChips, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(separator5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(optionsChipsLayout.createSequentialGroup()
-                                .addComponent(modeAddChips)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(modeRemoveChips)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(optionsChipsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(modeSetChips)
-                                    .addComponent(selectAllVerticesButton)
-                                    .addComponent(resetSelectedVerticesButton)))))
-                    .addGroup(optionsChipsLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel2))))
-            .addGroup(optionsChipsLayout.createSequentialGroup()
-                .addComponent(selectedNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(valideOptionChips, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(optionsChipsLayout.createSequentialGroup()
+        			.addGroup(optionsChipsLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(nbChipsLabel)
+        				.addComponent(inputNbChips, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGroup(optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(optionsChipsLayout.createSequentialGroup()
+        					.addGap(12)
+        					.addGroup(optionsChipsLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(separator5, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+        						.addGroup(optionsChipsLayout.createSequentialGroup()
+        							.addComponent(modeAddChips)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(modeRemoveChips)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addGroup(optionsChipsLayout.createParallelGroup(Alignment.BASELINE)
+        								.addComponent(modeSetChips)
+        								.addComponent(selectAllVerticesButton)
+        								.addComponent(resetSelectedVerticesButton)))))
+        				.addGroup(optionsChipsLayout.createSequentialGroup()
+        					.addGap(47)
+        					.addComponent(jLabel2))))
+        		.addGroup(optionsChipsLayout.createSequentialGroup()
+        			.addComponent(selectedNode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(61, Short.MAX_VALUE))
         );
+        optionsChips.setLayout(optionsChipsLayout);
 
         InformationsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Informations")));
 
@@ -580,7 +572,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JSeparator separator4;
     private javax.swing.JSeparator separator5;
     private javax.swing.JButton validateTime;
-    private javax.swing.JButton valideOptionChips;
     private javax.swing.JPanel viewGraph;
     // End of variables declaration//GEN-END:variables
 
@@ -592,10 +583,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JButton getSelectAllVerticesButton() {
         return selectAllVerticesButton;
-    }
-
-    public JRadioButton getModeSetChips() {
-        return modeSetChips;
     }
 
     public ModelMainFrame getModel() {
@@ -665,7 +652,11 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public JRadioButton getModeRemoveChips() {
         return modeRemoveChips;
     }
-
+    
+    public JRadioButton getModeSetChips() {
+        return modeSetChips;
+    }
+    
     public JLabel getNbChipsLabel() {
         return nbChipsLabel;
     }
@@ -760,10 +751,6 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
     public JSeparator getSeparator5() {
         return separator5;
-    }
-
-    public JButton getValideOptionChips() {
-        return valideOptionChips;
     }
 
     public JPanel getViewGraph() {

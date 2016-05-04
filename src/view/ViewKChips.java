@@ -67,7 +67,7 @@ public class ViewKChips extends javax.swing.JFrame implements Observer {
 
         labdelDisplaySet.setText("Display set config");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Input NbChips"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input NbChips", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 3, 10))); // NOI18N
 
         labelNbChips.setText("NbChips");
 

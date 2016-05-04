@@ -220,6 +220,10 @@ public class MyGraph {
     public int getNbChipsNode(String nodeId) {
         return graph.getNode(nodeId).getAttribute("chips");
     }
+    
+    public int getNbChipsNode(int Node) {
+        return graph.getNode(Node).getAttribute("chips");
+    }
 
     public void setNodeLabel(String nodeId, int nbChips) {
         graph.getNode(nodeId).addAttribute("ui.label", nbChips);
@@ -244,6 +248,10 @@ public class MyGraph {
 
     public Node getNode(String id) {
         return graph.getNode(id);
+    }
+    
+    public Node getNode(int Node) {
+        return graph.getNode(Node);
     }
 
     public boolean isNodeMarked(String id) {
