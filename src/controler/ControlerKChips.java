@@ -17,10 +17,14 @@ import java.util.List;
 import java.util.Observer;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JTextField;
 import model.ModelKChips;
 import org.graphstream.graph.Node;
 import view.ViewKChips;
+import view.ViewMainFrame;
 
 /**
  *
@@ -30,12 +34,12 @@ public class ControlerKChips implements ActionListener {
 
     private final ViewKChips viewKChips;
     private final ModelKChips modelKChips;
-    private AtomicBoolean inProgess;
+    private AtomicBoolean inProgress;
 
     ControlerKChips(ViewKChips viewKChips, ModelKChips modelKChips) {
         this.viewKChips = viewKChips;
         this.modelKChips = modelKChips;
-        inProgess = new AtomicBoolean(false);
+        inProgress = new AtomicBoolean(false);
 
         modelKChips.addObserver((Observer) viewKChips);
 
@@ -83,7 +87,7 @@ public class ControlerKChips implements ActionListener {
                         }
 
                         ConfigurationContrainer configSet = new ConfigurationContrainer(config.toString());
-                        inProgess.set(true);
+                        inProgress.set(true);
 
                         while (!configSet.cycleDetected() && !Thread.currentThread().isInterrupted()) {
                             PatternUpdate p = new PatternUpdate(PatternUpdate.buildParallelPattern(graph), graph);
@@ -102,13 +106,13 @@ public class ControlerKChips implements ActionListener {
                             System.err.println(configFrom + " -> " + configTo);
                             modelKChips.addTransition(configFrom, configTo);
                         }
-
-                        inProgess.set(false);
+                        
+                        inProgress.set(false);
                     }
                 }
             }
         });
-
+        
         compute.start();
     }
 

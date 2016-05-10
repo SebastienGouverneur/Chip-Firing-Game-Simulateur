@@ -230,6 +230,11 @@ public class ControlerMainFrame implements ActionListener {
     		}
     		
             setUpKChips();
+            
+            if (viewMainFrame.getOptionControlPause().isSelected()) {
+            	System.out.println("la");
+            }
+           
         } 
         
         
@@ -458,7 +463,7 @@ public class ControlerMainFrame implements ActionListener {
     public void graphTransButtonPerformed() {
     	if (Cfg.getInstance().getGraphTrans().getNodeCount() == 0)
     		errorDialogMessage();
-    	else
+    	else 
     		viewGraphTrans.setVisible(true);
     }
 
@@ -522,7 +527,7 @@ public class ControlerMainFrame implements ActionListener {
         return inProgress.get();
     }
 
-    void interruptCompute() {
+   public void interruptCompute() {
     	if (inProgess() == true) {
 	        compute.interrupt();
 	        try {

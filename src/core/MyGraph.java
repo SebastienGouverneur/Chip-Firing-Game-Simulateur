@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import model.ModelMainFrame;
 import org.graphstream.graph.Edge;
@@ -16,7 +15,6 @@ import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.stream.file.FileSinkDOT;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDOT;
-import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants.Units;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
@@ -108,7 +106,7 @@ public class MyGraph {
 
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         viewer.enableAutoLayout();
-
+        
         fromViewer = viewer.newViewerPipe();
         fromViewer.addSink(this.graph);
 
@@ -264,6 +262,10 @@ public class MyGraph {
 
     public Viewer getViewer() {
         return viewer;
+    }
+    
+    public Graph getCurrentGraph() {
+    	return graph;
     }
 
     public final void createViewGraph() {
