@@ -87,3 +87,19 @@ cliquez sur "Download ZIP"
 * On a enlevé le bouton de validation et la présélection en rouge sur les "+", "-", "=" et fait correspondre le choix d'ajout ou de substraction de jetons aux action sur les cliques des boutons précédents si un sommet du graphe est pré-sélectionné,
 * Lors du choix du template (Grid, Tore, Cycle), le refresh du bouton "OK" est maintenant fait correctement sur le preview ainsi que sur la fenêtre d'affichage du graphe,
 * Début d'implémentation de l'algo du mode Asynchrone : manque la condition pour boucler sur toutes les configurations fils ainsi que l'ajout correct des transitions.
+
+### Objectif Quatrième Itération
+
+##### Priorité : Visualisation des cycles limites et mode Asynchrone
+
+* Trouver une façon de générer un graphique contenant les cycles limites en fonction de leur période et du nombre de jetons associé au mode K-Chips.
+* Compléter l'implémentation du mode Asynchrone 
+
+##### Ergonomie
+
+* Implémenter un zoom sur la vue du graphe de transition
+
+### Résultat Quatrième Itération
+
+* La visualisation a été préparée et l'on s'est fixé sur le choix du graphique, manque l'ajout des prédécesseurs à chaque sommet pour pouvoir appliquer l'algorithme de Foulk et trouver les composantes fortements connexes terminales.
+* Nous arrivons à écouter sur les scroll de la souris mais échouons dans l'implémentation d'un zoom en s'appuyant sur la classe Camera() de graphstream.
