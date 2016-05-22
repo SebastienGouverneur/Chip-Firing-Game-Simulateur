@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Observer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import view.ViewAsynchrone;
+import view.ViewDiagKChips;
 import view.ViewEditGraph;
 import view.ViewGeneratorGraph;
 import view.ViewGraphTrans;
@@ -54,10 +56,12 @@ public class ControlerMainFrame implements ActionListener {
     private final ViewGraphTrans viewGraphTrans;
     private final ModelGraphTrans modelGraphTrans;
     private final ControlerGraphTrans controlerGraphTrans;
-
+    
     private final ModelFile modelFile;
     private final ViewGeneratorGraph viewGeneratorGraph;
     private final ControlerFile controllerFile;
+    
+    private final ViewDiagKChips viewDiagKChips;
 
     private Thread compute;
     private static AtomicBoolean inProgress;
@@ -82,6 +86,7 @@ public class ControlerMainFrame implements ActionListener {
         viewMainFrame.getInputNbChips().addActionListener((ActionListener) this);
         viewMainFrame.getValidateTime().addActionListener((ActionListener) this);
         viewMainFrame.getGraphTransButton().addActionListener((ActionListener) this);
+        viewMainFrame.getDiagKChipsButton().addActionListener((ActionListener) this);
         viewMainFrame.getSelectAllVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getResetSelectedVerticesButton().addActionListener((ActionListener) this);
         viewMainFrame.getEditGraphButton().addActionListener((ActionListener) this);
@@ -108,6 +113,8 @@ public class ControlerMainFrame implements ActionListener {
         modelFile = new ModelFile();
         viewGeneratorGraph = new ViewGeneratorGraph(modelFile);
         controllerFile = new ControlerFile(this, modelFile, viewGeneratorGraph);
+        
+        viewDiagKChips = new ViewDiagKChips(Cfg.getInstance().getGraph());
     }
 
     public void changeColorNode(String id) {
@@ -171,6 +178,10 @@ public class ControlerMainFrame implements ActionListener {
         if (ae.getSource() == viewMainFrame.getGraphTransButton()) {
             graphTransButtonPerformed();
         }
+        
+        if (ae.getSource() == viewMainFrame.getDiagKChipsButton()) {
+            diagKChipsButtonPerformed();
+        }
 
         if (ae.getSource() == viewMainFrame.getSelectAllVerticesButton()) {
             selectAllVerticesButtonPerformed();
@@ -225,18 +236,12 @@ public class ControlerMainFrame implements ActionListener {
     	}
     	
     	else if (viewMainFrame.getIterationModeKChips().isSelected()) {
+    		
     		if (inProgress.get()) {
     			return;
     		}
-    		
             setUpKChips();
-            
-            if (viewMainFrame.getOptionControlPause().isSelected()) {
-            	System.out.println("la");
-            }
-           
         } 
-        
         
     	else if (viewMainFrame.getIterationModeSynchrone().isSelected()) {
             if (inProgress.get()) {
@@ -396,7 +401,6 @@ public class ControlerMainFrame implements ActionListener {
     
     private void setUpKChips() {
     	viewMainFrame.printLimitCycleSize(0);
-
         ModelKChips modelKChips = new ModelKChips();
         ViewKChips viewKChips = new ViewKChips(modelKChips);
         ControlerKChips controlerKChips = new ControlerKChips(viewKChips, modelKChips);
@@ -405,6 +409,11 @@ public class ControlerMainFrame implements ActionListener {
     private void errorDialogMessage() {
     	JOptionPane.showMessageDialog(null, "There's no graph yet, please open a graph or import one from a template before.",
 				"Iteration Warning", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void errorDiagMessage() {
+    	JOptionPane.showMessageDialog(null, "Please generate a K-Chips configuration before trying to visualise something",
+				"Diagram-K-Chips Warning", JOptionPane.WARNING_MESSAGE);
     }
 
     private void iterationModeSynchronePerformed() {
@@ -441,6 +450,8 @@ public class ControlerMainFrame implements ActionListener {
     		errorDialogMessage();
     		viewMainFrame.getIterationModeKChips().setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/States Filled-32.png")));
     	}
+    	else if (inProgress() == true)
+    		return;
     	else {
     		setUpKChips();
     	}
@@ -467,6 +478,19 @@ public class ControlerMainFrame implements ActionListener {
     		viewGraphTrans.setVisible(true);
     }
 
+    public void diagKChipsButtonPerformed() {
+    	if (inProgress()) {
+    		return;
+    	}
+    	if (Cfg.getInstance().getGraphTrans().getNodeCount() == 0)
+    		errorDiagMessage();
+    	else {
+    		viewDiagKChips.initComponents();
+    		viewDiagKChips.setVisible(true);
+    	}
+    	
+    }
+    
     private void selectAllVerticesButtonPerformed() {
         for (Node node : modelMainFrame.getNodeSet()) {
             modelMainFrame.setSelectedNode(node.getId());
@@ -523,12 +547,12 @@ public class ControlerMainFrame implements ActionListener {
         controlerGraphTrans.reset();
     }
 
-    public boolean inProgess() {
+    public boolean inProgress() {
         return inProgress.get();
     }
 
    public void interruptCompute() {
-    	if (inProgess() == true) {
+    	if (inProgress() == true) {
 	        compute.interrupt();
 	        try {
 	            compute.join();

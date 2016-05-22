@@ -17,11 +17,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.ModelMainFrame;
 import org.graphstream.ui.swingViewer.ViewPanel;
+
+import controler.ControlerMainFrame;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import java.awt.Color;
 
 public class ViewMainFrame extends javax.swing.JFrame implements Observer {
 
@@ -58,6 +63,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         optionsControl = new javax.swing.JPanel();
         IterationModeSynchrone = new javax.swing.JRadioButton();
         IterationModeAsynchrone = new javax.swing.JRadioButton();
+        IterationModeAsynchrone.setBackground(new Color(238, 238, 238));
         separator4 = new javax.swing.JSeparator();
         optionControlRun = new javax.swing.JButton();
         optionControlPause = new javax.swing.JButton();
@@ -77,8 +83,13 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
+        diagKChipsButton = new javax.swing.JButton();
+        diagKChipsButton.setToolTipText("");
+        diagKChipsButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         editGraphButton = new javax.swing.JButton();
-        infoGraphButton = new javax.swing.JButton();
         logButton = new javax.swing.JButton();
         validateTime = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -127,7 +138,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         IterationModeSynchrone.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Unicast Filled-32red.png"))); // NOI18N
         IterationModeSynchrone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IterationModeSynchroneActionPerformed(evt);
+                iterationModeSynchroneActionPerformed(evt);
             }
         });
 
@@ -165,10 +176,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         graphTransButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Active Directory-25grey.png"))); // NOI18N
 
         editGraphButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Settings3-25.png"))); // NOI18N
-        editGraphButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Settings3-25grey.png"))); // NOI18N
-
-        infoGraphButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Info-25.png"))); // NOI18N
-        infoGraphButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Info-25grey.png"))); // NOI18N
+        editGraphButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Settings3-25grey.png")));
 
         logButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/System Task-25.png"))); // NOI18N
         logButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/System Task-25grey.png"))); // NOI18N
@@ -196,6 +204,10 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
                 iterationModeKChipsActionPerformed(evt);
             }
         });
+        
+        diagKChipsButton = new JButton("Diag");
+        diagKChipsButton.setIcon(new ImageIcon(ViewMainFrame.class.getResource("/view/icons/Diagram-KChips-32.png")));
+        diagKChipsButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Diagram-KChips-32-grey.png")));
 
         javax.swing.GroupLayout optionsControlLayout = new javax.swing.GroupLayout(optionsControl);
         optionsControlLayout.setHorizontalGroup(
@@ -212,7 +224,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(optionControlForward)
         			.addGap(6)
-        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
         				.addGroup(optionsControlLayout.createSequentialGroup()
         					.addGap(78)
         					.addComponent(separator4, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE))
@@ -228,48 +240,33 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         					.addGap(33)
         					.addComponent(optionControlTimeLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE)
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
         						.addGroup(optionsControlLayout.createSequentialGroup()
         							.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(jLabel1)
         							.addGap(2)
         							.addComponent(validateTime, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-        							.addGap(107)
-        							.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        							.addGap(46)
+        							.addComponent(graphTransButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+        							.addComponent(diagKChipsButton, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+        							.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
         								.addGroup(optionsControlLayout.createSequentialGroup()
-        									.addComponent(graphTransButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-        									.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-        									.addComponent(editGraphButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-        									.addGap(20))
-        								.addGroup(optionsControlLayout.createSequentialGroup()
+        									.addGap(23)
         									.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-        									.addPreferredGap(ComponentPlacement.RELATED, 175, Short.MAX_VALUE)))
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(infoGraphButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-        							.addGap(20)
-        							.addComponent(logButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-        							.addGap(17)))))
-        			.addGap(44))
+        									.addGap(118))
+        								.addGroup(Alignment.TRAILING, optionsControlLayout.createSequentialGroup()
+        									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        									.addComponent(editGraphButton)
+        									.addGap(42)))
+        							.addComponent(logButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE))
+        					.addPreferredGap(ComponentPlacement.RELATED)))
+        			.addGap(56))
         );
         optionsControlLayout.setVerticalGroup(
-        	optionsControlLayout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(optionsControlLayout.createSequentialGroup()
-        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(jSeparator1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(graphTransButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addGap(4))
-        		.addGroup(optionsControlLayout.createSequentialGroup()
-        			.addContainerGap()
-        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(infoGraphButton, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-        				.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING, false)
-        					.addComponent(logButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        					.addComponent(editGraphButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)))
-        			.addContainerGap(22, Short.MAX_VALUE))
+        	optionsControlLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(optionsControlLayout.createSequentialGroup()
         			.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
         				.addGroup(optionsControlLayout.createSequentialGroup()
@@ -295,6 +292,23 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         					.addComponent(validateTime)))
         			.addGap(20)
         			.addComponent(separator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(optionsControlLayout.createSequentialGroup()
+        			.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(12)
+        			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(diagKChipsButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(graphTransButton, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
+        					.addContainerGap())
+        				.addGroup(optionsControlLayout.createSequentialGroup()
+        					.addGap(11)
+        					.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(editGraphButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(logButton, Alignment.LEADING))
+        					.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+        					.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addGap(4))))
         );
         optionsControl.setLayout(optionsControlLayout);
 
@@ -507,7 +521,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_validateTimeActionPerformed
 
-    private void IterationModeSynchroneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IterationModeSynchroneActionPerformed
+    private void iterationModeSynchroneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IterationModeSynchroneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IterationModeSynchroneActionPerformed
 
@@ -528,8 +542,8 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton editGraphButton;
     private javax.swing.JMenu file;
     private javax.swing.JButton graphTransButton;
+    private javax.swing.JButton diagKChipsButton;
     private javax.swing.JMenuItem import_;
-    private javax.swing.JButton infoGraphButton;
     private javax.swing.JTextField inputNbChips;
     private javax.swing.ButtonGroup iterationMode;
     private javax.swing.JRadioButton iterationModeKChips;
@@ -612,13 +626,13 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     public JButton getGraphTransButton() {
         return graphTransButton;
     }
+    
+    public JButton getDiagKChipsButton() {
+    	return diagKChipsButton;
+    }
 
     public JMenuItem getImport_() {
         return import_;
-    }
-
-    public JButton getInfoGraphButton() {
-        return infoGraphButton;
     }
 
     public JTextField getInputNbChips() {

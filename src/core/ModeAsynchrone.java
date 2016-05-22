@@ -5,10 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.ModelAsynchrone;
-
-import org.graphstream.graph.Graph;
-
 public class ModeAsynchrone {
 	
     private final Set<Set<List<Integer>>> returnValue;

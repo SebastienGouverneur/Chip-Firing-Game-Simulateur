@@ -17,11 +17,12 @@ import core.Cfg;
 import model.ModelGraphTrans;
 
 public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
+	
 	private ModelGraphTrans modelGraphTrans;
 	private Dimension preferredSize = new Dimension(400, 400); 
 	//private Graph graph = Cfg.getInstance().getGraphTrans().getCurrentGraph();
-	Viewer viewer = null;
-	View view = null;
+	private Viewer viewer;
+	private View view;
 	
 	public ViewGraphTrans() {
 		initComponents();
@@ -35,6 +36,10 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
 		viewGraph.add(modelGraphTrans.getViewer().addDefaultView(false));
 		actionZoomPerformed();
 	}
+	
+	public View getView() {
+		return view;
+	}
 
 	public void actionZoomPerformed() {
 		viewGraph.addMouseWheelListener(new MouseWheelListener() {
@@ -43,7 +48,7 @@ public class ViewGraphTrans extends javax.swing.JFrame implements Observer {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int notches = e.getWheelRotation();
 				if (notches < 0) {
-					//view.getCamera().setViewPercent(0.5);
+					//getView().getCamera().setViewPercent(0.5)
 					System.out.println("up");
 				} else {
 					System.out.println("down");

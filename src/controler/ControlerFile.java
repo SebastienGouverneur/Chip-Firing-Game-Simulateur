@@ -43,7 +43,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
 			viewGeneratorGraph.dispose();
 		}
 		if (ae.getSource() == viewGeneratorGraph.getValidateGenerator()) {
-			if (controlerMainFrame.inProgess() == true) {
+			if (controlerMainFrame.inProgress() == true) {
 				int reply = JOptionPane
 						.showConfirmDialog(
 								null,
@@ -150,7 +150,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
 					}
 
 					public void removeUpdate(javax.swing.event.DocumentEvent e) {
-
+						updatePerformed();
 					}
 				});
 
@@ -165,7 +165,7 @@ public class ControlerFile implements ActionListener, ListSelectionListener {
 					}
 
 					public void removeUpdate(javax.swing.event.DocumentEvent e) {
-
+						updatePerformed();
 					}
 				});
 
