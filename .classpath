@@ -6,17 +6,17 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-ui-1.3/gs-ui-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-ui-1.3/gs-ui-1.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-ui-1.3/gs-ui-1.3.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-core-1.3/gs-core-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-core-1.3/gs-core-1.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-core-1.3/gs-core-1.3.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-algo-1.3/gs-algo-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-algo-1.3/gs-algo-1.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/Enseignement/TER/Chip-Firing-Game-Simulateur/src/lib/gs-algo-1.3/gs-algo-1.3.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/jfreechart-1.0.19/lib/jfreechart-1.0.19-swt.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
-	<classpathentry kind="lib" path="/home/sebastien/Documents/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-algo-1.3/gs-algo-1.3.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-algo-1.3/gs-algo-1.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-algo-1.3/gs-algo-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-core-1.3/gs-core-1.3.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-core-1.3/gs-core-1.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-core-1.3/gs-core-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-ui-1.3/gs-ui-1.3.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-ui-1.3/gs-ui-1.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/gs-ui-1.3/gs-ui-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="D:/Sébastien/Téléchargements/jfreechart-1.0.19/lib/jfreechart-1.0.19-swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

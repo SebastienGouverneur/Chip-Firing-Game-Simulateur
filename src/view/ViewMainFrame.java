@@ -205,9 +205,9 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
             }
         });
         
-        diagKChipsButton = new JButton("Diag");
-        diagKChipsButton.setIcon(new ImageIcon(ViewMainFrame.class.getResource("/view/icons/Diagram-KChips-32.png")));
-        diagKChipsButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Diagram-KChips-32-grey.png")));
+        diagKChipsButton_1 = new JButton("Diag");
+        diagKChipsButton_1.setIcon(new ImageIcon(ViewMainFrame.class.getResource("/view/icons/Diagram-KChips-32.png")));
+        diagKChipsButton_1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Diagram-KChips-32-grey.png")));
 
         javax.swing.GroupLayout optionsControlLayout = new javax.swing.GroupLayout(optionsControl);
         optionsControlLayout.setHorizontalGroup(
@@ -242,27 +242,26 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
         						.addGroup(optionsControlLayout.createSequentialGroup()
-        							.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(jLabel1)
-        							.addGap(2)
-        							.addComponent(validateTime, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-        							.addGap(46)
-        							.addComponent(graphTransButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-        							.addPreferredGap(ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-        							.addComponent(diagKChipsButton, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-        							.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING, false)
+        							.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
         								.addGroup(optionsControlLayout.createSequentialGroup()
-        									.addGap(23)
-        									.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-        									.addGap(118))
-        								.addGroup(Alignment.TRAILING, optionsControlLayout.createSequentialGroup()
-        									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        									.addComponent(optionControlTime, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.RELATED)
+        									.addComponent(jLabel1)
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(validateTime, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+        									.addGap(46)
+        									.addComponent(graphTransButton)
+        									.addGap(24)
+        									.addComponent(diagKChipsButton_1)
+        									.addPreferredGap(ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
         									.addComponent(editGraphButton)
-        									.addGap(42)))
+        									.addGap(42))
+        								.addGroup(optionsControlLayout.createSequentialGroup()
+        									.addPreferredGap(ComponentPlacement.RELATED, 369, Short.MAX_VALUE)
+        									.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+        									.addGap(118)))
         							.addComponent(logButton, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
-        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE))
-        					.addPreferredGap(ComponentPlacement.RELATED)))
+        						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 6, GroupLayout.PREFERRED_SIZE))))
         			.addGap(56))
         );
         optionsControlLayout.setVerticalGroup(
@@ -298,15 +297,15 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
         			.addGroup(optionsControlLayout.createParallelGroup(Alignment.LEADING)
         				.addGroup(optionsControlLayout.createSequentialGroup()
         					.addGroup(optionsControlLayout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(diagKChipsButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(diagKChipsButton_1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
         						.addComponent(graphTransButton, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
         					.addContainerGap())
         				.addGroup(optionsControlLayout.createSequentialGroup()
         					.addGap(11)
         					.addGroup(optionsControlLayout.createParallelGroup(Alignment.TRAILING)
-        						.addComponent(editGraphButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(editGraphButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
         						.addComponent(logButton, Alignment.LEADING))
-        					.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+        					.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
         					.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addGap(4))))
         );
@@ -543,6 +542,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JMenu file;
     private javax.swing.JButton graphTransButton;
     private javax.swing.JButton diagKChipsButton;
+    private JButton diagKChipsButton_1;
     private javax.swing.JMenuItem import_;
     private javax.swing.JTextField inputNbChips;
     private javax.swing.ButtonGroup iterationMode;
@@ -628,7 +628,7 @@ public class ViewMainFrame extends javax.swing.JFrame implements Observer {
     }
     
     public JButton getDiagKChipsButton() {
-    	return diagKChipsButton;
+    	return diagKChipsButton_1;
     }
 
     public JMenuItem getImport_() {
