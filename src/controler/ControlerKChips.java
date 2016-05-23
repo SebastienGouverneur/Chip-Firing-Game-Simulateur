@@ -60,10 +60,16 @@ public class ControlerKChips implements ActionListener {
         
         viewMainFrame.getOptionControlPause().addActionListener((ActionListener) this);
     }
+    
+    public void emptyMap(LinkedHashMap<String, List<String>> map) {
+    	map.clear();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == viewKChips.getButtonValidateNbChips()) {
+        	emptyMap(precMap);
+        	emptyMap(succMap);
             buttonValidateNbChipsPerformed();
         }
     }
@@ -151,8 +157,8 @@ public class ControlerKChips implements ActionListener {
                         }
                         //precMap.put(befConfigTo, configPrec);
                         succMap.put(newConfig, configSucc);
-                        Cfg.setTimeAnimation(1);
-						Cfg.setTimeExec(1);
+                        //Cfg.setTimeAnimation(1);
+						//Cfg.setTimeExec(1);
                     }
                 }
             }
